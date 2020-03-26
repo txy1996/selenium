@@ -177,11 +177,12 @@ public class SeleniumUtil {
         
         ArrayList<RequiredField> requiredFields = new ArrayList<>();
         //获取所有input 标签
-        List<WebElement> elements =driver.findElements(By.tagName("input"));
+//        List<WebElement> elements =driver.findElements(By.tagName("input"));
+        List<WebElement> elements =driver.findElements(By.xpath("//div[contains(@class,'input-group')]/*[contains(@class,'form-control')]"));
         //获取主表的数据集id 
         String id= driver.findElement(By.cssSelector("#data_panel")).getAttribute("data-dataid");
         for (WebElement webElement : elements) {
-           
+            
             //获取data-required 属性等于 1 获取必填字段
             if ("1".equals(webElement.getAttribute("data-required"))&&webElement.isDisplayed()
                     &&webElement.isEnabled()) {
@@ -199,9 +200,9 @@ public class SeleniumUtil {
                 coreDataInput(driver,webElement,requiredFields,id,AttributesEnum.Fillable.getValue());
                 //不可见
             }else if (("1".equals(webElement.getAttribute("data-readonly"))
-                    ||"0".equals(webElement.getAttribute("data-required")))
-                    &&!webElement.isDisplayed()) {
-                coreDataInput(driver,webElement,requiredFields,id,AttributesEnum.Invisible.getValue());
+                    ||!"1".equals(webElement.getAttribute("data-required")))
+                    &&!webElement.isDisplayed()&&webElement.getAttribute("data-field")!=null) {
+                  coreDataInput(driver,webElement,requiredFields,id,AttributesEnum.Invisible.getValue());
             }
             
             
