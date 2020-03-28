@@ -39,6 +39,7 @@ public class ExcelWriter {
         // 类装载时就载入指定好的列头信息，如有需要，可以考虑做成动态生成的列头
         CELL_HEADS = new ArrayList<>();
         CELL_HEADS.add("数据集ID");
+        CELL_HEADS.add("序号");
         CELL_HEADS.add("列名");
         CELL_HEADS.add("中文含义");
         CELL_HEADS.add("填写属性");
@@ -46,6 +47,7 @@ public class ExcelWriter {
         CELL_HEADS.add("小数位数");
         CELL_HEADS.add("字段值");
         CELL_HEADS.add("字典值");
+        
     }
 
     /**

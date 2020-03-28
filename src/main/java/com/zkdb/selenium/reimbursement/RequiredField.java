@@ -13,6 +13,11 @@ public class RequiredField {
      * 数据集id
      */
     private String dataId;
+    
+    /**
+     * 从表序号行
+     */
+    private String serialNumber;
     /**
      * 数据集字段
      */
@@ -98,24 +103,33 @@ public class RequiredField {
         super();
         // TODO Auto-generated constructor stub
     }
-    public RequiredField(String dataId, String field, String fieldName, String attributes, String length,
-            String decimalPlaces, String fieldValue, String fieldDicValue) {
-        super();
-        this.dataId = dataId;
-        this.field = field;
-        this.fieldName = fieldName;
-        this.attributes = attributes;
-        this.length = length;
-        this.decimalPlaces = decimalPlaces;
-        this.fieldValue = fieldValue;
-        this.fieldDicValue = fieldDicValue;
-    }
-    @Override
-    public String toString() {
-        return "RequiredField [dataId=" + dataId + ", field=" + field + ", fieldName=" + fieldName + ", attributes="
-                + attributes + ", length=" + length + ", decimalPlaces=" + decimalPlaces + ", fieldValue=" + fieldValue
-                + ", fieldDicValue=" + fieldDicValue + "]";
-    }
+	public String getSerialNumber() {
+		return serialNumber;
+	}
+	public void setSerialNumber(String serialNumber) {
+		this.serialNumber = serialNumber;
+	}
+	@Override
+	public String toString() {
+		return "RequiredField [dataId=" + dataId + ", serialNumber=" + serialNumber + ", field=" + field
+				+ ", fieldName=" + fieldName + ", attributes=" + attributes + ", length=" + length + ", decimalPlaces="
+				+ decimalPlaces + ", fieldValue=" + fieldValue + ", fieldDicValue=" + fieldDicValue + "]";
+	}
+	public RequiredField(String dataId, String serialNumber, String field, String fieldName, String attributes,
+			String length, String decimalPlaces, String fieldValue, String fieldDicValue) {
+		super();
+		this.dataId = dataId;
+		this.serialNumber = serialNumber;
+		this.field = field;
+		this.fieldName = fieldName;
+		this.attributes = attributes;
+		this.length = length;
+		this.decimalPlaces = decimalPlaces;
+		this.fieldValue = fieldValue;
+		this.fieldDicValue = fieldDicValue;
+	}
+    
+	
     
     
     

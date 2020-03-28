@@ -219,20 +219,20 @@ public class SeleniumUtil {
                 //获取从表必填字段
                 if ("1".equals(webElement1.getAttribute("data-required"))) {
                     
-                   secondaryDataInput(driver,webElement,webElement1,requiredFields,AttributesEnum.Required.getValue());
+                   //secondaryDataInput(driver,webElement,webElement1,requiredFields,AttributesEnum.Required.getValue());
                    //只读
                 }else if ("1".equals(webElement1.getAttribute("data-readonly"))) {
                     
-                    secondaryDataInput(driver,webElement,webElement1,requiredFields,AttributesEnum.Readonly.getValue());
+                    //secondaryDataInput(driver,webElement,webElement1,requiredFields,AttributesEnum.Readonly.getValue());
                     
                     //可填
                 }else if(!"1".equals(webElement.getAttribute("data-readonly"))
                         &&!"1".equals(webElement.getAttribute("data-required"))
                         ) {
-                    secondaryDataInput(driver,webElement,webElement1,requiredFields,AttributesEnum.Fillable.getValue());
+                    //secondaryDataInput(driver,webElement,webElement1,requiredFields,AttributesEnum.Fillable.getValue());
                     //不可见
                 }else if ("1".equals(webElement.getAttribute("data-readonly"))&&!webElement.isDisplayed()) {
-                    secondaryDataInput(driver,webElement,webElement1,requiredFields,AttributesEnum.Invisible.getValue());
+                    //secondaryDataInput(driver,webElement,webElement1,requiredFields,AttributesEnum.Invisible.getValue());
                 }
                 
             }
@@ -277,7 +277,7 @@ public class SeleniumUtil {
             fieldValue=webElement.getAttribute("value");
             //字典值
             fieldDicValue=webElement.getAttribute("selvalue");
-            requiredFields.add(new  RequiredField(dateId,field,fieldName,attributes, length, decimalPlaces, fieldValue,fieldDicValue)); 
+            requiredFields.add(new  RequiredField(dateId,null,field,fieldName,attributes, length, decimalPlaces, fieldValue,fieldDicValue)); 
         }
         
     }
@@ -291,7 +291,7 @@ public class SeleniumUtil {
      * @param webElement1
      * @param requiredFields
      */
-    public static void secondaryDataInput(WebDriver driver,WebElement webElement,WebElement webElement1,ArrayList<RequiredField> requiredFields,String attributes) {
+    public static void secondaryDataInput(WebDriver driver,WebElement webElement,WebElement webElement1,ArrayList<RequiredField> requiredFields,String attributes,String num,String value) {
         String dateId;
         String field;
         String fieldName;
@@ -300,7 +300,7 @@ public class SeleniumUtil {
         field=webElement1.getAttribute("data-field");
         fieldName=webElement1.findElement(By.className("text")).getAttribute("innerText");
         
-        requiredFields.add(new  RequiredField(dateId,field,fieldName, attributes, null, null, null,null));
+        requiredFields.add(new  RequiredField(dateId,num,field,fieldName, attributes, null, null, value,null));
     }
     /**
      * 

@@ -1,14 +1,18 @@
 package com.zkdb.selenium.tset;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -51,7 +55,8 @@ public class ReimbursementTest {
             }
     }
     
-    public static void run() {
+    @SuppressWarnings("static-access")
+	public static void run() {
         // TODO Auto-generated method stub
         WaitiElementsLoad load = new WaitiElementsLoad();
         SeleniumUtil util = new SeleniumUtil();
@@ -182,7 +187,7 @@ public class ReimbursementTest {
             driver.findElement(By.cssSelector(".cell:nth-child(7)")).click();
             logger.info("-----------child(7)------------");
             
-            //模拟键盘输入
+            //模拟键盘输入 10092.90
             util.keyboardNumberInput((float) 10092.90);
             
 
@@ -209,35 +214,17 @@ public class ReimbursementTest {
             
             load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".cell:nth-child(12)");
             driver.findElement(By.cssSelector(".cell:nth-child(12)")).click();
-//            //
-//            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".btn:nth-child(5)");
-//            driver.findElement(By.cssSelector(".btn:nth-child(5)")).click();
             
-//            //点击报销附件
-//            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".fa > .text");
-//            driver.findElement(By.cssSelector(".fa > .text")).click();
+            //点击新增从表
+            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".fa-plus-square");
+            driver.findElement(By.cssSelector(".fa-plus-square")).click();
+            logger.info("点击新增从表");
+            //tr[2]/td[4]
+            //双击 费用科目
+            Actions actions =new Actions(driver);
+            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_XPATH,"//tr[2]/td[4]");
             
-            
-//            //文件上传
-//            SimulationFileUpload fileUpload =new SimulationFileUpload();
-//            //上传文件路径
-//            String fileUrl ="D:\\资料文档\\电子书\\森见登美彦\\春宵苦短，少女前进吧！.txt";
-//            //
-//            fileUpload.fileUpload(fileUrl);
-//            
-//
-//            
-//            logger.info("-----------准备上传------------"+System.currentTimeMillis());
-//            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".modal-footer > .btn-primary");
-//            driver.findElement(By.cssSelector(".modal-footer > .btn-primary")).click();
-//            System.currentTimeMillis();
-//            logger.info("-----------开始上传------------"+System.currentTimeMillis());
-//            
-//            new WebDriverWait(driver, 30).until(ExpectedConditions.elementToBeClickable(By.id("form_newWfInstance")));
-//            logger.info("-----------文件上传完毕------------"+System.currentTimeMillis());
-//            
-//            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_ID,"form_newWfInstance");
-            
+            actions.doubleClick(driver.findElement(By.xpath("//tr[2]/td[4]"))).perform();
             try {
                 Thread.sleep(2000);
             }
@@ -252,42 +239,66 @@ public class ReimbursementTest {
           //获取表单必填字段
             ArrayList<RequiredField> requiredFields = new ArrayList<>();
             
+            //查找从表编号,并返回各个从表
             List<WebElement> elementsCBdate=driver.findElements(By.xpath("//table[@class='detailData']"));
             
             for (WebElement webElement : elementsCBdate) {
                 //logger.info(webElement.getAttribute("data-dataid"));
-                List<WebElement> elementsCB =webElement.findElements(By.xpath("//td[contains(@class,'ui-resizable')]"));
+            	
+            	ArrayList<HashMap<String, String>> valueArrayList =new ArrayList<HashMap<String, String>>();
+            	
+
+                //查找从表数据行 tr class  属性中包含detail-row 的元素
                 List<WebElement> elementTR=webElement.findElements(By.xpath("//tr[contains(@class,'detail-row')]"));
+                
                 for (WebElement webElement2 : elementTR) {
+                	//查找从表具体数据
                     List<WebElement> elementsTDData=webElement2.findElements(By.tagName("td"));
+                    HashMap<String, String> vHashMap =new HashMap<String, String>();
                     for (WebElement webElement3 : elementsTDData) {
+                    	
+                    	
+                    	//去除不符合条件的数据
                         if(webElement3.getAttribute("data-field")!=null&&!"checked".equals(webElement3.getAttribute("data-field"))) {
-                           logger.info(webElement3.getAttribute("data-field")+"-----data-field-----"+webElement3.getAttribute("title")+"-----title-----"); 
-                           
+                        	//输出字段名称和数据
+                        	logger.info(webElement3.getAttribute("data-field")+"-----data-field-----"+webElement3.getAttribute("title")+"-----title-----"); 
+                        	vHashMap.put(webElement3.getAttribute("data-field"), webElement3.getAttribute("title"));
                         }
+                        
                     }
+                    valueArrayList.add(vHashMap);
                 }
-                for (WebElement webElement1 : elementsCB) {
-                    //获取从表必填字段
-                    if ("1".equals(webElement1.getAttribute("data-required"))) {
+                //查找字段名称属性 td class  属性中包含 ui-resizable
+                List<WebElement> elementsCB =webElement.findElements(By.xpath("//td[contains(@class,'ui-resizable')]"));
+                
+                int num =1;
+            	for (HashMap<String, String> hashMap : valueArrayList) {
+					
+            		for (WebElement webElement1 : elementsCB) {
+                        //获取从表必填字段
+                        if ("1".equals(webElement1.getAttribute("data-required"))) {
+                            
+                           util.secondaryDataInput(driver,webElement,webElement1,requiredFields,AttributesEnum.Required.getValue(),String.valueOf(num),hashMap.get(webElement1.getAttribute("data-field")));
+                           //只读
+                        }else if ("1".equals(webElement1.getAttribute("data-readonly"))) {
+                            
+                            util.secondaryDataInput(driver,webElement,webElement1,requiredFields,AttributesEnum.Readonly.getValue(),String.valueOf(num),hashMap.get(webElement1.getAttribute("data-field")));
+                            
+                            //可填
+                        }else if(!"1".equals(webElement.getAttribute("data-readonly"))
+                                &&!"1".equals(webElement.getAttribute("data-required"))
+                                ) {
+                            util.secondaryDataInput(driver,webElement,webElement1,requiredFields,AttributesEnum.Fillable.getValue(),String.valueOf(num),hashMap.get(webElement1.getAttribute("data-field")));
+                            //不可见
+                        }else if ("1".equals(webElement.getAttribute("data-readonly"))&&!webElement.isDisplayed()) {
+                            util.secondaryDataInput(driver,webElement,webElement1,requiredFields,AttributesEnum.Invisible.getValue(),String.valueOf(num),hashMap.get(webElement1.getAttribute("data-field")));
+                        }
                         
-                       util.secondaryDataInput(driver,webElement,webElement1,requiredFields,AttributesEnum.Required.getValue());
-                       //只读
-                    }else if ("1".equals(webElement1.getAttribute("data-readonly"))) {
-                        
-                        util.secondaryDataInput(driver,webElement,webElement1,requiredFields,AttributesEnum.Readonly.getValue());
-                        
-                        //可填
-                    }else if(!"1".equals(webElement.getAttribute("data-readonly"))
-                            &&!"1".equals(webElement.getAttribute("data-required"))
-                            ) {
-                        util.secondaryDataInput(driver,webElement,webElement1,requiredFields,AttributesEnum.Fillable.getValue());
-                        //不可见
-                    }else if ("1".equals(webElement.getAttribute("data-readonly"))&&!webElement.isDisplayed()) {
-                        util.secondaryDataInput(driver,webElement,webElement1,requiredFields,AttributesEnum.Invisible.getValue());
                     }
-                    
-                }
+            		num++;
+				}
+            	
+                
             }
             
             ExcelWriter.inputDataExcel(requiredFields,url);
