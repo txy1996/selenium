@@ -34,16 +34,16 @@ public class ReimbursementTest {
     public static void main(String[] args) {
         
         
-        run();
+//        run();
         
         
-//        String url="D:\\费用报销模块\\测试用例\\费用报销测试用例.xlsx";
-//        ArrayList<RequiredField> requiredFields= (ArrayList<RequiredField>) SeleniumUtil.getExcelDate(url,new RequiredField());
-//        
-//        for (RequiredField requiredField2 : requiredFields) {
-//            
-//            System.out.println(requiredField2.toString());
-//        }
+        String url="D:\\费用报销模块\\测试用例\\费用报销测试用例.xlsx";
+        ArrayList<RequiredField> requiredFields= (ArrayList<RequiredField>) SeleniumUtil.getExcelDate(url,new RequiredField());
+        
+        for (RequiredField requiredField2 : requiredFields) {
+            
+            System.out.println(requiredField2.toString());
+        }
 
   
     }
@@ -234,72 +234,12 @@ public class ReimbursementTest {
             }
             
             
+            ArrayList<RequiredField> requiredFields=util.getFormRequiredField(driver);
+            
+          
+            	
+                
 
-            
-          //获取表单必填字段
-            ArrayList<RequiredField> requiredFields = new ArrayList<>();
-            
-            //查找从表编号,并返回各个从表
-            List<WebElement> elementsCBdate=driver.findElements(By.xpath("//table[@class='detailData']"));
-            
-            for (WebElement webElement : elementsCBdate) {
-                //logger.info(webElement.getAttribute("data-dataid"));
-            	
-            	ArrayList<HashMap<String, String>> valueArrayList =new ArrayList<HashMap<String, String>>();
-            	
-
-                //查找从表数据行 tr class  属性中包含detail-row 的元素
-                List<WebElement> elementTR=webElement.findElements(By.xpath("//tr[contains(@class,'detail-row')]"));
-                
-                for (WebElement webElement2 : elementTR) {
-                	//查找从表具体数据
-                    List<WebElement> elementsTDData=webElement2.findElements(By.tagName("td"));
-                    HashMap<String, String> vHashMap =new HashMap<String, String>();
-                    for (WebElement webElement3 : elementsTDData) {
-                    	
-                    	
-                    	//去除不符合条件的数据
-                        if(webElement3.getAttribute("data-field")!=null&&!"checked".equals(webElement3.getAttribute("data-field"))) {
-                        	//输出字段名称和数据
-                        	logger.info(webElement3.getAttribute("data-field")+"-----data-field-----"+webElement3.getAttribute("title")+"-----title-----"); 
-                        	vHashMap.put(webElement3.getAttribute("data-field"), webElement3.getAttribute("title"));
-                        }
-                        
-                    }
-                    valueArrayList.add(vHashMap);
-                }
-                //查找字段名称属性 td class  属性中包含 ui-resizable
-                List<WebElement> elementsCB =webElement.findElements(By.xpath("//td[contains(@class,'ui-resizable')]"));
-                
-                int num =1;
-            	for (HashMap<String, String> hashMap : valueArrayList) {
-					
-            		for (WebElement webElement1 : elementsCB) {
-                        //获取从表必填字段
-                        if ("1".equals(webElement1.getAttribute("data-required"))) {
-                            
-                           util.secondaryDataInput(driver,webElement,webElement1,requiredFields,AttributesEnum.Required.getValue(),String.valueOf(num),hashMap.get(webElement1.getAttribute("data-field")));
-                           //只读
-                        }else if ("1".equals(webElement1.getAttribute("data-readonly"))) {
-                            
-                            util.secondaryDataInput(driver,webElement,webElement1,requiredFields,AttributesEnum.Readonly.getValue(),String.valueOf(num),hashMap.get(webElement1.getAttribute("data-field")));
-                            
-                            //可填
-                        }else if(!"1".equals(webElement.getAttribute("data-readonly"))
-                                &&!"1".equals(webElement.getAttribute("data-required"))
-                                ) {
-                            util.secondaryDataInput(driver,webElement,webElement1,requiredFields,AttributesEnum.Fillable.getValue(),String.valueOf(num),hashMap.get(webElement1.getAttribute("data-field")));
-                            //不可见
-                        }else if ("1".equals(webElement.getAttribute("data-readonly"))&&!webElement.isDisplayed()) {
-                            util.secondaryDataInput(driver,webElement,webElement1,requiredFields,AttributesEnum.Invisible.getValue(),String.valueOf(num),hashMap.get(webElement1.getAttribute("data-field")));
-                        }
-                        
-                    }
-            		num++;
-				}
-            	
-                
-            }
             
             ExcelWriter.inputDataExcel(requiredFields,url);
             
