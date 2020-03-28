@@ -1,5 +1,7 @@
 package com.zkdb.selenium.util;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -30,7 +32,7 @@ import com.zkdb.selenium.reimbursement.RequiredField;
  */
 public class ExcelWriter {
 
-   public  Logger logger =Logger.getLogger(ExcelWriter.class);
+   public static  Logger logger =Logger.getLogger(ExcelWriter.class);
     private static List<String> CELL_HEADS; //列头
 
     static{
@@ -133,48 +135,54 @@ public class ExcelWriter {
      * @param row 行对象
      * @return
      */
-    private static void convertDataToRow(RequiredField data, Row row){
+    private static void convertDataToRow(Object data, Row row){
         int cellNum = 0;
         Cell cell;
-//        try {
-//            for (Field field : data.getClass().getDeclaredFields()) {
-//                field.setAccessible(true);
-//                cell = row.createCell(cellNum++);
-//                cell.setCellValue(null == (String)field.get(data) ? "" : (String) field.get(data));
-//                System.out.println(field.get(data));
-//                }
-//        }
-//        catch (Exception e) {
-//            // TODO: handle exception
-//            
-//        }
+        try {
+            for (Field field : data.getClass().getDeclaredFields()) {
+                field.setAccessible(true);
+                cell = row.createCell(cellNum++);
+                cell.setCellValue(null == (String)field.get(data) ? "" : (String) field.get(data));
+                }
+        }
+        catch (Exception e) {
+            // TODO: handle exception
+            
+        }
+  
+    }
+    
+    public static void inputDataExcel(ArrayList<RequiredField> requiredFields,String url) {
         
-        
-        // 姓名
-        cell = row.createCell(cellNum++);
-        cell.setCellValue(null == data.getDataId() ? "" : data.getDataId());
-        
-        cell = row.createCell(cellNum++);
-        cell.setCellValue(null == data.getField() ? "" : data.getField());
-        
-        cell = row.createCell(cellNum++);
-        cell.setCellValue(null == data.getFieldName() ? "" : data.getFieldName());
-        
-        cell = row.createCell(cellNum++);
-        cell.setCellValue(null == data.getAttributes() ? "" : data.getAttributes());
-        
-        cell = row.createCell(cellNum++);
-        cell.setCellValue(null == data.getLength() ? "" : data.getLength());
-        
-        cell = row.createCell(cellNum++);
-        cell.setCellValue(null == data.getFieldDicValue() ? "" : data.getFieldDicValue());
-        
-        cell = row.createCell(cellNum++);
-        cell.setCellValue(null == data.getFieldValue() ? "" : data.getFieldValue());
-        
-        cell = row.createCell(cellNum++);
-        cell.setCellValue(null == data.getFieldDicValue() ? "" : data.getFieldDicValue());
-        
+        Workbook workbook =ExcelWriter.exportData(requiredFields);
+        FileOutputStream fileOutputStream=null;
+        try {
+            String exportFilePath =url;
+            File exportFile =new File(exportFilePath);
+            if (!exportFile.exists()) {
+                exportFile.createNewFile();
+            }
+            fileOutputStream =new FileOutputStream(exportFile);
+            workbook.write(fileOutputStream);
+            fileOutputStream.flush();
+        }
+        catch (Exception e) {
+            // TODO: handle exception
+            logger.warn("输出Excel时发生错误，错误原因：" + e.getMessage());
+        }finally {
+            try {
+                if(null!=fileOutputStream) {
+                    fileOutputStream.close();
+                }
+                if(null!=workbook) {
+                    workbook.close();
+                }
+            }
+            catch (Exception e2) {
+                // TODO: handle exception
+                logger.warn("关闭输出流时发生错误，错误原因：" + e2.getMessage());
+            }
+        }
     }
     
 }

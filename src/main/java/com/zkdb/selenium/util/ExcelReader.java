@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.google.gson.Gson;
 import com.zkdb.selenium.vo.UserAccountVO;
 
 public class ExcelReader {
@@ -44,10 +46,11 @@ public class ExcelReader {
 
     /**
      * 读取Excel文件内容
+     * @param <E>
      * @param fileName 要读取的Excel文件所在路径
      * @return 读取结果列表，读取失败时返回null
      */
-    public static List<UserAccountVO> readExcel(String fileName) {
+    public static  <E> List<E> readExcel(String fileName,E object) {
 
         Workbook workbook = null;
         FileInputStream inputStream = null;
@@ -67,7 +70,7 @@ public class ExcelReader {
             workbook = getWorkbook(inputStream, fileType);
 
             // 读取excel中的数据
-            List<UserAccountVO> userDateList = parseExcel(workbook);
+            List<E> userDateList = parseExcel(workbook,object);
 
             return userDateList;
         } catch (Exception e) {
@@ -90,11 +93,12 @@ public class ExcelReader {
 
     /**
      * 解析Excel数据
+     * @param <E>
      * @param workbook Excel工作簿对象
      * @return 解析结果
      */
-    private static List<UserAccountVO> parseExcel(Workbook workbook) {
-       List<UserAccountVO> userDateList = new ArrayList<>();
+    private static <E> List<E> parseExcel(Workbook workbook,E object) {
+       List<E> userDateList = new ArrayList<>();
         // 解析sheet
         for (int sheetNum = 0; sheetNum < workbook.getNumberOfSheets(); sheetNum++) {
             Sheet sheet = workbook.getSheetAt(sheetNum);
@@ -121,7 +125,8 @@ public class ExcelReader {
                     continue;
                 }
 
-                UserAccountVO userDate = convertRowToData(row);
+                @SuppressWarnings("unchecked")
+                E userDate = (E) convertRowToData(object,row);
                 if (null == userDate) {
                     logger.warn("第 " + row.getRowNum() + "行数据不合法，已忽略！");
                     continue;
@@ -175,30 +180,34 @@ public class ExcelReader {
      * 提取每一行中需要的数据，构造成为一个结果数据对象
      *
      * 当该行中有单元格的数据为空或不合法时，忽略该行的数据
+     * @param <E>
+     * @param <T>
      *
      * @param row 行数据
      * @return 解析后的行数据对象，行数据错误时返回null
      */
-    private static UserAccountVO convertRowToData(Row row) {
-        UserAccountVO userDate = new UserAccountVO();
+    private static <E> Object convertRowToData(E object ,Row row) {
 
+        
         Cell cell;
         int cellNum = 0;
-        // 获取姓名
-        cell = row.getCell(cellNum++);
-        String orguid = convertCellValueToString(cell);
-        userDate.setOrguid(orguid);
-        // 获取年龄
-        cell = row.getCell(cellNum++);
-        String userName = convertCellValueToString(cell);
-        userDate.setUserName(userName);
-        // 获取居住地
-        cell = row.getCell(cellNum++);
-        String passWord = convertCellValueToString(cell);
-        userDate.setPassWord(passWord);
         
-
-        return userDate;
+        try {
+            for (Field field : object.getClass().getDeclaredFields()) {
+                field.setAccessible(true);
+                cell = row.getCell(cellNum++);
+                String value = convertCellValueToString(cell);
+                field.set(object, value);
+                }
+        }
+        catch (Exception e) {
+            // TODO: handle exception
+            
+        }
+        
+        Gson gson =new Gson();
+        String lString=gson.toJson(object);
+        return  gson.fromJson(lString, object.getClass());
     }
     
 }

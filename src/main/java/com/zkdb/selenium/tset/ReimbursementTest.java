@@ -16,6 +16,7 @@ import com.zkdb.selenium.reimbursement.RequiredField;
 import com.zkdb.selenium.util.AttributesEnum;
 import com.zkdb.selenium.util.ElementLocateMode;
 import com.zkdb.selenium.util.ExcelReader;
+import com.zkdb.selenium.util.ExcelWriter;
 import com.zkdb.selenium.util.InitDriver;
 import com.zkdb.selenium.util.Login;
 import com.zkdb.selenium.util.SeleniumUtil;
@@ -30,6 +31,16 @@ public class ReimbursementTest {
         
         
         run();
+        
+        
+//        String url="D:\\费用报销模块\\测试用例\\费用报销测试用例.xlsx";
+//        ArrayList<RequiredField> requiredFields= (ArrayList<RequiredField>) SeleniumUtil.getExcelDate(url,new RequiredField());
+//        
+//        for (RequiredField requiredField2 : requiredFields) {
+//            
+//            System.out.println(requiredField2.toString());
+//        }
+
   
     }
     
@@ -62,7 +73,10 @@ public class ReimbursementTest {
         login.loginTestAccount(driver, "BEP", "241", "11111111");
         logger.info("登陆账号:241");
         try {
-
+            String url="D:\\费用报销模块\\测试用例\\费用报销测试用例.xlsx";
+            //ArrayList<RequiredField> requiredFieldExecl= (ArrayList<RequiredField>) SeleniumUtil.getExcelDate(url,new RequiredField());
+            
+            
             
             load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "webiframe");
             driver.switchTo().frame("webiframe");
@@ -139,62 +153,62 @@ public class ReimbursementTest {
             .sendKeys("瞿塘嘈嘈十二滩，此中道路古来难。长恨人心不如水，等闲平地起波澜。");
             logger.info("-----------原始单据附件数------------");
             
-//            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".activitetab > .detail-count");
-//            driver.findElement(By.cssSelector(".activitetab > .detail-count")).click();
-//            
-//            logger.info("-----------新增费用明细从表------------");
-//            
-//            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".cell:nth-child(6)");
-//            driver.findElement(By.cssSelector(".cell:nth-child(6)")).click();
-//            
-//            logger.info("-----------点击日期------------");
-//            
-//            
-//            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".cell .glyphicon");
-//            driver.findElement(By.cssSelector(".cell .glyphicon")).click();
-//            
-//            
-//            //跳转窗体
-//            driver.switchTo().frame(0);
-//            
-//            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".mh-today > .mh-solar");
-//            driver.findElement(By.cssSelector(".mh-today > .mh-solar")).click();
-//            
-//            logger.info("-----------选择日期------------");
-//            
-//            driver.switchTo().defaultContent();
-//            
-//            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".cell:nth-child(7)");
-//            driver.findElement(By.cssSelector(".cell:nth-child(7)")).click();
-//            logger.info("-----------child(7)------------");
-//            
-//            //模拟键盘输入
-//            util.keyboardNumberInput((float) 10092.90);
-//            
-//
-//            
-//            
-//            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".cell:nth-child(8)");
-//            driver.findElement(By.cssSelector(".cell:nth-child(8)")).click();
-//            
-//            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".cell:nth-child(8)");
-//            driver.findElement(By.cssSelector(".cell:nth-child(8)")).click();
-//            
-//            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_XPATH,"//td[8]/div/span/span");
-//            driver.findElement(By.xpath("//td[8]/div/span/span")).click();
-//            
-//            
-//            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_LINKTEXT,"服务票3%");
-//            driver.findElement(By.linkText("服务票3%")).click();
-//            
-//            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".cell:nth-child(11)");
-//            driver.findElement(By.cssSelector(".cell:nth-child(11)")).click();
-//            
-//            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_XPATH,"//td[11]/input");
-//            driver.findElement(By.xpath("//td[11]/input")).sendKeys("芳树笼秦栈，春流绕蜀城");
-//            
-//            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".cell:nth-child(12)");
-//            driver.findElement(By.cssSelector(".cell:nth-child(12)")).click();
+            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".activitetab > .detail-count");
+            driver.findElement(By.cssSelector(".activitetab > .detail-count")).click();
+            
+            logger.info("-----------新增费用明细从表------------");
+            
+            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".cell:nth-child(6)");
+            driver.findElement(By.cssSelector(".cell:nth-child(6)")).click();
+            
+            logger.info("-----------点击日期------------");
+            
+            
+            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".cell .glyphicon");
+            driver.findElement(By.cssSelector(".cell .glyphicon")).click();
+            
+            
+            //跳转窗体
+            driver.switchTo().frame(0);
+            
+            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".mh-today > .mh-solar");
+            driver.findElement(By.cssSelector(".mh-today > .mh-solar")).click();
+            
+            logger.info("-----------选择日期------------");
+            
+            driver.switchTo().defaultContent();
+            
+            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".cell:nth-child(7)");
+            driver.findElement(By.cssSelector(".cell:nth-child(7)")).click();
+            logger.info("-----------child(7)------------");
+            
+            //模拟键盘输入
+            util.keyboardNumberInput((float) 10092.90);
+            
+
+            
+            
+            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".cell:nth-child(8)");
+            driver.findElement(By.cssSelector(".cell:nth-child(8)")).click();
+            
+            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".cell:nth-child(8)");
+            driver.findElement(By.cssSelector(".cell:nth-child(8)")).click();
+            
+            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_XPATH,"//td[8]/div/span/span");
+            driver.findElement(By.xpath("//td[8]/div/span/span")).click();
+            
+            
+            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_LINKTEXT,"服务票3%");
+            driver.findElement(By.linkText("服务票3%")).click();
+            
+            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".cell:nth-child(11)");
+            driver.findElement(By.cssSelector(".cell:nth-child(11)")).click();
+            
+            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_XPATH,"//td[11]/input");
+            driver.findElement(By.xpath("//td[11]/input")).sendKeys("芳树笼秦栈，春流绕蜀城");
+            
+            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".cell:nth-child(12)");
+            driver.findElement(By.cssSelector(".cell:nth-child(12)")).click();
 //            //
 //            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".btn:nth-child(5)");
 //            driver.findElement(By.cssSelector(".btn:nth-child(5)")).click();
@@ -233,82 +247,50 @@ public class ReimbursementTest {
             }
             
             
-//            String dateId;
-//            String field;
-//            String fieldName;
-//            String length=null;
-//            int decimalPlaces=0;
-//            String fieldValue=null;
-//            ArrayList<RequiredField> requiredFields = new ArrayList<>();
-//            
-//            //获取所有input 标签
-//            List<WebElement> elements =driver.findElements(By.tagName("input"));
-//            //获取主表的数据集id
-//            String id= driver.findElement(By.cssSelector("#data_panel")).getAttribute("data-dataid");
-//            for (WebElement webElement : elements) {
-//                //获取data-required 属性等于 1 
-//                if ("1".equals(webElement.getAttribute("data-required"))&&webElement.isDisplayed()) {
-//                    
-//                    dateId=id;
-//                    //获取满足 条件的 input 标签的 id属性值
-//                    field=webElement.getAttribute("id");
-//                    //获取字段中文名称
-//                    fieldName=driver.findElement(By.id("lab_"+webElement.getAttribute("id"))).getAttribute("innerText");
-//                    //字段长度
-//                    length =webElement.getAttribute("maxlength");
-//                    //是否有小数
-//                    if (webElement.getAttribute("data-decimalplaces")!=null) {
-//                        //几位小数
-//                        decimalPlaces= Integer.parseInt(webElement.getAttribute("data-decimalplaces"));
-//                    }
-//                    fieldValue=webElement.getAttribute("value");
-//                    
-//                    
-//                    requiredFields.add(new  RequiredField(dateId,field,fieldName, AttributesEnum.Required.getValue(), length, decimalPlaces, fieldValue,null));
-//                    
-//                }
-//            }
-//            
-//            for (RequiredField requiredField : requiredFields) {
-//                System.out.println(requiredField.toString());
-//            }
+
             
           //获取表单必填字段
             ArrayList<RequiredField> requiredFields = new ArrayList<>();
-            //获取所有input 标签
-            String id= driver.findElement(By.cssSelector("#data_panel")).getAttribute("data-dataid");
-            //div
-            List<WebElement> elements =driver.findElements(By.xpath("//div[contains(@class,'input-group')]/*[contains(@class,'form-control')]"));
             
+            List<WebElement> elementsCBdate=driver.findElements(By.xpath("//table[@class='detailData']"));
             
-            for (WebElement webElement : elements) {
-               
-                //获取data-required 属性等于 1 获取必填字段
-                if ("1".equals(webElement.getAttribute("data-required"))&&webElement.isDisplayed()
-                        &&webElement.isEnabled()) {
-                    
-                    util.coreDataInput(driver,webElement,requiredFields,id,AttributesEnum.Required.getValue());
-                    
-                    //只读
-                }else if ("1".equals(webElement.getAttribute("data-readonly"))&&webElement.isDisplayed()) {
-                    
-                    util.coreDataInput(driver,webElement,requiredFields,id,AttributesEnum.Readonly.getValue());
-                    //可填
-                }else if(!"1".equals(webElement.getAttribute("data-readonly"))
-                        &&!"1".equals(webElement.getAttribute("data-required"))
-                        &&webElement.isDisplayed()){
-                    util.coreDataInput(driver,webElement,requiredFields,id,AttributesEnum.Fillable.getValue());
-                    //不可见
-                }else if (("1".equals(webElement.getAttribute("data-readonly"))
-                        ||!"1".equals(webElement.getAttribute("data-required")))
-                        &&!webElement.isDisplayed()&&webElement.getAttribute("data-field")!=null) {
-                    util.coreDataInput(driver,webElement,requiredFields,id,AttributesEnum.Invisible.getValue());
+            for (WebElement webElement : elementsCBdate) {
+                //logger.info(webElement.getAttribute("data-dataid"));
+                List<WebElement> elementsCB =webElement.findElements(By.xpath("//td[contains(@class,'ui-resizable')]"));
+                List<WebElement> elementTR=webElement.findElements(By.xpath("//tr[contains(@class,'detail-row')]"));
+                for (WebElement webElement2 : elementTR) {
+                    List<WebElement> elementsTDData=webElement2.findElements(By.tagName("td"));
+                    for (WebElement webElement3 : elementsTDData) {
+                        if(webElement3.getAttribute("data-field")!=null&&!"checked".equals(webElement3.getAttribute("data-field"))) {
+                           logger.info(webElement3.getAttribute("data-field")+"-----data-field-----"+webElement3.getAttribute("title")+"-----title-----"); 
+                           
+                        }
+                    }
                 }
-                
-                
-                
+                for (WebElement webElement1 : elementsCB) {
+                    //获取从表必填字段
+                    if ("1".equals(webElement1.getAttribute("data-required"))) {
+                        
+                       util.secondaryDataInput(driver,webElement,webElement1,requiredFields,AttributesEnum.Required.getValue());
+                       //只读
+                    }else if ("1".equals(webElement1.getAttribute("data-readonly"))) {
+                        
+                        util.secondaryDataInput(driver,webElement,webElement1,requiredFields,AttributesEnum.Readonly.getValue());
+                        
+                        //可填
+                    }else if(!"1".equals(webElement.getAttribute("data-readonly"))
+                            &&!"1".equals(webElement.getAttribute("data-required"))
+                            ) {
+                        util.secondaryDataInput(driver,webElement,webElement1,requiredFields,AttributesEnum.Fillable.getValue());
+                        //不可见
+                    }else if ("1".equals(webElement.getAttribute("data-readonly"))&&!webElement.isDisplayed()) {
+                        util.secondaryDataInput(driver,webElement,webElement1,requiredFields,AttributesEnum.Invisible.getValue());
+                    }
+                    
+                }
             }
-            ExcelWriterTest.test(requiredFields);
+            
+            ExcelWriter.inputDataExcel(requiredFields,url);
             
 //            for (RequiredField requiredField : requiredFields) {
 //                testReflect(requiredField);

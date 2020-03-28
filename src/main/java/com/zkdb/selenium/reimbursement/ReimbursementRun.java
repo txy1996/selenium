@@ -20,7 +20,8 @@ public class ReimbursementRun {
         Logger logger =Logger.getLogger(ReimbursementRun.class);
         //读取文件
         String excelFileName ="D:\\费用报销模块\\UserAccountVO.xlsx";
-        ArrayList<UserAccountVO> userDate= (ArrayList<UserAccountVO>) SeleniumUtil.getExcelDate(excelFileName);
+        UserAccountVO user =new UserAccountVO();
+        ArrayList<UserAccountVO> userDate=  (ArrayList<UserAccountVO>) SeleniumUtil.getExcelDate(excelFileName,user);
         //初始化 
         WebDriver driver =InitDriver.INSTANCE.getDriver();
         //调用登录

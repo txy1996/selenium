@@ -3,7 +3,7 @@ package com.zkdb.selenium.reimbursement;
 /**
  * 
  * @ClassName: RequiredField 
- * @Description: TODO(表单必填字段) 
+ * @Description: TODO(表单字段) 
  * @author tangxiaoyu 
  * @date 2020年3月24日 下午2:03:28 
  *
@@ -44,12 +44,8 @@ public class RequiredField {
      * 字典值
      */
     private String fieldDicValue;
-    public String getFieldDicValue() {
-        return fieldDicValue;
-    }
-    public void setFieldDicValue(String fieldDicValue) {
-        this.fieldDicValue = fieldDicValue;
-    }
+    
+    
     public String getDataId() {
         return dataId;
     }
@@ -92,7 +88,12 @@ public class RequiredField {
     public void setFieldValue(String fieldValue) {
         this.fieldValue = fieldValue;
     }
-
+    public String getFieldDicValue() {
+        return fieldDicValue;
+    }
+    public void setFieldDicValue(String fieldDicValue) {
+        this.fieldDicValue = fieldDicValue;
+    }
     public RequiredField() {
         super();
         // TODO Auto-generated constructor stub
@@ -115,6 +116,7 @@ public class RequiredField {
                 + attributes + ", length=" + length + ", decimalPlaces=" + decimalPlaces + ", fieldValue=" + fieldValue
                 + ", fieldDicValue=" + fieldDicValue + "]";
     }
+    
     
     
     

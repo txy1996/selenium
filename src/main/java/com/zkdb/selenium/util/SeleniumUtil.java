@@ -1,5 +1,7 @@
 package com.zkdb.selenium.util;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
@@ -177,12 +179,11 @@ public class SeleniumUtil {
         
         ArrayList<RequiredField> requiredFields = new ArrayList<>();
         //获取所有input 标签
-//        List<WebElement> elements =driver.findElements(By.tagName("input"));
-        List<WebElement> elements =driver.findElements(By.xpath("//div[contains(@class,'input-group')]/*[contains(@class,'form-control')]"));
+        List<WebElement> elements =driver.findElements(By.xpath("//div[contains(@class,'input-group')]//*[contains(@class,'form-control')]"));
         //获取主表的数据集id 
         String id= driver.findElement(By.cssSelector("#data_panel")).getAttribute("data-dataid");
         for (WebElement webElement : elements) {
-            
+           
             //获取data-required 属性等于 1 获取必填字段
             if ("1".equals(webElement.getAttribute("data-required"))&&webElement.isDisplayed()
                     &&webElement.isEnabled()) {
@@ -202,7 +203,7 @@ public class SeleniumUtil {
             }else if (("1".equals(webElement.getAttribute("data-readonly"))
                     ||!"1".equals(webElement.getAttribute("data-required")))
                     &&!webElement.isDisplayed()&&webElement.getAttribute("data-field")!=null) {
-                  coreDataInput(driver,webElement,requiredFields,id,AttributesEnum.Invisible.getValue());
+                coreDataInput(driver,webElement,requiredFields,id,AttributesEnum.Invisible.getValue());
             }
             
             
@@ -257,7 +258,7 @@ public class SeleniumUtil {
         String length=null;
         String decimalPlaces=null;
         String fieldValue=null;
-        
+        String fieldDicValue=null;
         
         dateId=id;
         //获取满足 条件的 input 标签的 id属性值
@@ -267,13 +268,16 @@ public class SeleniumUtil {
             fieldName=driver.findElement(By.id("lab_"+field)).getAttribute("innerText");
             //字段长度
             length =webElement.getAttribute("maxlength");
-            //是否有小数
-            if (webElement.getAttribute("data-decimalplaces")!=null) {
-                //几位小数
-                decimalPlaces= webElement.getAttribute("data-decimalplaces");
-            }
+            
+            
+            //几位小数
+            decimalPlaces= webElement.getAttribute("data-decimalplaces");
+            //logger.info(decimalPlaces+"小数位数"+field);
+            //字段值
             fieldValue=webElement.getAttribute("value");
-            requiredFields.add(new  RequiredField(dateId,field,fieldName,attributes, length, decimalPlaces, fieldValue,null)); 
+            //字典值
+            fieldDicValue=webElement.getAttribute("selvalue");
+            requiredFields.add(new  RequiredField(dateId,field,fieldName,attributes, length, decimalPlaces, fieldValue,fieldDicValue)); 
         }
         
     }
@@ -436,15 +440,16 @@ public class SeleniumUtil {
      }
      /**
       * 
-      * @Title: getExcelDate 
+      * @param <E>
+     * @Title: getExcelDate 
       * @Description: TODO(获取用户信息) 
       * @param excelFileName
       * @return
       */
-     public static List<UserAccountVO> getExcelDate(String excelFileName) {
+     public static <E> List<E> getExcelDate(String excelFileName,E object) {
          
          
-         List<UserAccountVO> userDate =ExcelReader.readExcel(excelFileName);
+         List<E> userDate = ExcelReader.readExcel(excelFileName,object);
          return userDate;
      }
     
