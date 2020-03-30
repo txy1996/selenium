@@ -28,15 +28,16 @@ public class seleniumTest1 {
     public final static String FIND_ELEMENT_CSSSELECTOR="CSSSELECTOR";
 
     
-//    public WebDriver driver;
-//    //初始化
-//    public void InitDriver() {
-//        driver = new ChromeDriver();
-//        driver.get("http://epplus.cn/d/signin_test.jsp");
-//        driver.manage().window().maximize();
-//
-//    }
-    WebDriver driver = InitDriver.INSTANCE.getDriver();
+    public WebDriver driver;
+    //初始化
+    public void InitDriver() {
+        System.setProperty("webdriver.chrome.driver","C:/Users/gmsd11/Desktop/selenium/chromedriver.exe");
+        driver = new ChromeDriver();
+        driver.get("http://epplus.cn/d/signin_test.jsp");
+        driver.manage().window().maximize();
+
+    }
+//    WebDriver driver = InitDriver.INSTANCE.getDriver();
     //关闭浏览器
     public void CloseBrowser() {
         driver.quit();

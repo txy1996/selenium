@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -39,7 +40,8 @@ public class ReimbursementOpenForm {
     public String reimbursementPositioningExpenses(WebDriver driver) {
         
         
-        
+        //鼠标模拟
+        Actions actions =new Actions(driver);
         load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "webiframe");
         driver.switchTo().frame("webiframe");
         logger.info("跳转到webiframe");
@@ -69,11 +71,10 @@ public class ReimbursementOpenForm {
         }
         load.Wait(driver,30,ElementLocateMode.FIND_ELEMENT_ID,"a_number3");
 
-        driver.findElement(By.id("a_number3")).click();
-        logger.info("-----------点击费用报销支出类型------------");
+//        driver.findElement(By.id("a_number3")).click();
+//        logger.info("-----------点击费用报销支出类型------------");
         
-        load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,"#group_head_1504769941216 > div > div.row > div > div > span.input-group-addon");
-        driver.findElement(By.cssSelector("#group_head_1504769941216 > div > div.row > div > div > span.input-group-addon")).click();
+        actions.doubleClick(driver.findElement(By.id("a_number3"))).perform();
         logger.info("-----------点击费用报销支出类型------------");
         
         load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_LINKTEXT,"其他费用");
@@ -84,8 +85,7 @@ public class ReimbursementOpenForm {
         driver.findElement(By.id("a_org_code3")).click();
         logger.info("-----------点击费用科目------------");
         
-        load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,"#group_body_1504769941216 > div > div:nth-child(1) > div:nth-child(4) > div > span.input-group-addon");
-        driver.findElement(By.cssSelector("#group_body_1504769941216 > div > div:nth-child(1) > div:nth-child(4) > div > span.input-group-addon")).click();
+        actions.doubleClick(driver.findElement(By.id("a_org_code3"))).perform();
         
         logger.info("-----------点击费用报销支出类型------------");
         
