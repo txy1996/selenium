@@ -23,7 +23,7 @@ public class ExampleForFireFox {
         }
         catch (Exception e) {
             // TODO: handle exception
-            throw e;
+            
         }finally {
             closeBrowser(driver);
         }
