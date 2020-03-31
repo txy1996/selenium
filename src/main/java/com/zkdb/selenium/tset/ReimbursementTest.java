@@ -84,7 +84,9 @@ public class ReimbursementTest {
         try {
             String url = "D:\\费用报销模块\\测试用例\\费用报销测试用例12.xlsx";
             Map<String, String[]>  valueMap=util.getEncapsulationFormData(url);
-            
+            if(valueMap==null) {
+            	logger.info("文件不存在,转换输入模式");
+            }
             
 
             load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "webiframe");
@@ -152,7 +154,7 @@ public class ReimbursementTest {
             load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_XPATH, util.getElementXPath("69ea52b9-0976-4643-aa87-4407f2f2baf2", "1", "sheet_date"));
             actions.doubleClick(driver.findElement(By.xpath(util.getElementXPath("69ea52b9-0976-4643-aa87-4407f2f2baf2", "1", "sheet_date")))).perform();
 
-            util.keyboardNumberInput(valueMap.get("69ea52b9-0976-4643-aa87-4407f2f2baf2"+"sheet_date"+"1")[0]);
+            util.keyboardNumberInput(valueMap.get("69ea52b9-0976-4643-aa87-4407f2f2baf2"+"1"+"sheet_date")[0]);
             logger.info("-----------点击日期------------");
 
 
@@ -166,7 +168,7 @@ public class ReimbursementTest {
             logger.info("-----------child(7)------------");
 
             // 模拟键盘输入 10092.909
-            util.keyboardNumberInput(valueMap.get("69ea52b9-0976-4643-aa87-4407f2f2baf2"+"sheet_money"+"1")[0]);
+            util.keyboardNumberInput(valueMap.get("69ea52b9-0976-4643-aa87-4407f2f2baf2"+"1"+"sheet_money")[0]);
 
             load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_CSSSELECTOR, ".cell:nth-child(8)");
             driver.findElement(By.cssSelector(".cell:nth-child(8)")).click();

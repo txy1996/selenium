@@ -50,6 +50,7 @@ public class SeleniumUtil {
      * @return boolean
      */
     public boolean checkExistsElement(WebDriver driver, By element) {
+    	
         try {
             driver.findElement(element);
             return true;
@@ -497,7 +498,9 @@ public class SeleniumUtil {
     public static <E> List<E> getExcelDate(String excelFileName, E object) {
 
         List<E> userDate = ExcelReader.readExcel(excelFileName, object);
-        
+        if(userDate==null) {
+        	return null;
+        }
         return userDate;
     }
 
@@ -570,15 +573,18 @@ public class SeleniumUtil {
         
         ArrayList<RequiredField> requiredFields = (ArrayList<RequiredField>) SeleniumUtil.getExcelDate(url,
                 new RequiredField());
+        if(requiredFields ==null) {
+        	return null;
+        }
         Map<String, String[]> valueMap = new HashMap<String, String[]>();
        
         for (RequiredField requiredField : requiredFields) {
-            //主表数据处理
+            //主表数据处理 key=(字段名称) value=(显示值,字段值(实际值))
             if (requiredField.getSerialNumber().equals("") || requiredField.getSerialNumber() == null) {
                 valueMap.put(requiredField.getField(), new String[] {requiredField.getFieldValue(),requiredField.getFieldDicValue()});
-                //从表数据封装
+                //从表数据封装 key=(数据集id+行号+字段值名称) value=(显示值,字段值(实际值))
             }else if(!requiredField.getSerialNumber().equals("") && requiredField.getSerialNumber() != null) {
-                valueMap.put(requiredField.getDataId()+requiredField.getField()+requiredField.getSerialNumber(), 
+                valueMap.put(requiredField.getDataId()+requiredField.getSerialNumber()+requiredField.getFieldName(), 
                         new String[] {requiredField.getFieldValue(),requiredField.getFieldDicValue()});
             }
             
