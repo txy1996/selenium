@@ -63,7 +63,7 @@ public class SeleniumUtil {
      * @Description: TODO(模拟数字输入)
      * @param number
      */
-    public void keyboardNumberInput(float number) {
+    public void keyboardNumberInput(String number) {
         Robot robot;
         try {
             robot = new Robot();
@@ -536,6 +536,22 @@ public class SeleniumUtil {
                 }
             }
         }
+    }
+    
+    /**
+     * 
+     * @Title: getElementXPath 
+     * @Description: TODO(从表xPath统一定位) 
+     * @param dataId 数据集id
+     * @param serialNumber 行号
+     * @param field 字段名称(英文名称)
+     * @return xPath
+     */
+    public static String getElementXPath(String dataId,String serialNumber,String field) {
+        
+        String xPath="//table[@data-dataid='"+dataId+"']//tr["+serialNumber+"]//td[ contains(@class,'cell') and @data-field='"+field+"']";
+        
+        return xPath;
     }
 
 }

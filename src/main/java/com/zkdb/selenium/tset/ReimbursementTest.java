@@ -34,14 +34,16 @@ public class ReimbursementTest {
 
         run();
 
-        // String url="D:\\费用报销模块\\测试用例\\费用报销测试用例.xlsx";
-        // ArrayList<RequiredField> requiredFields= (ArrayList<RequiredField>)
-        // SeleniumUtil.getExcelDate(url,new RequiredField());
-        //
-        // for (RequiredField requiredField2 : requiredFields) {
-        //
-        // System.out.println(requiredField2.toString());
-        // }
+//        String url = "D:\\费用报销模块\\测试用例\\费用报销测试用例.xlsx";
+//        ArrayList<RequiredField> requiredFields = (ArrayList<RequiredField>) SeleniumUtil.getExcelDate(url,
+//                new RequiredField());
+//        Map<String, String> valueMap = new HashMap<String, String>();
+//        for (RequiredField requiredField : requiredFields) {
+//            if (requiredField.getSerialNumber().equals("") || requiredField == null) {
+//                valueMap.put(requiredField.getField(), requiredField.getFieldValue());
+//            }
+//            System.out.println(requiredField.toString());
+//        }
 
     }
 
@@ -81,9 +83,16 @@ public class ReimbursementTest {
         logger.info("登陆账号:241");
         try {
             String url = "D:\\费用报销模块\\测试用例\\费用报销测试用例.xlsx";
-            // ArrayList<RequiredField> requiredFieldExecl=
-            // (ArrayList<RequiredField>) SeleniumUtil.getExcelDate(url,new
-            // RequiredField());
+            ArrayList<RequiredField> requiredFields = (ArrayList<RequiredField>) SeleniumUtil.getExcelDate(url,
+                    new RequiredField());
+            Map<String, String[]> valueMap = new HashMap<String, String[]>();
+            for (RequiredField requiredField : requiredFields) {
+                //主表数据处理
+                if (requiredField.getSerialNumber().equals("") || requiredField == null) {
+                    valueMap.put(requiredField.getField(), new String[] {requiredField.getFieldValue(),requiredField.getFieldDicValue()});
+                }
+                
+            }
 
             load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "webiframe");
             driver.switchTo().frame("webiframe");
@@ -111,39 +120,35 @@ public class ReimbursementTest {
                 e.printStackTrace();
             }
             load.Wait(driver, 30, ElementLocateMode.FIND_ELEMENT_ID, "a_number3");
-
             actions.doubleClick(driver.findElement(By.id("a_number3"))).perform();
             logger.info("-----------点击费用报销支出类型------------");
 
             logger.info("-----------点击费用报销支出类型------------");
 
-            load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_LINKTEXT, "其他费用");
-            driver.findElement(By.linkText("其他费用")).click();
+            load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_LINKTEXT, valueMap.get("a_number3")[0]);
+            driver.findElement(By.linkText(valueMap.get("a_number3")[0])).click();
 
             load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "a_org_code3");
-
             actions.doubleClick(driver.findElement(By.id("a_org_code3"))).perform();
             logger.info("-----------点击费用科目------------");
             logger.info("-----------点击费用报销支出类型------------");
 
-            load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_CSSSELECTOR, "tr:nth-child(6) > td:nth-child(3)");
-            driver.findElement(By.cssSelector("tr:nth-child(6) > td:nth-child(3)")).click();
+            load.Wait(driver, 20, ElementLocateMode.FIND_ELEMENT_XPATH, "//table[contains(@class,'tree_grid')]/tbody//td/span[contains(text(), '"+valueMap.get("a_org_code3")[1]+"')]/../..");
+            actions.doubleClick(driver.findElement(By.xpath("//table[contains(@class,'tree_grid')]/tbody//td/span[contains(text(), '"+valueMap.get("a_org_code3")[1]+"')]/../.."))).perform();
             logger.info("-----------点击通讯费------------");
 
-            load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_CSSSELECTOR, ".modal-footer > .btn:nth-child(1)");
-            driver.findElement(By.cssSelector(".modal-footer > .btn:nth-child(1)")).click();
-            logger.info("-----------点击确定------------");
+
 
             load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "sheet_title");
-            driver.findElement(By.id("sheet_title")).sendKeys("少女祈祷中…");
+            driver.findElement(By.id("sheet_title")).sendKeys(valueMap.get("sheet_title")[0]);
             logger.info("-----------支出事由------------");
 
             load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "a_number2");
-            driver.findElement(By.id("a_number2")).sendKeys("2");
+            driver.findElement(By.id("a_number2")).sendKeys(valueMap.get("a_number2")[0]);
             logger.info("-----------原始单据附件数------------");
 
             load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "a_text1");
-            driver.findElement(By.id("a_text1")).sendKeys("瞿塘嘈嘈十二滩，此中道路古来难。长恨人心不如水，等闲平地起波澜。");
+            driver.findElement(By.id("a_text1")).sendKeys(valueMap.get("a_text1")[0]);
             logger.info("-----------原始单据附件数------------");
 
             load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_CSSSELECTOR, ".activitetab > .detail-count");
@@ -151,30 +156,24 @@ public class ReimbursementTest {
 
             logger.info("-----------新增费用明细从表------------");
 
-            load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_CSSSELECTOR, ".cell:nth-child(6)");
-            driver.findElement(By.cssSelector(".cell:nth-child(6)")).click();
+            load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_XPATH, "//table[@data-dataid='69ea52b9-0976-4643-aa87-4407f2f2baf2']//tr[1]//td[ contains(@class,'cell') and @data-field='sheet_date']");
+            actions.doubleClick(driver.findElement(By.xpath("//table[@data-dataid='69ea52b9-0976-4643-aa87-4407f2f2baf2']//tr[1]//td[ contains(@class,'cell') and @data-field='sheet_date']"))).perform();
 
+            util.keyboardNumberInput("2020-04-01");
             logger.info("-----------点击日期------------");
 
-            load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_CSSSELECTOR, ".cell .glyphicon");
-            driver.findElement(By.cssSelector(".cell .glyphicon")).click();
 
-            // 跳转窗体
-            driver.switchTo().frame(0);
-
-            load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_CSSSELECTOR, ".mh-today > .mh-solar");
-            driver.findElement(By.cssSelector(".mh-today > .mh-solar")).click();
 
             logger.info("-----------选择日期------------");
 
             driver.switchTo().defaultContent();
 
-            load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_CSSSELECTOR, ".cell:nth-child(7)");
-            driver.findElement(By.cssSelector(".cell:nth-child(7)")).click();
+            load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_XPATH, util.getElementXPath("69ea52b9-0976-4643-aa87-4407f2f2baf2", "1", "sheet_money"));
+            driver.findElement(By.xpath(util.getElementXPath("69ea52b9-0976-4643-aa87-4407f2f2baf2", "1", "sheet_money"))).click();
             logger.info("-----------child(7)------------");
 
             // 模拟键盘输入 10092.909
-            util.keyboardNumberInput((float) 10092.90);
+            util.keyboardNumberInput("10092.909");
 
             load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_CSSSELECTOR, ".cell:nth-child(8)");
             driver.findElement(By.cssSelector(".cell:nth-child(8)")).click();
@@ -208,12 +207,12 @@ public class ReimbursementTest {
             // actions.doubleClick(driver.findElement(By.xpath("//tr[2]/td[4]"))).perform();
             //
             // 点击发起
-            load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "form_newWfInstance");
-            driver.findElement(By.id("form_newWfInstance")).click();
-            // 获取流程名称
-            load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_XPATH, "//div/div[2]/div/div/div[2]/input");
-            String processName = driver.findElement(By.xpath("//div/div[2]/div/div/div[2]/input"))
-                    .getAttribute("value");
+//            load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "form_newWfInstance");
+//            driver.findElement(By.id("form_newWfInstance")).click();
+//            // 获取流程名称
+//            load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_XPATH, "//div/div[2]/div/div/div[2]/input");
+//            String processName = driver.findElement(By.xpath("//div/div[2]/div/div/div[2]/input"))
+//                    .getAttribute("value");
             // li
             List<WebElement> elements = driver.findElements(By.xpath(
                     "//div[contains(@class,'modalWorkFlow')]//ul[@id='Transmit_userTree' and contains(@class,'ztree')]/li"));
@@ -259,11 +258,11 @@ public class ReimbursementTest {
             }
 
             // 获取表单信息
-            // ArrayList<RequiredField>
-            // requiredFields=util.getFormRequiredField(driver);
+             ArrayList<RequiredField>
+             requiredFields1=util.getFormRequiredField(driver);
 
             // 写入表单信息
-            // ExcelWriter.inputDataExcel(requiredFields,url);
+             ExcelWriter.inputDataExcel(requiredFields1,url);
 
             logger.info("完成");
 

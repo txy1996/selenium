@@ -145,7 +145,7 @@ public class ReimbursementOpenForm {
         logger.info("-----------child(7)------------");
         
         //模拟键盘输入
-        util.keyboardNumberInput((float) 10092.90);
+        util.keyboardNumberInput("10092.90");
         
 
         
