@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -552,6 +553,34 @@ public class SeleniumUtil {
         String xPath="//table[@data-dataid='"+dataId+"']//tr["+serialNumber+"]//td[ contains(@class,'cell') and @data-field='"+field+"']";
         
         return xPath;
+    }
+    
+    /**
+     * 
+     * @Title: getEncapsulationFormData 
+     * @Description: TODO(传入测试用例文件地址,获取测试用例的数据) 
+     * @param url 地址
+     * @return
+     */
+    public static Map<String, String[]> getEncapsulationFormData(String url){
+        
+        ArrayList<RequiredField> requiredFields = (ArrayList<RequiredField>) SeleniumUtil.getExcelDate(url,
+                new RequiredField());
+        Map<String, String[]> valueMap = new HashMap<String, String[]>();
+       
+        for (RequiredField requiredField : requiredFields) {
+            //主表数据处理
+            if (requiredField.getSerialNumber().equals("") || requiredField.getSerialNumber() == null) {
+                valueMap.put(requiredField.getField(), new String[] {requiredField.getFieldValue(),requiredField.getFieldDicValue()});
+                //从表数据封装
+            }else if(!requiredField.getSerialNumber().equals("") && requiredField.getSerialNumber() != null) {
+                valueMap.put(requiredField.getDataId()+requiredField.getField()+requiredField.getSerialNumber(), 
+                        new String[] {requiredField.getFieldValue(),requiredField.getFieldDicValue()});
+            }
+            
+        }
+        
+        return valueMap;
     }
 
 }

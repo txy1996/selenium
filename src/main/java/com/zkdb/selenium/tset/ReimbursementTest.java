@@ -83,21 +83,7 @@ public class ReimbursementTest {
         logger.info("登陆账号:241");
         try {
             String url = "D:\\费用报销模块\\测试用例\\费用报销测试用例.xlsx";
-            ArrayList<RequiredField> requiredFields = (ArrayList<RequiredField>) SeleniumUtil.getExcelDate(url,
-                    new RequiredField());
-            Map<String, String[]> valueMap = new HashMap<String, String[]>();
-           
-            for (RequiredField requiredField : requiredFields) {
-                //主表数据处理
-                if (requiredField.getSerialNumber().equals("") || requiredField.getSerialNumber() == null) {
-                    valueMap.put(requiredField.getField(), new String[] {requiredField.getFieldValue(),requiredField.getFieldDicValue()});
-                    //从表数据封装
-                }else if(!requiredField.getSerialNumber().equals("") && requiredField.getSerialNumber() != null) {
-                    valueMap.put(requiredField.getDataId()+requiredField.getField()+requiredField.getSerialNumber(), 
-                            new String[] {requiredField.getFieldValue(),requiredField.getFieldDicValue()});
-                }
-                
-            }
+            Map<String, String[]>  valueMap=util.getEncapsulationFormData(url);
             
             
 
