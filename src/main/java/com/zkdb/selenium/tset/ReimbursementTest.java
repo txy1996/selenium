@@ -16,12 +16,12 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.zkdb.selenium.constant.AttributesEnum;
+import com.zkdb.selenium.constant.ElementLocateMode;
+import com.zkdb.selenium.constant.InitDriver;
 import com.zkdb.selenium.reimbursement.RequiredField;
-import com.zkdb.selenium.util.AttributesEnum;
-import com.zkdb.selenium.util.ElementLocateMode;
 import com.zkdb.selenium.util.ExcelReader;
 import com.zkdb.selenium.util.ExcelWriter;
-import com.zkdb.selenium.util.InitDriver;
 import com.zkdb.selenium.util.Login;
 import com.zkdb.selenium.util.SeleniumUtil;
 import com.zkdb.selenium.util.SimulationFileUpload;
@@ -82,7 +82,7 @@ public class ReimbursementTest {
         login.loginTestAccount(driver, "BEP", "241", "11111111");
         logger.info("登陆账号:241");
         try {
-            String url = "D:\\费用报销模块\\测试用例\\费用报销测试用例.xlsx";
+            String url = "D:\\费用报销模块\\测试用例\\费用报销测试用例12.xlsx";
             Map<String, String[]>  valueMap=util.getEncapsulationFormData(url);
             
             
@@ -190,22 +190,22 @@ public class ReimbursementTest {
             driver.findElement(By.cssSelector(".cell:nth-child(12)")).click();
 
             // 点击新增从表
-            // load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".fa-plus-square");
-            // driver.findElement(By.cssSelector(".fa-plus-square")).click();
-            // logger.info("点击新增从表");
-            // tr[2]/td[4]
+             load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".fa-plus-square");
+             driver.findElement(By.cssSelector(".fa-plus-square")).click();
+             logger.info("点击新增从表");
+             
             // 双击 费用科目
 
-            // load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_XPATH,"//tr[2]/td[4]");
-            // actions.doubleClick(driver.findElement(By.xpath("//tr[2]/td[4]"))).perform();
-            //
+             load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_XPATH,"//tr[2]/td[4]");
+             actions.doubleClick(driver.findElement(By.xpath("//tr[2]/td[4]"))).perform();
+            
             // 点击发起
-//            load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "form_newWfInstance");
-//            driver.findElement(By.id("form_newWfInstance")).click();
-//            // 获取流程名称
-//            load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_XPATH, "//div/div[2]/div/div/div[2]/input");
-//            String processName = driver.findElement(By.xpath("//div/div[2]/div/div/div[2]/input"))
-//                    .getAttribute("value");
+            load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "form_newWfInstance");
+            driver.findElement(By.id("form_newWfInstance")).click();
+            // 获取流程名称
+            load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_XPATH, "//div/div[2]/div/div/div[2]/input");
+            String processName = driver.findElement(By.xpath("//div/div[2]/div/div/div[2]/input"))
+                    .getAttribute("value");
             // li
             List<WebElement> elements = driver.findElements(By.xpath(
                     "//div[contains(@class,'modalWorkFlow')]//ul[@id='Transmit_userTree' and contains(@class,'ztree')]/li"));
@@ -253,10 +253,8 @@ public class ReimbursementTest {
             // 获取表单信息
              ArrayList<RequiredField>
              requiredFields1=util.getFormRequiredField(driver);
-
-             for (RequiredField requiredField : requiredFields1) {
-                System.out.println(requiredField.toString());
-            }
+             
+             
             // 写入表单信息
              ExcelWriter.inputDataExcel(requiredFields1,url);
 

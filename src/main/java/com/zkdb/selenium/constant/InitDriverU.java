@@ -1,7 +1,9 @@
-package com.zkdb.selenium.util;
+package com.zkdb.selenium.constant;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+
+import com.zkdb.selenium.util.SeleniumUtil;
 
 public class InitDriverU {
 

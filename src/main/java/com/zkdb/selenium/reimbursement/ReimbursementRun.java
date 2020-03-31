@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 
-import com.zkdb.selenium.util.InitDriver;
+import com.zkdb.selenium.constant.InitDriver;
 import com.zkdb.selenium.util.Login;
 import com.zkdb.selenium.util.SeleniumUtil;
 import com.zkdb.selenium.vo.UserAccountVO;

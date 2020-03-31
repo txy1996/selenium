@@ -1,4 +1,4 @@
-package com.zkdb.selenium.util;
+package com.zkdb.selenium.constant;
 
 /**
  * 
