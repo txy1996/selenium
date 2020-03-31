@@ -81,5 +81,23 @@ public Login() {
         
     }
     
+    /**
+     * @Title: loginAccount 
+     * @Description: TODO(登陆账号) 
+     * @param driver
+     * @param orguid
+     * @param userName
+     * @param passWord
+     */
+    public void loginAccount(WebDriver driver,String orguid,String userName,String passWord) {
+        
+        load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "resetorguid");
+        driver.findElement(By.id("resetorguid")).click();
+        load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "signin-orguid");
+        setOrguid(driver, orguid);
+        setUsername(driver, userName);
+        setpassWord(driver, passWord);
+        clickLogin(driver);
+    }
     
 }

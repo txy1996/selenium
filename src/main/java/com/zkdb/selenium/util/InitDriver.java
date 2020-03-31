@@ -16,7 +16,7 @@ public enum InitDriver {
     INSTANCE;
     //初始化
     public WebDriver getDriver() {
-        String url=SeleniumUtil.getPropValue("url");
+        String url=SeleniumUtil.getPropValue("urlD");
         WebDriver driver = new ChromeDriver();
         driver.get(url);
         driver.manage().window().maximize();

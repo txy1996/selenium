@@ -86,13 +86,20 @@ public class ReimbursementTest {
             ArrayList<RequiredField> requiredFields = (ArrayList<RequiredField>) SeleniumUtil.getExcelDate(url,
                     new RequiredField());
             Map<String, String[]> valueMap = new HashMap<String, String[]>();
+           
             for (RequiredField requiredField : requiredFields) {
                 //主表数据处理
-                if (requiredField.getSerialNumber().equals("") || requiredField == null) {
+                if (requiredField.getSerialNumber().equals("") || requiredField.getSerialNumber() == null) {
                     valueMap.put(requiredField.getField(), new String[] {requiredField.getFieldValue(),requiredField.getFieldDicValue()});
+                    //从表数据封装
+                }else if(!requiredField.getSerialNumber().equals("") && requiredField.getSerialNumber() != null) {
+                    valueMap.put(requiredField.getDataId()+requiredField.getField()+requiredField.getSerialNumber(), 
+                            new String[] {requiredField.getFieldValue(),requiredField.getFieldDicValue()});
                 }
                 
             }
+            
+            
 
             load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "webiframe");
             driver.switchTo().frame("webiframe");
@@ -156,10 +163,10 @@ public class ReimbursementTest {
 
             logger.info("-----------新增费用明细从表------------");
 
-            load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_XPATH, "//table[@data-dataid='69ea52b9-0976-4643-aa87-4407f2f2baf2']//tr[1]//td[ contains(@class,'cell') and @data-field='sheet_date']");
-            actions.doubleClick(driver.findElement(By.xpath("//table[@data-dataid='69ea52b9-0976-4643-aa87-4407f2f2baf2']//tr[1]//td[ contains(@class,'cell') and @data-field='sheet_date']"))).perform();
+            load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_XPATH, util.getElementXPath("69ea52b9-0976-4643-aa87-4407f2f2baf2", "1", "sheet_date"));
+            actions.doubleClick(driver.findElement(By.xpath(util.getElementXPath("69ea52b9-0976-4643-aa87-4407f2f2baf2", "1", "sheet_date")))).perform();
 
-            util.keyboardNumberInput("2020-04-01");
+            util.keyboardNumberInput(valueMap.get("69ea52b9-0976-4643-aa87-4407f2f2baf2"+"sheet_date"+"1")[0]);
             logger.info("-----------点击日期------------");
 
 
@@ -173,7 +180,7 @@ public class ReimbursementTest {
             logger.info("-----------child(7)------------");
 
             // 模拟键盘输入 10092.909
-            util.keyboardNumberInput("10092.909");
+            util.keyboardNumberInput(valueMap.get("69ea52b9-0976-4643-aa87-4407f2f2baf2"+"sheet_money"+"1")[0]);
 
             load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_CSSSELECTOR, ".cell:nth-child(8)");
             driver.findElement(By.cssSelector(".cell:nth-child(8)")).click();
