@@ -52,10 +52,11 @@ public class ExcelWriter {
 
     /**
      * 生成Excel并写入数据信息
-     * @param dataList 数据列表
+     * @param <E>
+     * @param requiredFields 数据列表
      * @return 写入数据后的工作簿对象
      */
-    public static Workbook exportData(List<RequiredField> dataList){
+    public static <E> Workbook exportData(ArrayList<E> requiredFields){
         // 生成xlsx的Excel
         Workbook workbook = new SXSSFWorkbook();
 
@@ -66,8 +67,8 @@ public class ExcelWriter {
         Sheet sheet = buildDataSheet(workbook);
         //构建每行的数据内容
         int rowNum = 1;
-        for (Iterator<RequiredField> it = dataList.iterator(); it.hasNext(); ) {
-            RequiredField data = it.next();
+        for (Iterator<E> it = requiredFields.iterator(); it.hasNext(); ) {
+            E data = it.next();
             if (data == null) {
                 continue;
             }
@@ -154,7 +155,7 @@ public class ExcelWriter {
   
     }
     
-    public static void inputDataExcel(ArrayList<RequiredField> requiredFields,String url) {
+    public static <E> void inputDataExcel(ArrayList<E> requiredFields,String url) {
         
         Workbook workbook =ExcelWriter.exportData(requiredFields);
         FileOutputStream fileOutputStream=null;

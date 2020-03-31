@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.zkdb.selenium.tset.ExcelWriterTest;
 import com.zkdb.selenium.util.ElementLocateMode;
+import com.zkdb.selenium.util.ExcelWriter;
 import com.zkdb.selenium.util.SeleniumUtil;
 import com.zkdb.selenium.util.SimulationFileUpload;
 import com.zkdb.selenium.util.WaitiElementsLoad;
@@ -171,6 +172,15 @@ public class ReimbursementOpenForm {
         
         load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".cell:nth-child(12)");
         driver.findElement(By.cssSelector(".cell:nth-child(12)")).click();
+        
+        
+        //获取表单必填字段
+        ArrayList<RequiredField> requiredFields=util.getFormRequiredField(driver);
+        // 写入表单信息
+        ExcelWriter.inputDataExcel(requiredFields,"D:\\费用报销模块\\测试用例\\费用报销测试用例.xlsx");
+        
+        
+        
         //
         load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".btn:nth-child(5)");
         driver.findElement(By.cssSelector(".btn:nth-child(5)")).click();
@@ -207,13 +217,9 @@ public class ReimbursementOpenForm {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
-        //获取表单必填字段
-        ArrayList<RequiredField> requiredFields=util.getFormRequiredField(driver);
-        ExcelWriterTest.test(requiredFields);
+
         
-        for (RequiredField requiredField : requiredFields) {
-            logger.info(requiredField.toString());
-        }
+        
         
         
         //点击发起

@@ -254,6 +254,9 @@ public class ReimbursementTest {
              ArrayList<RequiredField>
              requiredFields1=util.getFormRequiredField(driver);
 
+             for (RequiredField requiredField : requiredFields1) {
+                System.out.println(requiredField.toString());
+            }
             // 写入表单信息
              ExcelWriter.inputDataExcel(requiredFields1,url);
 

@@ -235,12 +235,12 @@ public class SeleniumUtil {
                                 + webElement3.getAttribute("title") + "-----title-----");
                         vHashMap.put(webElement3.getAttribute("data-field"), webElement3.getAttribute("title"));
                     }
-
+                    
                 }
                 valueArrayList.add(vHashMap);
             }
             // 查找字段名称属性 td class 属性中包含 ui-resizable
-            List<WebElement> elementsCB = webElement.findElements(By.xpath("//td[contains(@class,'ui-resizable')]"));
+            List<WebElement> elementsCB = webElement.findElements(By.xpath("//table[@class='detailData']/thead/tr//td[contains(@class,'ui-resizable')]"));
 
             int num = 1;
             for (HashMap<String, String> hashMap : valueArrayList) {
