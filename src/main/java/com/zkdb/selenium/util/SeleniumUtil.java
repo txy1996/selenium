@@ -584,13 +584,23 @@ public class SeleniumUtil {
                 valueMap.put(requiredField.getField(), new String[] {requiredField.getFieldValue(),requiredField.getFieldDicValue()});
                 //从表数据封装 key=(数据集id+行号+字段值名称) value=(显示值,字段值(实际值))
             }else if(!requiredField.getSerialNumber().equals("") && requiredField.getSerialNumber() != null) {
-                valueMap.put(requiredField.getDataId()+requiredField.getSerialNumber()+requiredField.getFieldName(), 
+                valueMap.put(requiredField.getDataId()+requiredField.getSerialNumber()+requiredField.getField(), 
                         new String[] {requiredField.getFieldValue(),requiredField.getFieldDicValue()});
             }
             
         }
         
         return valueMap;
+    }
+    
+    /**
+     * @Title: getprocessNodeInfo 
+     * @Description: TODO(获取流程节点信息)
+     */
+    public void getprocessNodeInfo(WebDriver driver) {
+        
+        String activityNewId = driver.findElement(By.id("activityid")).getAttribute("value");
+        
     }
 
 }

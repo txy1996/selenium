@@ -82,7 +82,7 @@ public class ReimbursementTest {
         login.loginTestAccount(driver, "BEP", "241", "11111111");
         logger.info("登陆账号:241");
         try {
-            String url = "D:\\费用报销模块\\测试用例\\费用报销测试用例12.xlsx";
+            String url = "D:\\费用报销模块\\测试用例\\费用报销测试用例.xlsx";
             Map<String, String[]>  valueMap=util.getEncapsulationFormData(url);
             if(valueMap==null) {
             	logger.info("文件不存在,转换输入模式");
@@ -144,7 +144,7 @@ public class ReimbursementTest {
 
             load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "a_text1");
             driver.findElement(By.id("a_text1")).sendKeys(valueMap.get("a_text1")[0]);
-            logger.info("-----------原始单据附件数------------");
+            logger.info("-----------报销说明------------");
 
             load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_CSSSELECTOR, ".activitetab > .detail-count");
             driver.findElement(By.cssSelector(".activitetab > .detail-count")).click();
@@ -186,20 +186,20 @@ public class ReimbursementTest {
             driver.findElement(By.cssSelector(".cell:nth-child(11)")).click();
 
             load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_XPATH, "//td[11]/input");
-            driver.findElement(By.xpath("//td[11]/input")).sendKeys("芳树笼秦栈，春流绕蜀城");
+            driver.findElement(By.xpath("//td[11]/input")).sendKeys("那随风飘荡的蒲公英种子，会在什么时候决定自己的命运呢？");
 
             load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_CSSSELECTOR, ".cell:nth-child(12)");
             driver.findElement(By.cssSelector(".cell:nth-child(12)")).click();
 
-            // 点击新增从表
-             load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".fa-plus-square");
-             driver.findElement(By.cssSelector(".fa-plus-square")).click();
-             logger.info("点击新增从表");
-             
-            // 双击 费用科目
-
-             load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_XPATH,"//tr[2]/td[4]");
-             actions.doubleClick(driver.findElement(By.xpath("//tr[2]/td[4]"))).perform();
+//            // 点击新增从表
+//             load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".fa-plus-square");
+//             driver.findElement(By.cssSelector(".fa-plus-square")).click();
+//             logger.info("点击新增从表");
+//             
+//            // 双击 费用科目
+//
+//             load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_XPATH,"//tr[2]/td[4]");
+//             actions.doubleClick(driver.findElement(By.xpath("//tr[2]/td[4]"))).perform();
             
             // 点击发起
             load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "form_newWfInstance");

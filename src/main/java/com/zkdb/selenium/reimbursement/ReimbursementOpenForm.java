@@ -1,6 +1,7 @@
 package com.zkdb.selenium.reimbursement;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -29,7 +30,7 @@ public class ReimbursementOpenForm {
 
     
     WaitiElementsLoad load = new WaitiElementsLoad();
-    SeleniumUtil util = new SeleniumUtil();
+    static SeleniumUtil util = new SeleniumUtil();
     Logger logger =Logger.getLogger(ReimbursementOpenForm.class);
     /**
      * 
@@ -38,8 +39,15 @@ public class ReimbursementOpenForm {
      * @param driver
      * @return  流程事项名称
      */
+    @SuppressWarnings("static-access")
     public String reimbursementPositioningExpenses(WebDriver driver) {
         
+        String url = "D:\\费用报销模块\\测试用例\\费用报销测试用例.xlsx";
+        @SuppressWarnings("static-access")
+        Map<String, String[]>  valueMap=util.getEncapsulationFormData(url);
+        if(valueMap==null) {
+            logger.info("文件不存在,转换输入模式");
+        }
         
         //鼠标模拟
         Actions actions =new Actions(driver);
@@ -71,113 +79,92 @@ public class ReimbursementOpenForm {
             e.printStackTrace();
         }
         load.Wait(driver,30,ElementLocateMode.FIND_ELEMENT_ID,"a_number3");
-
-//        driver.findElement(By.id("a_number3")).click();
-//        logger.info("-----------点击费用报销支出类型------------");
-        
         actions.doubleClick(driver.findElement(By.id("a_number3"))).perform();
+        
         logger.info("-----------点击费用报销支出类型------------");
         
-        load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_LINKTEXT,"其他费用");
-        driver.findElement(By.linkText("其他费用")).click();
+//        load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_LINKTEXT,"其他费用");
+//        driver.findElement(By.linkText("其他费用")).click();
+        
+        
+        load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_LINKTEXT, valueMap.get("a_number3")[0]);
+        driver.findElement(By.linkText(valueMap.get("a_number3")[0])).click();
         
         
         load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_ID,"a_org_code3");
-        driver.findElement(By.id("a_org_code3")).click();
-        logger.info("-----------点击费用科目------------");
-        
         actions.doubleClick(driver.findElement(By.id("a_org_code3"))).perform();
-        
         logger.info("-----------点击费用报销支出类型------------");
         
 
         
-        load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,"tr:nth-child(6) > td:nth-child(3)");
-        driver.findElement(By.cssSelector("tr:nth-child(6) > td:nth-child(3)")).click();
+        load.Wait(driver, 20, ElementLocateMode.FIND_ELEMENT_XPATH, "//table[contains(@class,'tree_grid')]/tbody//td/span[contains(text(), '"+valueMap.get("a_org_code3")[1]+"')]/../..");
+        actions.doubleClick(driver.findElement(By.xpath("//table[contains(@class,'tree_grid')]/tbody//td/span[contains(text(), '"+valueMap.get("a_org_code3")[1]+"')]/../.."))).perform();
         logger.info("-----------点击通讯费------------");
         
-        load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".modal-footer > .btn:nth-child(1)");
-        driver.findElement(By.cssSelector(".modal-footer > .btn:nth-child(1)")).click();
-        logger.info("-----------点击确定------------");
+//        load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".modal-footer > .btn:nth-child(1)");
+//        driver.findElement(By.cssSelector(".modal-footer > .btn:nth-child(1)")).click();
+//        logger.info("-----------点击确定------------");
 
-        load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_ID,"sheet_title");
-        driver.findElement(By.id("sheet_title"))
-        .sendKeys("少女祈祷中…");
+        load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "sheet_title");
+        driver.findElement(By.id("sheet_title")).sendKeys(valueMap.get("sheet_title")[0]);
         logger.info("-----------支出事由------------");
         
         
-        load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_ID,"a_number2");
-        driver.findElement(By.id("a_number2"))
-        .sendKeys("2");
+        load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "a_number2");
+        driver.findElement(By.id("a_number2")).sendKeys(valueMap.get("a_number2")[0]);
         logger.info("-----------原始单据附件数------------");
         
-        load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_ID,"a_text1");
-        driver.findElement(By.id("a_text1"))
-        .sendKeys("瞿塘嘈嘈十二滩，此中道路古来难。长恨人心不如水，等闲平地起波澜。");
-        logger.info("-----------原始单据附件数------------");
+        load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "a_text1");
+        driver.findElement(By.id("a_text1")).sendKeys(valueMap.get("a_text1")[0]);
+        logger.info("-----------报销说明------------");
         
         load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".activitetab > .detail-count");
         driver.findElement(By.cssSelector(".activitetab > .detail-count")).click();
         
         logger.info("-----------新增费用明细从表------------");
         
-        load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".cell:nth-child(6)");
-        driver.findElement(By.cssSelector(".cell:nth-child(6)")).click();
-        
+        load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_XPATH, util.getElementXPath("69ea52b9-0976-4643-aa87-4407f2f2baf2", "1", "sheet_date"));
+        actions.doubleClick(driver.findElement(By.xpath(util.getElementXPath("69ea52b9-0976-4643-aa87-4407f2f2baf2", "1", "sheet_date")))).perform();
+
+        util.keyboardNumberInput(valueMap.get("69ea52b9-0976-4643-aa87-4407f2f2baf2"+"1"+"sheet_date")[0]);
         logger.info("-----------点击日期------------");
-        
-        
-        load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".cell .glyphicon");
-        driver.findElement(By.cssSelector(".cell .glyphicon")).click();
-        
-        
-        //跳转窗体
-        driver.switchTo().frame(0);
-        
-        load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".mh-today > .mh-solar");
-        driver.findElement(By.cssSelector(".mh-today > .mh-solar")).click();
-        
+
+
+
         logger.info("-----------选择日期------------");
         
-        driver.switchTo().defaultContent();
-        
-        load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".cell:nth-child(7)");
-        driver.findElement(By.cssSelector(".cell:nth-child(7)")).click();
+        load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_XPATH, util.getElementXPath("69ea52b9-0976-4643-aa87-4407f2f2baf2", "1", "sheet_money"));
+        driver.findElement(By.xpath(util.getElementXPath("69ea52b9-0976-4643-aa87-4407f2f2baf2", "1", "sheet_money"))).click();
         logger.info("-----------child(7)------------");
-        
-        //模拟键盘输入
-        util.keyboardNumberInput("10092.90");
+
+        // 模拟键盘输入 10092.909
+        util.keyboardNumberInput(valueMap.get("69ea52b9-0976-4643-aa87-4407f2f2baf2"+"1"+"sheet_money")[0]);
         
 
         
         
-        load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".cell:nth-child(8)");
-        driver.findElement(By.cssSelector(".cell:nth-child(8)")).click();
+        load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_XPATH,util.getElementXPath("69ea52b9-0976-4643-aa87-4407f2f2baf2", "1", "a_number2"));
+        actions.doubleClick(driver.findElement(By.xpath(util.getElementXPath("69ea52b9-0976-4643-aa87-4407f2f2baf2", "1", "a_number2")))).perform();
         
-        load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".cell:nth-child(8)");
-        driver.findElement(By.cssSelector(".cell:nth-child(8)")).click();
+//        load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".cell:nth-child(8)");
+//        driver.findElement(By.cssSelector(".cell:nth-child(8)")).click();
         
-        load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_XPATH,"//td[8]/div/span/span");
-        driver.findElement(By.xpath("//td[8]/div/span/span")).click();
-        
-        
-        load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_LINKTEXT,"服务票3%");
-        driver.findElement(By.linkText("服务票3%")).click();
-        
-        load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".cell:nth-child(11)");
-        driver.findElement(By.cssSelector(".cell:nth-child(11)")).click();
-        
-        load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_XPATH,"//td[11]/input");
-        driver.findElement(By.xpath("//td[11]/input")).sendKeys("芳树笼秦栈，春流绕蜀城");
-        
-        load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".cell:nth-child(12)");
-        driver.findElement(By.cssSelector(".cell:nth-child(12)")).click();
+//        load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_XPATH,"//td[8]/div/span/span");
+//        driver.findElement(By.xpath("//td[8]/div/span/span")).click();
         
         
-        //获取表单必填字段
-        ArrayList<RequiredField> requiredFields=util.getFormRequiredField(driver);
-        // 写入表单信息
-        ExcelWriter.inputDataExcel(requiredFields,"D:\\费用报销模块\\测试用例\\费用报销测试用例.xlsx");
+        load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_LINKTEXT,valueMap.get("69ea52b9-0976-4643-aa87-4407f2f2baf2"+"1"+"a_number2")[0]);
+        driver.findElement(By.linkText(valueMap.get("69ea52b9-0976-4643-aa87-4407f2f2baf2"+"1"+"a_number2")[0])).click();
+        
+        load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_XPATH,util.getElementXPath("69ea52b9-0976-4643-aa87-4407f2f2baf2", "1", "sheet_content"));
+        driver.findElement(By.xpath(util.getElementXPath("69ea52b9-0976-4643-aa87-4407f2f2baf2", "1", "sheet_content"))).sendKeys(valueMap.get("69ea52b9-0976-4643-aa87-4407f2f2baf2"+"1"+"sheet_content")[0]);
+        
+
+        
+
+        
+        
+        
         
         
         
@@ -224,6 +211,11 @@ public class ReimbursementOpenForm {
         
         //点击发起
          driver.findElement(By.id("form_newWfInstance")).click();
+         
+       //获取表单必填字段
+         ArrayList<RequiredField> requiredFields=util.getFormRequiredField(driver);
+         // 写入表单信息
+         ExcelWriter.inputDataExcel(requiredFields,"D:\\费用报销模块\\测试用例\\费用报销测试用例.xlsx");
         //获取流程名称
         load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_XPATH,"//div/div[2]/div/div/div[2]/input");
         String processName= driver.findElement(By.xpath("//div/div[2]/div/div/div[2]/input")).getAttribute("value");
@@ -233,6 +225,7 @@ public class ReimbursementOpenForm {
         
 
         logger.info("-----------确认发起------------");
+        
         
         
         //点击发起
