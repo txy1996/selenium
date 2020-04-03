@@ -1,5 +1,6 @@
 package com.zkdb.selenium.tset;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -196,11 +197,23 @@ public class DesignProject {
         logger.info("设置描 述");
         
         
-//        load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "a_org_code2");
-//        actions.doubleClick(driver.findElement(By.id("a_org_code2"))).perform();
-//        logger.info("双击设计阶段");
-//        load.Wait(driver,30,ElementLocateMode.FIND_ELEMENT_XPATH,"//body/ul[9]/li[@class='active']//input[@value='方案设计' and @type='checkbox']");
-//        WebElement elementFN =driver.findElement(By.xpath("//body/ul[9]/li[@class='active']//input[@value='方案设计' and @type='checkbox']"));
+        load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "a_org_code2");
+        actions.doubleClick(driver.findElement(By.id("a_org_code2"))).perform();
+        logger.info("双击设计阶段");
+        List<WebElement> elements=driver.findElements(By.xpath("/html/body/ul"));
+        logger.info("获取元素");
+        for (WebElement webElement : elements) {
+            logger.info(webElement.getCssValue("display"));
+            if ("blcok".equals(webElement.getCssValue("display"))) {
+                
+                webElement.findElement(By.xpath("//li[@class='active']//input[@value='方案设计' and @type='checkbox']")).click();
+                logger.info("选择方案设计");
+                webElement.findElement(By.xpath("//li/a[contains(@class,'btn') and contains(text(),'确定')]")).click();
+            }
+        }
+        
+//        load.Wait(driver,30,ElementLocateMode.FIND_ELEMENT_XPATH,"/body/ul/li[@class='active']//input[@value='方案设计' and @type='checkbox']");
+//        WebElement elementFN =driver.findElement(By.xpath("//body/ul/li[@class='active']//input[@value='方案设计' and @type='checkbox']"));
 //        elementFN.click();
 //        if (elementFN.isSelected()) {
 //            logger.info("选择方案设计");
