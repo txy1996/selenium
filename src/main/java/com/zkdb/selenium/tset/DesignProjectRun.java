@@ -21,7 +21,7 @@ import com.zkdb.selenium.vo.UserAccountVO;
  * @date 2020年4月1日 下午2:15:25 
  *
  */
-public class DesignProjectTest {
+public class DesignProjectRun {
 
     public static void main(String[] args) {
         // TODO Auto-generated method stub
@@ -53,6 +53,7 @@ public class DesignProjectTest {
         //使用账号登录
         login.loginAccount(driver, userDate.get(0).getOrguid(), userDate.get(0).getUserName(), userDate.get(0).getPassWord());
         logger.info("登陆账号:"+userDate.get(0).getUserName());
+        
         try {
             //填写费用报销表单
             DesignProject designProject =new DesignProject();
@@ -66,24 +67,24 @@ public class DesignProjectTest {
                 e.printStackTrace();
             }
             //删除集合中前两位的数据
-            for(int i=0;i<2;i++) {
-                userDate.remove(0);
-            }
-            ProcessForwarding processForwarding = new ProcessForwarding();
-            
-            //循环预设的账号,进行流程批转
-            for (UserAccountVO userAccountVO : userDate) {
-                
-                login.loginTestAccount(driver, userAccountVO.getOrguid(), userAccountVO.getUserName(), userAccountVO.getPassWord());
-                logger.info(userAccountVO.getUserName());
-                processForwarding.processOperation(driver, processName);
-            }
+//            for(int i=0;i<2;i++) {
+//                userDate.remove(0);
+//            }
+//            ProcessForwarding processForwarding = new ProcessForwarding();
+//            
+//            //循环预设的账号,进行流程批转
+//            for (UserAccountVO userAccountVO : userDate) {
+//                
+//                login.loginTestAccount(driver, userAccountVO.getOrguid(), userAccountVO.getUserName(), userAccountVO.getPassWord());
+//                logger.info(userAccountVO.getUserName());
+//                processForwarding.processOperation(driver, processName);
+//            }
    
         }catch (Exception e){
             
             logger.info(e.toString());
             //错误截图
-            SeleniumUtil.runExceptionScreenshot(driver);
+            //SeleniumUtil.runExceptionScreenshot(driver);
         }
         finally {
             // TODO: handle finally clause

@@ -69,21 +69,21 @@ public class ReimbursementTest {
         Actions actions = new Actions(driver);
         // 登录方法
         Login login = new Login();
-        login.loginDevelopmentAccount(driver, "15882891378", "888888");
+//        login.loginDevelopmentAccount(driver, "15882891378", "888888");
+//
+//        try {
+//            Thread.sleep(2000);
+//        }
+//        catch (InterruptedException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
 
-        try {
-            Thread.sleep(2000);
-        }
-        catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        login.loginTestAccount(driver, "BEP", "241", "11111111");
+        login.loginAccount(driver, "BEP", "241", "11111111");
         logger.info("登陆账号:241");
         try {
             String url = "D:\\费用报销模块\\测试用例\\费用报销测试用例.xlsx";
-            Map<String, String[]>  valueMap=util.getEncapsulationFormData(url);
+            Map<String, String[]> valueMap=util.getEncapsulationFormData(url);
             if(valueMap==null) {
             	logger.info("文件不存在,转换输入模式");
             }

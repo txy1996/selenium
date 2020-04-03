@@ -3,8 +3,10 @@ package com.zkdb.selenium.manage;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+import com.zkdb.selenium.constant.ElementLocateMode;
 import com.zkdb.selenium.constant.InitDriver;
 import com.zkdb.selenium.reimbursement.ProcessForwarding;
 import com.zkdb.selenium.reimbursement.ReimbursementRun;
@@ -22,6 +24,7 @@ public class CustomerManagementRun {
 
     public static void run() {
         Logger logger =Logger.getLogger(ReimbursementRun.class);
+        SeleniumUtil util =new SeleniumUtil();
         //读取配置文件 (预设账号)
         String excelFileName ="D:\\项目立项\\UserAccountVO.xlsx";
         UserAccountVO user =new UserAccountVO();
@@ -48,6 +51,7 @@ public class CustomerManagementRun {
         login.loginAccount(driver, "fep", "1005118", "888888");
         logger.info("登陆账号:"+"1005118");
         
+        util.verifyOnDuty(driver);
         try {
             //填写费用报销表单
             CustomerManagementTest rManagementRun= new CustomerManagementTest();
@@ -67,7 +71,7 @@ public class CustomerManagementRun {
             
             logger.info(e.toString());
             //错误截图
-            SeleniumUtil.runExceptionScreenshot(driver);
+            //SeleniumUtil.runExceptionScreenshot(driver);
         }
         finally {
             // TODO: handle finally clause

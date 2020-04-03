@@ -23,17 +23,8 @@ public class CustomerManagementTest {
         
         //鼠标模拟
         Actions actions =new Actions(driver);
-        load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "webiframe");
-        //窗口跳转
-        driver.switchTo().frame("webiframe");
-        logger.info("跳转到webiframe");
-        try {
-            Thread.sleep(2000);
-        }
-        catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+
+        
         
         load.Wait(driver,30,ElementLocateMode.FIND_ELEMENT_XPATH,"//*[@id='topbar1']/div//span[contains(text(),'经营')]");
         driver.findElement(By.xpath("//*[@id='topbar1']/div//span[contains(text(),'经营')]")).click();

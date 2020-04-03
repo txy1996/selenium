@@ -40,7 +40,7 @@ public class SeleniumUtil {
 
     private static final String DEFAULT_PROPERTIES = "/url.properties";
     static Logger logger = Logger.getLogger(SeleniumUtil.class);
-
+    WaitiElementsLoad load = new WaitiElementsLoad();
     /**
      * 
      * @Title: checkExistsElement
@@ -603,4 +603,41 @@ public class SeleniumUtil {
         
     }
 
+    /**
+     * 
+     * @Title: verifyOnDuty 
+     * @Description: TODO(检验在岗状态) 
+     * @param driver
+     */
+    public void verifyOnDuty(WebDriver driver) {
+        //
+        load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "webiframe");
+        driver.switchTo().frame("webiframe");
+        logger.info("跳转到webiframe ");
+     
+         try {
+            Thread.sleep(2000);
+        }
+        catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+         
+        By elementOnDuty = new By.ByXPath("//div[@class='modal-content']//div[@class='userstatus-content']/span[contains(text(),'选择工作状态')]");
+        if(checkExistsElement(driver, elementOnDuty)) {
+            logger.info("第一次登陆");
+            By elementV =new By.ByXPath("/html/body//div//div/div/ul/li[contains(@class,'select') and @status='1']");
+            By elementVC =new By.ByXPath("");
+            if(checkExistsElement(driver, elementV)) {
+                load.Wait(driver,30,ElementLocateMode.FIND_ELEMENT_XPATH,"/html/body//div/div/div//div/div/button[contains(text(),'确定在岗状态')]");
+                driver.findElement(By.xpath("/html/body//div/div/div//div/div/button[contains(text(),'确定在岗状态')]")).click();
+            }else if (checkExistsElement(driver, elementVC)) {
+                load.Wait(driver,30,ElementLocateMode.FIND_ELEMENT_XPATH,"/html/body//div//div/div/ul/li[@status='1']");
+                driver.findElement(By.xpath("/html/body//div//div/div/ul/li[@status='1']")).click();
+                load.Wait(driver,30,ElementLocateMode.FIND_ELEMENT_XPATH,"/html/body//div/div/div//div/div/button[contains(text(),'确定在岗状态')]");
+                driver.findElement(By.xpath("/html/body//div/div/div//div/div/button[contains(text(),'确定在岗状态')]")).click();
+            }
+            
+        }
+    }
 }
