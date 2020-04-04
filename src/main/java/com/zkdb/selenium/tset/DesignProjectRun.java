@@ -39,17 +39,6 @@ public class DesignProjectRun {
         WebDriver driver =InitDriver.INSTANCE.getDriver();
         //调用登录
         Login login = new Login();
-        //使用预设的账号数据登录
-//        login.loginDevelopmentAccount(driver, userDate.get(0).getUserName(), userDate.get(0).getPassWord());
-//        logger.info("登陆开发者账号:"+userDate.get(0).getUserName());
-//        try {
-//            Thread.sleep(2000);
-//        }
-//        catch (InterruptedException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-        
         //使用账号登录
         login.loginAccount(driver, userDate.get(0).getOrguid(), userDate.get(0).getUserName(), userDate.get(0).getPassWord());
         logger.info("登陆账号:"+userDate.get(0).getUserName());
@@ -67,18 +56,18 @@ public class DesignProjectRun {
                 e.printStackTrace();
             }
             //删除集合中前两位的数据
-//            for(int i=0;i<2;i++) {
-//                userDate.remove(0);
-//            }
-//            ProcessForwarding processForwarding = new ProcessForwarding();
-//            
-//            //循环预设的账号,进行流程批转
-//            for (UserAccountVO userAccountVO : userDate) {
-//                
-//                login.loginTestAccount(driver, userAccountVO.getOrguid(), userAccountVO.getUserName(), userAccountVO.getPassWord());
-//                logger.info(userAccountVO.getUserName());
-//                processForwarding.processOperation(driver, processName);
-//            }
+            for(int i=0;i<2;i++) {
+                userDate.remove(0);
+            }
+            ProcessForwarding processForwarding = new ProcessForwarding();
+            
+            //循环预设的账号,进行流程批转
+            for (UserAccountVO userAccountVO : userDate) {
+                
+                login.loginTestAccount(driver, userAccountVO.getOrguid(), userAccountVO.getUserName(), userAccountVO.getPassWord());
+                logger.info(userAccountVO.getUserName());
+                processForwarding.processOperation(driver, processName);
+            }
    
         }catch (Exception e){
             

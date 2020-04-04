@@ -1,5 +1,6 @@
 package com.zkdb.selenium.tset;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.zkdb.selenium.constant.ElementLocateMode;
 import com.zkdb.selenium.reimbursement.ReimbursementOpenForm;
+import com.zkdb.selenium.reimbursement.RequiredField;
+import com.zkdb.selenium.util.ExcelWriter;
 import com.zkdb.selenium.util.SeleniumUtil;
 import com.zkdb.selenium.util.WaitiElementsLoad;
 
@@ -273,7 +276,10 @@ public class DesignProject {
 
         logger.info("备注");
 
-
+        //获取表单必填字段
+        ArrayList<RequiredField> requiredFields=util.getFormRequiredField(driver);
+        // 写入表单信息
+        ExcelWriter.inputDataExcel(requiredFields,"D:\\项目立项\\项目立项测试用例.xlsx");
         
         return null;
     }
