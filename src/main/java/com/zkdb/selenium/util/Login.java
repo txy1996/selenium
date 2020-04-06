@@ -24,17 +24,20 @@ public Login() {
     //设置企业号
     public void setOrguid(WebDriver driver,String orguid) {
         WebElement orguidWeb = driver.findElement(By.id("signin-orguid"));
+        orguidWeb.clear();
         orguidWeb.sendKeys(orguid);
         
     }
     //设置用户名
     public void setUsername(WebDriver driver,String userName) {
         WebElement userNameWeb = driver.findElement(By.id("signin-name"));
+        userNameWeb.clear();
         userNameWeb.sendKeys(userName);
     }
     //设置密码
     public void setpassWord(WebDriver driver,String passWord) {
         WebElement passWordWeb = driver.findElement(By.id("signin-pass"));
+//        passWordWeb.clear();
         passWordWeb.sendKeys(passWord);
     }
     //点击提交
@@ -94,7 +97,8 @@ public Login() {
     public void loginAccount(WebDriver driver,String orguid,String userName,String passWord) {
         
         load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "resetorguid");
-        driver.findElement(By.id("resetorguid")).click();
+        WebElement resetorguid=driver.findElement(By.id("resetorguid"));
+        resetorguid.click();
         load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "signin-orguid");
         setOrguid(driver, orguid);
         setUsername(driver, userName);

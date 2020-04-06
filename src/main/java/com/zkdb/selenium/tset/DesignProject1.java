@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -23,17 +22,9 @@ import com.zkdb.selenium.util.ExcelWriter;
 import com.zkdb.selenium.util.SeleniumUtil;
 import com.zkdb.selenium.util.WaitiElementsLoad;
 
-/**
- * 
- * @ClassName: DesignProject 
- * @Description: TODO(填写项目立项表单) 
- * @author tangxiaoyu 
- * @date 2020年4月1日 下午2:24:25 
- *
- */
-public class DesignProject {
+public class DesignProject1 {
 
-    //等待方法
+	//等待方法
     WaitiElementsLoad load = new WaitiElementsLoad();
     //工具类
     static SeleniumUtil util = new SeleniumUtil();
@@ -91,32 +82,49 @@ public class DesignProject {
             e.printStackTrace();
         }
         
-        load.Wait(driver,30,ElementLocateMode.FIND_ELEMENT_ID,"a_number2");
-        //鼠标模拟双击
-        actions.doubleClick(driver.findElement(By.id("a_number2"))).perform();
-        logger.info("双击立项依据");
-        load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_LINKTEXT, "备案项目");
-        driver.findElement(By.linkText("备案项目")).click();
-        logger.info("选择备案项目");
+        load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "sheet_code");
+        actions.doubleClick(driver.findElement(By.id("sheet_code"))).perform();
+        logger.info("设置项目简称");
         
-        load.Wait(driver,30,ElementLocateMode.FIND_ELEMENT_ID,"a_user4");
-        //鼠标模拟双击
-        actions.doubleClick(driver.findElement(By.id("a_user4"))).perform();
-        logger.info("双击备案项目");
-        String Record="测试生成数据8.58336e+013";
+        
+        load.Wait(driver,30,ElementLocateMode.FIND_ELEMENT_XPATH,"//table/tbody//tr//td[contains(text(),'建筑')]/../td/input");
+        actions.doubleClick(driver.findElement(By.xpath("//table/tbody//tr//td[contains(text(),'建筑')]/../td/input"))).perform();
+        logger.info("选择建筑");
+        
+        load.Wait(driver,30,ElementLocateMode.FIND_ELEMENT_XPATH,"//table/tbody//tr//td[contains(text(),'市政')]/../td/input");
+        actions.doubleClick(driver.findElement(By.xpath("//table/tbody//tr//td[contains(text(),'市政')]/../td/input"))).perform();
+        logger.info("选择市政");
+        
+        
+        load.Wait(driver,30,ElementLocateMode.FIND_ELEMENT_XPATH,"//div[contains(@class,'modal-dialog')]//div[contains(@class,'modal-footer')]/span[contains(text(),'确定')]");
+        driver.findElement(By.xpath("//div[contains(@class,'modal-dialog')]//div[contains(@class,'modal-footer')]/span[contains(text(),'确定')]")).click();
+        logger.info("点击确定");
+        
+        load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "customid");
+        actions.doubleClick(driver.findElement(By.id("customid"))).perform();
+        logger.info("设置甲方名称");
+        
+        String partyName="国家电网有限公司";
         load.Wait(driver,30,ElementLocateMode.FIND_ELEMENT_XPATH,"//div[@class='modal-header']/div/ul//div/input[@data-field='sheet_title']");
-        driver.findElement(By.xpath("//div[@class='modal-header']/div/ul//div/input[@data-field='sheet_title']")).sendKeys(Record);
-        logger.info("输入项目名称");
+        driver.findElement(By.xpath("//div[@class='modal-header']/div/ul//div/input[@data-field='sheet_title']")).sendKeys(partyName);
+        logger.info("输入甲方名称");
         load.Wait(driver,30,ElementLocateMode.FIND_ELEMENT_XPATH,"//div[contains(@class,'modal-content')]/div[@class='modal-header']/div/ul//button[contains(text(),'搜索')]");
         driver.findElement(By.xpath("//div[contains(@class,'modal-content')]/div[@class='modal-header']/div/ul//button[contains(text(),'搜索')]")).click();
         logger.info("点击搜索");
-        load.Wait(driver,30,ElementLocateMode.FIND_ELEMENT_XPATH,"//table[contains(@class,'table')]/tbody//tr//td[@data-field='sheet_title' and contains(text(),'"+Record+"')]/..");
-        actions.doubleClick(driver.findElement(By.xpath("//table[contains(@class,'table')]/tbody//tr//td[@data-field='sheet_title' and contains(text(),'"+Record+"')]/.."))).perform();
+        load.Wait(driver,30,ElementLocateMode.FIND_ELEMENT_XPATH,"//table[contains(@class,'table')]/tbody//tr//td[@data-field='sheet_title' and contains(text(),'"+partyName+"')]/..");
+        actions.doubleClick(driver.findElement(By.xpath("//table[contains(@class,'table')]/tbody//tr//td[@data-field='sheet_title' and contains(text(),'"+partyName+"')]/.."))).perform();
         logger.info("双击确认选择");
         
+        String proj_name="selenium自动化测试项目";
+        load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "proj_name");
+        driver.findElement(By.id("proj_name")).sendKeys(proj_name+System.currentTimeMillis());
+        logger.info("设置项目名称");
+        
+        
+        
         load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "proj_shortname");
-        driver.findElement(By.id("proj_shortname")).sendKeys(Record);
-        logger.info("设置项目简称");
+        driver.findElement(By.id("proj_shortname")).sendKeys(proj_name);
+        logger.info("设置 项目简称");
         
         load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "proj_author");
         actions.doubleClick(driver.findElement(By.id("proj_author"))).perform();
@@ -133,17 +141,14 @@ public class DesignProject {
         Date date = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date); // 设置为当前时间
-        calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) - 1); // 设置为上一个月      +为后一个月  0 为本月
+        calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 1); // 设置为上一个月      +为后一个月  0 为本月
         date = calendar.getTime();
         String time = format.format(date);
         
-//        load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "proj_start_date");
-//        actions.doubleClick(driver.findElement(By.id("proj_start_date"))).perform();
-//        util.keyboardNumberInput(path);
-//        logger.info("开始日期");
-        
-
-
+        load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "proj_finish_date");
+        actions.doubleClick(driver.findElement(By.id("proj_finish_date"))).perform();
+        util.keyboardNumberInput(time);
+        logger.info("结束日期");
         
         load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "a_org_code3");
         driver.findElement(By.id("a_org_code3")).sendKeys("中建五局");
@@ -228,6 +233,15 @@ public class DesignProject {
                 webElement.findElement(By.xpath("//li/a[contains(@class,'btn') and contains(text(),'确定')]")).click();
             }
         }
+        
+        String dataId="360476a2-402d-43a8-8fe7-f709b40ed1c1";
+        
+        String a_string2Xpth=util.getElementXPath(dataId, "1", "a_string2");
+        logger.info(a_string2Xpth);
+        load.Wait(driver, 30, ElementLocateMode.FIND_ELEMENT_XPATH, a_string2Xpth);
+        actions.doubleClick(driver.findElement(By.xpath(a_string2Xpth))).perform();
+        logger.info("委托类别");
+
         load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_XPATH, "//div[@id='data_panel']//div[@class='tabHeaders']//span[contains(text(),'项目委托')]");
         driver.findElement(By.xpath("//div[@id='data_panel']//div[@class='tabHeaders']//span[contains(text(),'项目委托')]")).click();
         logger.info("点击项目委托从表");
@@ -304,11 +318,12 @@ public class DesignProject {
         //点击发起
          driver.findElement(By.id("form_newWfInstance")).click();
          logger.info("点击发起");
-        //获取表单必填字段
-        ArrayList<RequiredField> requiredFields=util.getFormRequiredField(driver);
-        // 写入表单信息
-        ExcelWriter.inputDataExcel(requiredFields,"D:\\项目立项\\项目立项测试用例.xlsx");
+//        //获取表单必填字段
+//        ArrayList<RequiredField> requiredFields=util.getFormRequiredField(driver);
+//        // 写入表单信息
+//        ExcelWriter.inputDataExcel(requiredFields,"D:\\项目立项\\项目立项测试用例.xlsx");
         //获取流程事项名称
+        load.Wait(driver, 30, ElementLocateMode.FIND_ELEMENT_XPATH, "//div[contains(@class,'modalWorkFlow')]//div[contains(@class,'modal-body')]//div/label[contains(text(), '事项名称')]/../input");
         String processName= driver.findElement(By.xpath("//div[contains(@class,'modalWorkFlow')]//div[contains(@class,'modal-body')]//div/label[contains(text(), '事项名称')]/../input")).getAttribute("value");
         
         //点击发起

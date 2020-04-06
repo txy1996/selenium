@@ -36,8 +36,8 @@ public class ProcessForwarding {
         //跳转iframe
         
         SeleniumUtil util = new SeleniumUtil();
-        load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "webiframe");
-        driver.switchTo().frame("webiframe");
+        //跳转webiframe 验证是否第一次登陆设置在岗状态
+        util.verifyOnDuty(driver);
         
         load.Wait(driver,30,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".fa-tasks");
         //new WebDriverWait(driver, 30).until(ExpectedConditions.elementToBeClickable(By.id("a_number3")));

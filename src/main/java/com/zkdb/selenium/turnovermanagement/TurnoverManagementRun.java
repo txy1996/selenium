@@ -1,4 +1,4 @@
-package com.zkdb.selenium.tset;
+package com.zkdb.selenium.turnovermanagement;
 
 import java.util.ArrayList;
 
@@ -7,29 +7,20 @@ import org.openqa.selenium.WebDriver;
 
 import com.zkdb.selenium.constant.InitDriver;
 import com.zkdb.selenium.reimbursement.ProcessForwarding;
-import com.zkdb.selenium.reimbursement.ReimbursementOpenForm;
 import com.zkdb.selenium.reimbursement.ReimbursementRun;
+import com.zkdb.selenium.tset.DesignProject1;
 import com.zkdb.selenium.util.Login;
 import com.zkdb.selenium.util.SeleniumUtil;
 import com.zkdb.selenium.vo.UserAccountVO;
 
-/**
- * 
- * @ClassName: DesignProjectTest 
- * @Description: TODO(fep设计项目立项) 
- * @author tangxiaoyu 
- * @date 2020年4月1日 下午2:15:25 
- *
- */
-public class DesignProjectRun {
+public class TurnoverManagementRun {
 
-    public static void main(String[] args) {
-        // TODO Auto-generated method stub
-
-        run();
-    }
-
-    public static void run() {
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		run();
+	}
+	
+	public static void run() {
         Logger logger =Logger.getLogger(ReimbursementRun.class);
         //读取配置文件 (预设账号)
         String excelFileName ="D:\\项目立项\\UserAccountVO.xlsx";
@@ -44,10 +35,10 @@ public class DesignProjectRun {
         logger.info("登陆账号:"+userDate.get(0).getUserName());
         
         try {
-            //填写费用报销表单
-            DesignProject1 designProject =new DesignProject1();
+            //填写离职管理表单
+            TurnoverManagement management =new TurnoverManagement();
             //返回流程事项名称
-            String processName = designProject.designProjectPositioningExpenses(driver);
+            String processName = management.turnoverManagementOpenFrom(driver);
             try {
                 Thread.sleep(2000);
             }
@@ -56,7 +47,7 @@ public class DesignProjectRun {
                 e.printStackTrace();
             }
             //删除集合中前两位的数据
-            for(int i=0;i<2;i++) {
+            for(int i=0;i<1;i++) {
                 userDate.remove(0);
             }
             ProcessForwarding processForwarding = new ProcessForwarding();
@@ -90,4 +81,5 @@ public class DesignProjectRun {
         }
         
     }
+
 }

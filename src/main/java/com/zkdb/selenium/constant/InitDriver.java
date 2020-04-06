@@ -22,7 +22,7 @@ public enum InitDriver {
         String url=SeleniumUtil.getPropValue("urlU");
         WebDriver driver = new ChromeDriver();
         driver.get(url);
-        driver.manage().window().maximize();
+        //driver.manage().window().maximize();
         return driver;
     }
     
