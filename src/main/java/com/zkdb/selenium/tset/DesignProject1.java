@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -15,6 +16,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.zkdb.selenium.constant.AttributesEnum;
 import com.zkdb.selenium.constant.ElementLocateMode;
 import com.zkdb.selenium.reimbursement.ReimbursementOpenForm;
 import com.zkdb.selenium.reimbursement.RequiredField;
@@ -318,10 +320,39 @@ public class DesignProject1 {
         //点击发起
          driver.findElement(By.id("form_newWfInstance")).click();
          logger.info("点击发起");
-//        //获取表单必填字段
-//        ArrayList<RequiredField> requiredFields=util.getFormRequiredField(driver);
-//        // 写入表单信息
-//        ExcelWriter.inputDataExcel(requiredFields,"D:\\项目立项\\项目立项测试用例.xlsx");
+        //获取表单必填字段
+        ArrayList<RequiredField> requiredFields=util.getFormRequiredField(driver);
+         //写入表单信息
+        ExcelWriter.inputDataExcel(requiredFields,"D:\\项目立项\\项目立项测试用例.xlsx");
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         //获取流程事项名称
         load.Wait(driver, 30, ElementLocateMode.FIND_ELEMENT_XPATH, "//div[contains(@class,'modalWorkFlow')]//div[contains(@class,'modal-body')]//div/label[contains(text(), '事项名称')]/../input");
         String processName= driver.findElement(By.xpath("//div[contains(@class,'modalWorkFlow')]//div[contains(@class,'modal-body')]//div/label[contains(text(), '事项名称')]/../input")).getAttribute("value");
@@ -331,6 +362,22 @@ public class DesignProject1 {
         driver.findElement(By.cssSelector(".modal-footer > .btn-primary")).click();
         logger.info("-----------发起成功------------");
 
+        //流程接收人为自己
+        By elBy=new By.ByXPath("//body//div[contains(@class,'modal')]//div[contains(@class,'modal-body')]/div[contains(@class,'modal-confirm') and contains(text(),'您选择的接收人为您自己，系统将为您打开流程继续办理')]");
+        try {
+            Thread.sleep(2000);
+        }
+        catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        logger.info("-----------是否存在接收人为自己------------");
+        if(util.checkExistsElement(driver, elBy)) {
+        	logger.info("-----------查询等待------------");
+            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_XPATH,"//body//div[contains(@class,'modal')]//div[contains(@class,'modal-footer')]//span[contains(@class,'btn-default') and contains(text(),'取消')]");
+            driver.findElement(By.xpath("//body//div[contains(@class,'modal')]//div[contains(@class,'modal-footer')]//span[contains(@class,'btn-default') and contains(text(),'取消')]")).click();
+            logger.info("-----------点击取消------------");
+        }
         
         try {
             Thread.sleep(2000);
@@ -347,5 +394,18 @@ public class DesignProject1 {
         driver.navigate().refresh();
         
         return processName;
+    }
+    
+    public static void secondaryDataInput(WebDriver driver, WebElement webElement, WebElement webElement1,
+            ArrayList<RequiredField> requiredFields, String attributes, String num, String value) {
+        String dateId;
+        String field;
+        String fieldName;
+
+        dateId = webElement.getAttribute("data-dataid");
+        field = webElement1.getAttribute("data-field");
+        fieldName = webElement1.findElement(By.className("text")).getAttribute("innerText");
+
+        requiredFields.add(new RequiredField(dateId, num, field, fieldName, attributes, null, null, value, null));
     }
 }

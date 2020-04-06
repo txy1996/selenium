@@ -223,7 +223,7 @@ public class SeleniumUtil {
             ArrayList<HashMap<String, String>> valueArrayList = new ArrayList<HashMap<String, String>>();
 
             // 查找从表数据行 tr class 属性中包含detail-row 的元素
-            List<WebElement> elementTR = webElement.findElements(By.xpath("//tr[contains(@class,'detail-row')]"));
+            List<WebElement> elementTR = driver.findElements(By.xpath("//table[@class='detailData' and @data-dataid='"+webElement.getAttribute("data-dataid")+"']//tr[contains(@class,'detail-row')]"));
 
             for (WebElement webElement2 : elementTR) {
                 // 查找从表具体数据
@@ -235,8 +235,8 @@ public class SeleniumUtil {
                     if (webElement3.getAttribute("data-field") != null
                             && !"checked".equals(webElement3.getAttribute("data-field"))) {
                         // 输出字段名称和数据
-                        logger.info(webElement3.getAttribute("data-field") + "-----data-field-----"
-                                + webElement3.getAttribute("title") + "-----title-----");
+//                        logger.info(webElement3.getAttribute("data-field") + "-----data-field-----"
+//                                + webElement3.getAttribute("title") + "-----title-----");
                         vHashMap.put(webElement3.getAttribute("data-field"), webElement3.getAttribute("title"));
                     }
                     
@@ -250,34 +250,37 @@ public class SeleniumUtil {
             for (HashMap<String, String> hashMap : valueArrayList) {
 
                 for (WebElement webElement1 : elementsCB) {
-                    // 获取从表必填字段
-                    if ("1".equals(webElement1.getAttribute("data-required"))) {
+                	if(webElement1.getAttribute("data-field")!=""&&webElement1.getAttribute("data-field")!=null) {
+                		// 获取从表必填字段
+                        if ("1".equals(webElement1.getAttribute("data-required"))) {
 
-                        secondaryDataInput(driver, webElement, webElement1, requiredFields,
-                                AttributesEnum.Required.getValue(), String.valueOf(num),
-                                hashMap.get(webElement1.getAttribute("data-field")));
-                        // 只读
-                    }
-                    else if ("1".equals(webElement1.getAttribute("data-readonly"))) {
+                            secondaryDataInput(driver, webElement, webElement1, requiredFields,
+                                    AttributesEnum.Required.getValue(), String.valueOf(num),
+                                    hashMap.get(webElement1.getAttribute("data-field")));
+                            // 只读
+                        }
+                        else if ("1".equals(webElement1.getAttribute("data-readonly"))) {
 
-                        secondaryDataInput(driver, webElement, webElement1, requiredFields,
-                                AttributesEnum.Readonly.getValue(), String.valueOf(num),
-                                hashMap.get(webElement1.getAttribute("data-field")));
+                            secondaryDataInput(driver, webElement, webElement1, requiredFields,
+                                    AttributesEnum.Readonly.getValue(), String.valueOf(num),
+                                    hashMap.get(webElement1.getAttribute("data-field")));
 
-                        // 可填
-                    }
-                    else if (!"1".equals(webElement.getAttribute("data-readonly"))
-                            && !"1".equals(webElement.getAttribute("data-required"))) {
-                        secondaryDataInput(driver, webElement, webElement1, requiredFields,
-                                AttributesEnum.Fillable.getValue(), String.valueOf(num),
-                                hashMap.get(webElement1.getAttribute("data-field")));
-                        // 不可见
-                    }
-                    else if ("1".equals(webElement.getAttribute("data-readonly")) && !webElement.isDisplayed()) {
-                        secondaryDataInput(driver, webElement, webElement1, requiredFields,
-                                AttributesEnum.Invisible.getValue(), String.valueOf(num),
-                                hashMap.get(webElement1.getAttribute("data-field")));
-                    }
+                            // 可填
+                        }
+                        else if (!"1".equals(webElement.getAttribute("data-readonly"))
+                                && !"1".equals(webElement.getAttribute("data-required"))) {
+                            secondaryDataInput(driver, webElement, webElement1, requiredFields,
+                                    AttributesEnum.Fillable.getValue(), String.valueOf(num),
+                                    hashMap.get(webElement1.getAttribute("data-field")));
+                            // 不可见
+                        }
+                        else if ("1".equals(webElement.getAttribute("data-readonly")) && !webElement.isDisplayed()) {
+                            secondaryDataInput(driver, webElement, webElement1, requiredFields,
+                                    AttributesEnum.Invisible.getValue(), String.valueOf(num),
+                                    hashMap.get(webElement1.getAttribute("data-field")));
+                        }
+                	}
+                    
 
                 }
                 num++;

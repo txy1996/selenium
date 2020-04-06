@@ -124,19 +124,20 @@ public class ProcessForwarding {
             
             
             //确定办理
-            By  confirmation = new By.ByXPath("//button[contains(.,'确定办理')]");
+            By  confirmation = new By.ByXPath("//button[contains(text(),'确定办理')] ");
             Thread.sleep(4000);
             if(util.checkExistsElement(driver, confirmation)) {
-            load.Wait(driver,40,ElementLocateMode.FIND_ELEMENT_XPATH,"//button[contains(.,'确定办理')]");
-            driver.findElement(By.xpath("//button[contains(.,'确定办理')]")).click();
+            load.Wait(driver,40,ElementLocateMode.FIND_ELEMENT_XPATH,"//button[contains(text(),'确定办理')]");
+            driver.findElement(By.xpath("//button[contains(text(),'确定办理')]")).click();
             logger.info("-----------确定办理------------");
             }
             
             //如果没有勾选人员会弹出提示信息,然后进行人员选择,再点击办理
-            By  element = new By.ByXPath("//span[contains(.,'确定')]");
-            if(util.checkExistsElement(driver, element)) {
-                load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_XPATH,"//span[contains(.,'确定')]");
-                driver.findElement(By.xpath("//span[contains(.,'确定')]")).click();
+            By  element = new By.ByXPath("//span[contains(text(),'确定') and contains(@class,'okbtn')]");
+            By promptXpath=new By.ByXPath("//body//div[contains(@class,'modal')]//div[contains(@class,'modal-body')]/div[contains(@class,'modal-alert') and contains(text(),'必须选择接收人')]");
+            if(util.checkExistsElement(driver, element)&&util.checkExistsElement(driver, promptXpath)) {
+                load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_XPATH,"//span[contains(text(),'确定') and contains(@class,'okbtn')]");
+                driver.findElement(By.xpath("//span[contains(text(),'确定') and contains(@class,'okbtn')]")).click();
                 
                 logger.info("-----------选中人员1------------");
                 load.Wait(driver,60,ElementLocateMode.FIND_ELEMENT_ID,"Transmit_userTree_2_check");
@@ -152,12 +153,26 @@ public class ProcessForwarding {
                 driver.findElement(By.xpath("//button[contains(.,'确定办理')]")).click();
                 logger.info("-----------确定办理------------");
             }
-            
+            //流程接收人为自己
+            By elBy=new By.ByXPath("//body//div[contains(@class,'modal')]//div[contains(@class,'modal-body')]/div[contains(@class,'modal-confirm') and contains(text(),'您选择的接收人为您自己，系统将为您打开流程继续办理')]");
+            logger.info("-----------流程接收人为自己------------");
+            try {
+                Thread.sleep(2000);
+            }
+            catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            if(util.checkExistsElement(driver, elBy)) {
+                load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_XPATH,"//body//div[contains(@class,'modal')]//div[contains(@class,'modal-footer')]//span[contains(@class,'btn-default') and contains(text(),'取消')]");
+                driver.findElement(By.xpath("//body//div[contains(@class,'modal')]//div[contains(@class,'modal-footer')]//span[contains(@class,'btn-default') and contains(text(),'取消')]")).click();
+                logger.info("-----------点击取消------------");
+            }
             Thread.sleep(2000);
-            //logger.info("-----------跳转窗口------------"+driver.getWindowHandle());
+
             driver.switchTo().window(handle);
             logger.info("-----------跳转窗口------------"+handle);
-
+            
             //刷新页面
             driver.navigate().refresh();
             Thread.sleep(4000);
