@@ -27,7 +27,7 @@ public class TurnoverManagementRun {
         UserAccountVO user =new UserAccountVO();
         ArrayList<UserAccountVO> userDate=  (ArrayList<UserAccountVO>) SeleniumUtil.getExcelDate(excelFileName,user);
         //初始化 
-        WebDriver driver =InitDriver.INSTANCE.getDriver();
+        WebDriver driver =InitDriver.getDriver();
         //调用登录
         Login login = new Login();
         //使用账号登录

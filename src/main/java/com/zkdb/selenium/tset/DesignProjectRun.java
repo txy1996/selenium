@@ -2,6 +2,7 @@ package com.zkdb.selenium.tset;
 
 import java.util.ArrayList;
 
+import com.zkdb.selenium.constant.InitDriverU;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 
@@ -36,7 +37,7 @@ public class DesignProjectRun {
         UserAccountVO user =new UserAccountVO();
         ArrayList<UserAccountVO> userDate=  (ArrayList<UserAccountVO>) SeleniumUtil.getExcelDate(excelFileName,user);
         //初始化 
-        WebDriver driver =InitDriver.INSTANCE.getDriver();
+        WebDriver driver = InitDriver.getDriver();
         //调用登录
         Login login = new Login();
         //使用账号登录
@@ -60,10 +61,10 @@ public class DesignProjectRun {
                 userDate.remove(0);
             }
             ProcessForwarding processForwarding = new ProcessForwarding();
-            
+
             //循环预设的账号,进行流程批转
             for (UserAccountVO userAccountVO : userDate) {
-                
+
                 login.loginAccount(driver, userAccountVO.getOrguid(), userAccountVO.getUserName(), userAccountVO.getPassWord());
                 logger.info(userAccountVO.getUserName());
                 processForwarding.processOperation(driver, processName);
@@ -76,7 +77,6 @@ public class DesignProjectRun {
             //SeleniumUtil.runExceptionScreenshot(driver);
         }
         finally {
-            // TODO: handle finally clause
             try {
                 Thread.sleep(6200);
             }

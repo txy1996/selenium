@@ -52,9 +52,10 @@ public class DesignProject1 {
         //鼠标模拟
         Actions actions =new Actions(driver);
         //跳转webiframe 验证是否第一次登陆设置在岗状态
-        util.verifyOnDuty(driver);
-        load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_XPATH, "//div[@id='topbar1']//div[@data-title='项目']");
-        driver.findElement(By.xpath("//div[@id='topbar1']//div[@data-title='项目']")).click();
+        util.verifyOnDuty();
+        util.getElement(10,ElementLocateMode.FIND_ELEMENT_XPATH,"//div[@id='topbar1']//div[@data-title='项目']").click();
+//        load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_XPATH, "//div[@id='topbar1']//div[@data-title='项目']");
+//        driver.findElement(By.xpath("//div[@id='topbar1']//div[@data-title='项目']")).click();
         logger.info("点击项目");
         
         load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_LINKTEXT, "启动规划");
@@ -72,7 +73,7 @@ public class DesignProject1 {
         logger.info("点击添加按钮");
         
         String handle= driver.getWindowHandle();
-        util.switchWindow(driver);
+        util.switchWindow();
         
         
         new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("body")));
@@ -321,38 +322,10 @@ public class DesignProject1 {
          driver.findElement(By.id("form_newWfInstance")).click();
          logger.info("点击发起");
         //获取表单必填字段
-        ArrayList<RequiredField> requiredFields=util.getFormRequiredField(driver);
+        ArrayList<RequiredField> requiredFields=util.getFormRequiredField();
          //写入表单信息
         ExcelWriter.inputDataExcel(requiredFields,"D:\\项目立项\\项目立项测试用例.xlsx");
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
         //获取流程事项名称
         load.Wait(driver, 30, ElementLocateMode.FIND_ELEMENT_XPATH, "//div[contains(@class,'modalWorkFlow')]//div[contains(@class,'modal-body')]//div/label[contains(text(), '事项名称')]/../input");
         String processName= driver.findElement(By.xpath("//div[contains(@class,'modalWorkFlow')]//div[contains(@class,'modal-body')]//div/label[contains(text(), '事项名称')]/../input")).getAttribute("value");
@@ -372,7 +345,7 @@ public class DesignProject1 {
             e.printStackTrace();
         }
         logger.info("-----------是否存在接收人为自己------------");
-        if(util.checkExistsElement(driver, elBy)) {
+        if(util.isElementExist(elBy)) {
         	logger.info("-----------查询等待------------");
             load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_XPATH,"//body//div[contains(@class,'modal')]//div[contains(@class,'modal-footer')]//span[contains(@class,'btn-default') and contains(text(),'取消')]");
             driver.findElement(By.xpath("//body//div[contains(@class,'modal')]//div[contains(@class,'modal-footer')]//span[contains(@class,'btn-default') and contains(text(),'取消')]")).click();
@@ -396,16 +369,5 @@ public class DesignProject1 {
         return processName;
     }
     
-    public static void secondaryDataInput(WebDriver driver, WebElement webElement, WebElement webElement1,
-            ArrayList<RequiredField> requiredFields, String attributes, String num, String value) {
-        String dateId;
-        String field;
-        String fieldName;
 
-        dateId = webElement.getAttribute("data-dataid");
-        field = webElement1.getAttribute("data-field");
-        fieldName = webElement1.findElement(By.className("text")).getAttribute("innerText");
-
-        requiredFields.add(new RequiredField(dateId, num, field, fieldName, attributes, null, null, value, null));
-    }
 }

@@ -46,6 +46,6 @@ public class CustomerManagementTest {
         logger.info("点击添加按钮");
         
         String handle= driver.getWindowHandle();
-        util.switchWindow(driver);
+        util.switchWindow();
     }
 }

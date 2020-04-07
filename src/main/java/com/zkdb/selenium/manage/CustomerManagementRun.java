@@ -30,7 +30,7 @@ public class CustomerManagementRun {
         UserAccountVO user =new UserAccountVO();
         ArrayList<UserAccountVO> userDate=  (ArrayList<UserAccountVO>) SeleniumUtil.getExcelDate(excelFileName,user);
         //初始化 
-        WebDriver driver =InitDriver.INSTANCE.getDriver();
+        WebDriver driver =InitDriver.getDriver();
         //调用登录
         Login login = new Login();
         //使用预设的账号数据登录
@@ -51,7 +51,7 @@ public class CustomerManagementRun {
         login.loginAccount(driver, "fep", "1005118", "888888");
         logger.info("登陆账号:"+"1005118");
         
-        util.verifyOnDuty(driver);
+        util.verifyOnDuty();
         try {
             //填写费用报销表单
             CustomerManagementTest rManagementRun= new CustomerManagementTest();

@@ -74,7 +74,7 @@ public class PostManagementTest {
         //获取当前窗口
         String handle= driver.getWindowHandle();
         //调用切换窗口的方法
-        util.switchWindow(driver);
+        util.switchWindow();
         
         
         new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("body")));

@@ -13,16 +13,19 @@ public class InitDriverU {
 
         INSTANCE;
         private InitDriverU initDriverU;
-        
+        private  WebDriver driver;
         private InitDriver() {
+
             initDriverU =new InitDriverU();
+            driver= new ChromeDriver();
+            String url=SeleniumUtil.getPropValue("urlU");
+            driver.get(url);
+            driver.manage().window().maximize();
+
         }
         //初始化
         public WebDriver getDriver() {
-            
-            WebDriver driver = new ChromeDriver();
-            driver.get(SeleniumUtil.getPropValue("url"));
-            driver.manage().window().maximize();
+
             return driver;
         }
     }

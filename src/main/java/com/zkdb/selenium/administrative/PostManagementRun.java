@@ -27,7 +27,7 @@ public class PostManagementRun {
         UserAccountVO user =new UserAccountVO();
         ArrayList<UserAccountVO> userDate=  (ArrayList<UserAccountVO>) SeleniumUtil.getExcelDate(excelFileName,user);
         //初始化 
-        WebDriver driver =InitDriver.INSTANCE.getDriver();
+        WebDriver driver =InitDriver.getDriver();
         //调用登录
         Login login = new Login();
 
@@ -66,7 +66,7 @@ public class PostManagementRun {
             
             logger.info(e.toString());
             //错误截图
-            SeleniumUtil.runExceptionScreenshot(driver);
+            SeleniumUtil.runExceptionScreenshot();
         }
         finally {
             // TODO: handle finally clause

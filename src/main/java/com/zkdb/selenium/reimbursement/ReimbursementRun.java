@@ -23,7 +23,7 @@ public class ReimbursementRun {
         UserAccountVO user =new UserAccountVO();
         ArrayList<UserAccountVO> userDate=  (ArrayList<UserAccountVO>) SeleniumUtil.getExcelDate(excelFileName,user);
         //初始化 
-        WebDriver driver =InitDriver.INSTANCE.getDriver();
+        WebDriver driver =InitDriver.getDriver();
         //调用登录
         Login login = new Login();
         //使用预设的账号数据登录
@@ -69,7 +69,7 @@ public class ReimbursementRun {
         }catch (Exception e){
             System.out.println(e.toString());
             
-            SeleniumUtil.runExceptionScreenshot(driver);
+            SeleniumUtil.runExceptionScreenshot();
         }
         finally {
             // TODO: handle finally clause

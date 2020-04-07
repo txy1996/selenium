@@ -34,7 +34,7 @@ public class TurnoverManagement {
 		//鼠标模拟
         Actions actions =new Actions(driver);
         //跳转webiframe 验证是否第一次登陆设置在岗状态
-        util.verifyOnDuty(driver);
+        util.verifyOnDuty();
 		
         load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_XPATH, "//div[@id='topbar1']//div[@data-title='人力']");
         driver.findElement(By.xpath("//div[@id='topbar1']//div[@data-title='人力']")).click();
@@ -55,7 +55,7 @@ public class TurnoverManagement {
         logger.info("点击添加按钮");
         //记录当前窗口编号
         String handle= driver.getWindowHandle();
-        util.switchWindow(driver);
+        util.switchWindow();
         
         
         new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("body")));
@@ -178,7 +178,7 @@ public class TurnoverManagement {
        logger.info("点击发起");
       
        //获取表单必填字段
-       ArrayList<RequiredField> requiredFields=util.getFormRequiredField(driver);
+       ArrayList<RequiredField> requiredFields=util.getFormRequiredField();
        // 写入表单信息
        ExcelWriter.inputDataExcel(requiredFields,"D:\\项目立项\\项目立项测试用例.xlsx");
        

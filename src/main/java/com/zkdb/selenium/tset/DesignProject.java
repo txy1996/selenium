@@ -59,9 +59,10 @@ public class DesignProject {
         //鼠标模拟
         Actions actions =new Actions(driver);
         //跳转webiframe 验证是否第一次登陆设置在岗状态
-        util.verifyOnDuty(driver);
-        load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_XPATH, "//div[@id='topbar1']//div[@data-title='项目']");
-        driver.findElement(By.xpath("//div[@id='topbar1']//div[@data-title='项目']")).click();
+        util.verifyOnDuty();
+        //util.getElement(10,ElementLocateMode.FIND_ELEMENT_XPATH,"//div[@id='topbar1']//div[@data-title='项目']").click();
+//        load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_XPATH, "//div[@id='topbar1']//div[@data-title='项目']");
+//        driver.findElement(By.xpath("//div[@id='topbar1']//div[@data-title='项目']")).click();
         logger.info("点击项目");
         
         load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_LINKTEXT, "启动规划");
@@ -79,7 +80,7 @@ public class DesignProject {
         logger.info("点击添加按钮");
         
         String handle= driver.getWindowHandle();
-        util.switchWindow(driver);
+        util.switchWindow();
         
         
         new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("body")));
@@ -305,7 +306,7 @@ public class DesignProject {
          driver.findElement(By.id("form_newWfInstance")).click();
          logger.info("点击发起");
         //获取表单必填字段
-        ArrayList<RequiredField> requiredFields=util.getFormRequiredField(driver);
+        ArrayList<RequiredField> requiredFields=util.getFormRequiredField();
         // 写入表单信息
         ExcelWriter.inputDataExcel(requiredFields,"D:\\项目立项\\项目立项测试用例.xlsx");
         //获取流程事项名称

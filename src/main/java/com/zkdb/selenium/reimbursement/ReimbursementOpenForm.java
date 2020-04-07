@@ -65,7 +65,7 @@ public class ReimbursementOpenForm {
         
         
         String handle= driver.getWindowHandle();
-        util.switchWindow(driver);
+        util.switchWindow();
 
         
         
@@ -213,7 +213,7 @@ public class ReimbursementOpenForm {
          driver.findElement(By.id("form_newWfInstance")).click();
          
        //获取表单必填字段
-         ArrayList<RequiredField> requiredFields=util.getFormRequiredField(driver);
+         ArrayList<RequiredField> requiredFields=util.getFormRequiredField();
          // 写入表单信息
          ExcelWriter.inputDataExcel(requiredFields,"D:\\费用报销模块\\测试用例\\费用报销测试用例.xlsx");
         //获取流程名称

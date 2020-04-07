@@ -15,9 +15,12 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import com.zkdb.selenium.constant.InitDriverU;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -27,6 +30,8 @@ import com.zkdb.selenium.constant.AttributesEnum;
 import com.zkdb.selenium.constant.ElementLocateMode;
 import com.zkdb.selenium.constant.InitDriver;
 import com.zkdb.selenium.reimbursement.RequiredField;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * 
@@ -41,16 +46,17 @@ public class SeleniumUtil {
     private static final String DEFAULT_PROPERTIES = "/url.properties";
     static Logger logger = Logger.getLogger(SeleniumUtil.class);
     WaitiElementsLoad load = new WaitiElementsLoad();
+    static WebDriver driver = InitDriver.getDriver();
+
     /**
      * 
      * @Title: checkExistsElement
      * @Description: TODO(判断元素是否存在)
-     * @param driver
      * @param element
      * @return boolean
      */
-    public boolean checkExistsElement(WebDriver driver, By element) {
-    	
+    public boolean checkExistsElement(By element) {
+
         try {
             driver.findElement(element);
             return true;
@@ -145,7 +151,14 @@ public class SeleniumUtil {
                         robot.keyPress(KeyEvent.VK_SUBTRACT);
                         robot.keyRelease(KeyEvent.VK_SUBTRACT);
                         break;
-
+                    case ' ':
+                        robot.keyPress(KeyEvent.VK_BACK_SPACE);
+                        robot.keyRelease(KeyEvent.VK_BACK_SPACE);
+                        break;
+                    case ':':
+                        robot.keyPress(KeyEvent.VK_SEMICOLON);
+                        robot.keyRelease(KeyEvent.VK_SEMICOLON);
+                        break;
                     default:
                         break;
                 }
@@ -176,7 +189,7 @@ public class SeleniumUtil {
      * @param driver
      * @return
      */
-    public ArrayList<RequiredField> getFormRequiredField(WebDriver driver) {
+    public ArrayList<RequiredField> getFormRequiredField() {
         //
         // RequiredField requiredField;
 
@@ -192,24 +205,24 @@ public class SeleniumUtil {
             if ("1".equals(webElement.getAttribute("data-required")) && webElement.isDisplayed()
                     && webElement.isEnabled()) {
 
-                coreDataInput(driver, webElement, requiredFields, id, AttributesEnum.Required.getValue());
+                coreDataInput(webElement, requiredFields, id, AttributesEnum.Required.getValue());
 
                 // 只读
             }
             else if ("1".equals(webElement.getAttribute("data-readonly")) && webElement.isDisplayed()) {
 
-                coreDataInput(driver, webElement, requiredFields, id, AttributesEnum.Readonly.getValue());
+                coreDataInput(webElement, requiredFields, id, AttributesEnum.Readonly.getValue());
                 // 可填
             }
             else if (!"1".equals(webElement.getAttribute("data-readonly"))
                     && !"1".equals(webElement.getAttribute("data-required")) && webElement.isDisplayed()) {
-                coreDataInput(driver, webElement, requiredFields, id, AttributesEnum.Fillable.getValue());
+                coreDataInput(webElement, requiredFields, id, AttributesEnum.Fillable.getValue());
                 // 不可见
             }
             else if (("1".equals(webElement.getAttribute("data-readonly"))
                     || !"1".equals(webElement.getAttribute("data-required"))) && !webElement.isDisplayed()
                     && webElement.getAttribute("data-field") != null) {
-                coreDataInput(driver, webElement, requiredFields, id, AttributesEnum.Invisible.getValue());
+                coreDataInput(webElement, requiredFields, id, AttributesEnum.Invisible.getValue());
             }
 
         }
@@ -223,7 +236,8 @@ public class SeleniumUtil {
             ArrayList<HashMap<String, String>> valueArrayList = new ArrayList<HashMap<String, String>>();
 
             // 查找从表数据行 tr class 属性中包含detail-row 的元素
-            List<WebElement> elementTR = driver.findElements(By.xpath("//table[@class='detailData' and @data-dataid='"+webElement.getAttribute("data-dataid")+"']//tr[contains(@class,'detail-row')]"));
+            List<WebElement> elementTR = driver.findElements(By.xpath("//table[@class='detailData' and @data-dataid='"
+                    + webElement.getAttribute("data-dataid") + "']//tr[contains(@class,'detail-row')]"));
 
             for (WebElement webElement2 : elementTR) {
                 // 查找从表具体数据
@@ -235,33 +249,37 @@ public class SeleniumUtil {
                     if (webElement3.getAttribute("data-field") != null
                             && !"checked".equals(webElement3.getAttribute("data-field"))) {
                         // 输出字段名称和数据
-//                        logger.info(webElement3.getAttribute("data-field") + "-----data-field-----"
-//                                + webElement3.getAttribute("title") + "-----title-----");
+                        // logger.info(webElement3.getAttribute("data-field") +
+                        // "-----data-field-----"
+                        // + webElement3.getAttribute("title") +
+                        // "-----title-----");
                         vHashMap.put(webElement3.getAttribute("data-field"), webElement3.getAttribute("title"));
                     }
-                    
+
                 }
                 valueArrayList.add(vHashMap);
             }
             // 查找字段名称属性 td class 属性中包含 ui-resizable
-            List<WebElement> elementsCB = webElement.findElements(By.xpath("//table[@class='detailData']/thead/tr//td[contains(@class,'ui-resizable')]"));
+            List<WebElement> elementsCB = webElement.findElements(
+                    By.xpath("//table[@class='detailData']/thead/tr//td[contains(@class,'ui-resizable')]"));
 
             int num = 1;
             for (HashMap<String, String> hashMap : valueArrayList) {
 
                 for (WebElement webElement1 : elementsCB) {
-                	if(webElement1.getAttribute("data-field")!=""&&webElement1.getAttribute("data-field")!=null) {
-                		// 获取从表必填字段
+                    if (webElement1.getAttribute("data-field") != ""
+                            && webElement1.getAttribute("data-field") != null) {
+                        // 获取从表必填字段
                         if ("1".equals(webElement1.getAttribute("data-required"))) {
 
-                            secondaryDataInput(driver, webElement, webElement1, requiredFields,
+                            secondaryDataInput(webElement, webElement1, requiredFields,
                                     AttributesEnum.Required.getValue(), String.valueOf(num),
                                     hashMap.get(webElement1.getAttribute("data-field")));
                             // 只读
                         }
                         else if ("1".equals(webElement1.getAttribute("data-readonly"))) {
 
-                            secondaryDataInput(driver, webElement, webElement1, requiredFields,
+                            secondaryDataInput(webElement, webElement1, requiredFields,
                                     AttributesEnum.Readonly.getValue(), String.valueOf(num),
                                     hashMap.get(webElement1.getAttribute("data-field")));
 
@@ -269,18 +287,17 @@ public class SeleniumUtil {
                         }
                         else if (!"1".equals(webElement.getAttribute("data-readonly"))
                                 && !"1".equals(webElement.getAttribute("data-required"))) {
-                            secondaryDataInput(driver, webElement, webElement1, requiredFields,
+                            secondaryDataInput(webElement, webElement1, requiredFields,
                                     AttributesEnum.Fillable.getValue(), String.valueOf(num),
                                     hashMap.get(webElement1.getAttribute("data-field")));
                             // 不可见
                         }
                         else if ("1".equals(webElement.getAttribute("data-readonly")) && !webElement.isDisplayed()) {
-                            secondaryDataInput(driver, webElement, webElement1, requiredFields,
+                            secondaryDataInput(webElement, webElement1, requiredFields,
                                     AttributesEnum.Invisible.getValue(), String.valueOf(num),
                                     hashMap.get(webElement1.getAttribute("data-field")));
                         }
-                	}
-                    
+                    }
 
                 }
                 num++;
@@ -299,8 +316,8 @@ public class SeleniumUtil {
      * @param requiredFields
      * @param id
      */
-    public static void coreDataInput(WebDriver driver, WebElement webElement, ArrayList<RequiredField> requiredFields,
-            String id, String attributes) {
+    public static void coreDataInput(WebElement webElement, ArrayList<RequiredField> requiredFields, String id,
+            String attributes) {
         String dateId;
         String field;
         String fieldName;
@@ -340,7 +357,7 @@ public class SeleniumUtil {
      * @param webElement1
      * @param requiredFields
      */
-    public static void secondaryDataInput(WebDriver driver, WebElement webElement, WebElement webElement1,
+    public static void secondaryDataInput(WebElement webElement, WebElement webElement1,
             ArrayList<RequiredField> requiredFields, String attributes, String num, String value) {
         String dateId;
         String field;
@@ -359,7 +376,7 @@ public class SeleniumUtil {
      * @Description: TODO(切换窗口,切换至新打开的窗口)
      * @param driver
      */
-    public void switchWindow(WebDriver driver) {
+    public void switchWindow() {
         // 获取当前窗口
         String currentWindow = driver.getWindowHandle();
         // 获取所有窗口
@@ -380,7 +397,7 @@ public class SeleniumUtil {
      * @Description: TODO(运行异常截图)
      * @param driver
      */
-    public static void runExceptionScreenshot(WebDriver driver) {
+    public static void runExceptionScreenshot() {
 
         // SimpleDateFormat format =new SimpleDateFormat("yyyy-MM-ddHH:mm:ss)");
         // String path = format.format(System.currentTimeMillis());
@@ -407,7 +424,7 @@ public class SeleniumUtil {
      * @param driver
      * @param strings
      */
-    public void shortcutMenu(WaitiElementsLoad load, WebDriver driver, String[] strings) {
+    public void shortcutMenu(WaitiElementsLoad load, String[] strings) {
 
         load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "webiframe");
         driver.switchTo().frame("webiframe");
@@ -426,13 +443,11 @@ public class SeleniumUtil {
      * @Title: element
      * @Description: TODO(元素获取封装)
      * @param locateMode
-     * @param driver
      * @param value
      * @return
      */
     public WebElement geElement(ElementLocateMode locateMode, String value) {
         WebElement element = null;
-        WebDriver driver = InitDriver.INSTANCE.getDriver();
         switch (locateMode) {
             case FIND_ELEMENT_ID:
                 element = driver.findElement(By.id(value));
@@ -501,8 +516,8 @@ public class SeleniumUtil {
     public static <E> List<E> getExcelDate(String excelFileName, E object) {
 
         List<E> userDate = ExcelReader.readExcel(excelFileName, object);
-        if(userDate==null) {
-        	return null;
+        if (userDate == null) {
+            return null;
         }
         return userDate;
     }
@@ -512,7 +527,7 @@ public class SeleniumUtil {
      * @Title: optProcessRecipients
      * @Description: TODO(选择流程接收人)
      */
-    public static void optProcessRecipients(WebDriver driver, String userId, String activityName, String activityID) {
+    public static void optProcessRecipients(String userId, String activityName, String activityID) {
         // li
         List<WebElement> elements = driver.findElements(By.xpath(
                 "//div[contains(@class,'modalWorkFlow')]//ul[@id='Transmit_userTree' and contains(@class,'ztree')]/li"));
@@ -548,99 +563,263 @@ public class SeleniumUtil {
             }
         }
     }
-    
+
     /**
      * 
-     * @Title: getElementXPath 
-     * @Description: TODO(从表xPath统一定位) 
+     * @Title: getElementXPath
+     * @Description: TODO(从表xPath统一定位)
      * @param dataId 数据集id
      * @param serialNumber 行号
      * @param field 字段名称(英文名称)
      * @return xPath
      */
-    public static String getElementXPath(String dataId,String serialNumber,String field) {
-        
-        String xPath="//table[@data-dataid='"+dataId+"']//tr["+serialNumber+"]//td[ contains(@class,'cell') and @data-field='"+field+"']";
-        
+    public String getElementXPath(String dataId, String serialNumber, String field) {
+
+        String xPath = "//table[@data-dataid='" + dataId + "']//tr[" + serialNumber
+                + "]//td[ contains(@class,'cell') and @data-field='" + field + "']";
+
         return xPath;
-    }
-    
-    /**
-     * 
-     * @Title: getEncapsulationFormData 
-     * @Description: TODO(传入测试用例文件地址,获取测试用例的数据) 
-     * @param url 地址
-     * @return
-     */
-    public static Map<String, String[]> getEncapsulationFormData(String url){
-        
-        ArrayList<RequiredField> requiredFields = (ArrayList<RequiredField>) SeleniumUtil.getExcelDate(url,
-                new RequiredField());
-        if(requiredFields ==null) {
-        	return null;
-        }
-        Map<String, String[]> valueMap = new HashMap<String, String[]>();
-       
-        for (RequiredField requiredField : requiredFields) {
-            //主表数据处理 key=(字段名称) value=(显示值,字段值(实际值))
-            if (requiredField.getSerialNumber().equals("") || requiredField.getSerialNumber() == null) {
-                valueMap.put(requiredField.getField(), new String[] {requiredField.getFieldValue(),requiredField.getFieldDicValue()});
-                //从表数据封装 key=(数据集id+行号+字段值名称) value=(显示值,字段值(实际值))
-            }else if(!requiredField.getSerialNumber().equals("") && requiredField.getSerialNumber() != null) {
-                valueMap.put(requiredField.getDataId()+requiredField.getSerialNumber()+requiredField.getField(), 
-                        new String[] {requiredField.getFieldValue(),requiredField.getFieldDicValue()});
-            }
-            
-        }
-        
-        return valueMap;
-    }
-    
-    /**
-     * @Title: getprocessNodeInfo 
-     * @Description: TODO(获取流程节点信息)
-     */
-    public void getprocessNodeInfo(WebDriver driver) {
-        
-        String activityNewId = driver.findElement(By.id("activityid")).getAttribute("value");
-        
     }
 
     /**
      * 
-     * @Title: verifyOnDuty 
-     * @Description: TODO(检验在岗状态) 
+     * @Title: getEncapsulationFormData
+     * @Description: TODO(传入测试用例文件地址,获取测试用例的数据)
+     * @param url 地址
+     * @return
+     */
+    public Map<String, String[]> getEncapsulationFormData(String url) {
+
+        ArrayList<RequiredField> requiredFields = (ArrayList<RequiredField>) SeleniumUtil.getExcelDate(url,
+                new RequiredField());
+        if (requiredFields == null) {
+            return null;
+        }
+        Map<String, String[]> valueMap = new HashMap<String, String[]>();
+
+        for (RequiredField requiredField : requiredFields) {
+            // 主表数据处理 key=(字段名称) value=(显示值,字段值(实际值))
+            if (requiredField.getSerialNumber().equals("") || requiredField.getSerialNumber() == null) {
+                valueMap.put(requiredField.getField(),
+                        new String[] { requiredField.getFieldValue(), requiredField.getFieldDicValue() });
+                // 从表数据封装 key=(数据集id+行号+字段值名称) value=(显示值,字段值(实际值))
+            }
+            else if (!requiredField.getSerialNumber().equals("") && requiredField.getSerialNumber() != null) {
+                valueMap.put(requiredField.getDataId() + requiredField.getSerialNumber() + requiredField.getField(),
+                        new String[] { requiredField.getFieldValue(), requiredField.getFieldDicValue() });
+            }
+
+        }
+
+        return valueMap;
+    }
+
+    /**
+     * @Title: getprocessNodeInfo
+     * @Description: TODO(获取流程节点信息)
+     */
+    public void getprocessNodeInfo() {
+
+        String activityNewId = driver.findElement(By.id("activityid")).getAttribute("value");
+
+    }
+
+    /**
+     * 
+     * @Title: verifyOnDuty
+     * @Description: TODO(检验在岗状态)
      * @param driver
      */
-    public void verifyOnDuty(WebDriver driver) {
+    public void verifyOnDuty() {
         //
         load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "webiframe");
         driver.switchTo().frame("webiframe");
         logger.info("跳转到webiframe ");
-     
-         try {
+
+        try {
             Thread.sleep(2000);
         }
         catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-         
-        By elementOnDuty = new By.ByXPath("//div[@class='modal-content']//div[@class='userstatus-content']/span[contains(text(),'选择工作状态')]");
-        if(checkExistsElement(driver, elementOnDuty)) {
+
+        By elementOnDuty = new By.ByXPath(
+                "//div[@class='modal-content']//div[@class='userstatus-content']/span[contains(text(),'选择工作状态')]");
+        if (checkExistsElement(elementOnDuty)) {
             logger.info("第一次登陆");
-            By elementV =new By.ByXPath("/html/body//div//div/div/ul/li[contains(@class,'select') and @status='1']");
-            By elementVC =new By.ByXPath("");
-            if(checkExistsElement(driver, elementV)) {
-                load.Wait(driver,30,ElementLocateMode.FIND_ELEMENT_XPATH,"/html/body//div/div/div//div/div/button[contains(text(),'确定在岗状态')]");
-                driver.findElement(By.xpath("/html/body//div/div/div//div/div/button[contains(text(),'确定在岗状态')]")).click();
-            }else if (checkExistsElement(driver, elementVC)) {
-                load.Wait(driver,30,ElementLocateMode.FIND_ELEMENT_XPATH,"/html/body//div//div/div/ul/li[@status='1']");
-                driver.findElement(By.xpath("/html/body//div//div/div/ul/li[@status='1']")).click();
-                load.Wait(driver,30,ElementLocateMode.FIND_ELEMENT_XPATH,"/html/body//div/div/div//div/div/button[contains(text(),'确定在岗状态')]");
-                driver.findElement(By.xpath("/html/body//div/div/div//div/div/button[contains(text(),'确定在岗状态')]")).click();
+            By elementV = new By.ByXPath("/html/body//div//div/div/ul/li[contains(@class,'select') and @status='1']");
+            By elementVC = new By.ByXPath("");
+            if (checkExistsElement(elementV)) {
+                load.Wait(driver, 30, ElementLocateMode.FIND_ELEMENT_XPATH,
+                        "/html/body//div/div/div//div/div/button[contains(text(),'确定在岗状态')]");
+                driver.findElement(By.xpath("/html/body//div/div/div//div/div/button[contains(text(),'确定在岗状态')]"))
+                        .click();
             }
-            
+            else if (checkExistsElement(elementVC)) {
+                load.Wait(driver, 30, ElementLocateMode.FIND_ELEMENT_XPATH,
+                        "/html/body//div//div/div/ul/li[@status='1']");
+                driver.findElement(By.xpath("/html/body//div//div/div/ul/li[@status='1']")).click();
+                load.Wait(driver, 30, ElementLocateMode.FIND_ELEMENT_XPATH,
+                        "/html/body//div/div/div//div/div/button[contains(text(),'确定在岗状态')]");
+                driver.findElement(By.xpath("/html/body//div/div/div//div/div/button[contains(text(),'确定在岗状态')]"))
+                        .click();
+            }
+
         }
     }
+
+    /**
+     *
+     * @Title: isElementExist
+     * @Description: TODO(判断一个元素是否存在)
+     * @param by
+     * @return
+     */
+    public boolean isElementExist(By by) {
+        try {
+            driver.findElement(by);
+            return true;
+        }
+        catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    /**
+     *
+     * @Title: elementsExists
+     * @Description: TODO(判断元素列表是否存在)
+     * @param by
+     * @return
+     */
+    public boolean elementsExists(By by) {
+        return (driver.findElements(by).size() > 0) ? true : false;
+    }
+
+    /**
+     *
+     * @Title: FindByElements
+     * @Description: TODO(获取元素列表中指定的元素)
+     * @param by
+     * @param index
+     * @return
+     */
+    public WebElement FindByElements(By by, int index) {
+        WebElement element = null;
+        if (this.elementsExists(by)) {
+            element = driver.findElements(by).get(index);
+        }
+        return element;
+    }
+
+    /**
+     * @Title:
+     * @Description: TODO(返回)
+     * @param:
+     * @return:
+     * @Date: 2020/4/7 14:50
+     */
+
+    public void BrowserBack() {
+        driver.navigate().back();
+    }
+
+    /**
+     * @Title:
+     * @Description: TODO(前进)
+     * @param:
+     * @return:
+     * @Date: 2020/4/7 14:50
+     */
+
+    public void BrowserForward() {
+        driver.navigate().forward();
+    }
+
+    /**
+     * @Title:
+     * @Description: TODO( 滚动到最上方)
+     * @param:
+     * @return:
+     * @Date: 2020/4/7 14:50
+     */
+
+    public void scrollToTop() {
+        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0,0);");
+        // JavascriptExecutor js = (JavascriptExecutor) driver;
+        // js.executeScript("window.scrollTo(0,0);");
+    }
+
+    /**
+     * @Title:
+     * @Description: TODO(滚动到页面底部)
+     * @param:
+     * @return:
+     * @Date: 2020/4/7 14:49
+     */
+
+    public void scrollToBottom(String id) {
+        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0,10000);");
+    }
+
+    /**
+     * @Title:
+     * @Description: TODO(滚动到某个元素)
+     * @param:
+     * @return:
+     * @Date: 2020/4/7 14:49
+     */
+    public void scrollToElement(WebElement element) {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView(true);", element);
+    }
+
+    public WebElement getElement(int time, ElementLocateMode locateMode, String path) {
+        // 显示等待
+
+        WebElement element = null;
+        logger.info("等待");
+        WebDriverWait wait = new WebDriverWait(driver, time);
+        switch (locateMode) {
+            case FIND_ELEMENT_ID:
+                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.id(path)));
+                element = driver.findElement(By.id(path));
+                break;
+            case FIND_ELEMENT_NAME:
+                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.name(path)));
+                element = driver.findElement(By.name(path));
+                break;
+
+            case FIND_ELEMENT_CLASSNAME:
+                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.className(path)));
+                element = driver.findElement(By.className(path));
+                break;
+            case FIND_ELEMENT_TAGNAME:
+                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.tagName(path)));
+                element = driver.findElement(By.tagName(path));
+                break;
+            case FIND_ELEMENT_LINKTEXT:
+                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.linkText(path)));
+                element = driver.findElement(By.linkText(path));
+                break;
+            case FIND_ELEMENT_PARTIALLINKTEXT:
+                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.partialLinkText(path)));
+                element = driver.findElement(By.partialLinkText(path));
+                break;
+            case FIND_ELEMENT_XPATH:
+                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(path)));
+                element = driver.findElement(By.xpath(path));
+                break;
+
+            case FIND_ELEMENT_CSSSELECTOR:
+                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(path)));
+                element = driver.findElement(By.cssSelector(path));
+                break;
+            default:
+                break;
+        }
+        return element;
+    }
+
 }

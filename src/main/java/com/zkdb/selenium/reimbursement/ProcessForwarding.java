@@ -37,7 +37,7 @@ public class ProcessForwarding {
         
         SeleniumUtil util = new SeleniumUtil();
         //跳转webiframe 验证是否第一次登陆设置在岗状态
-        util.verifyOnDuty(driver);
+        util.verifyOnDuty();
         
         load.Wait(driver,30,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".fa-tasks");
         //new WebDriverWait(driver, 30).until(ExpectedConditions.elementToBeClickable(By.id("a_number3")));
@@ -71,12 +71,12 @@ public class ProcessForwarding {
         By elementUnclassified = new By.ByCssSelector("#box_data .name");
         
         boolean flag =true; 
-        if(util.checkExistsElement(driver, elementGroup)) {
+        if(util.checkExistsElement(elementGroup)) {
             load.Wait(driver,30,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".wftasks .name");
             text=  driver.findElement(By.cssSelector(".wftasks .name")).getText();
             logger.info("-----------分组------------"+text);
             
-        }else if (util.checkExistsElement(driver, elementUnclassified)) {
+        }else if (util.checkExistsElement(elementUnclassified)) {
             load.Wait(driver,30,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,"#box_data .name");
             text=  driver.findElement(By.cssSelector("#box_data .name")).getText();
             flag=false;
@@ -101,10 +101,10 @@ public class ProcessForwarding {
             
             String handle= driver.getWindowHandle();
 
-            util.switchWindow(driver);
+            util.switchWindow();
             Thread.sleep(4000);
             By unreadMessages = new By.ByCssSelector(".close");
-            if(util.checkExistsElement(driver, unreadMessages)) {
+            if(util.checkExistsElement( unreadMessages)) {
                 logger.info("-----------@未阅消息提醒------------");
                 load.Wait(driver,30,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".close");
                 driver.findElement(By.cssSelector(".close")).click();
@@ -126,7 +126,7 @@ public class ProcessForwarding {
             //确定办理
             By  confirmation = new By.ByXPath("//button[contains(text(),'确定办理')] ");
             Thread.sleep(4000);
-            if(util.checkExistsElement(driver, confirmation)) {
+            if(util.checkExistsElement( confirmation)) {
             load.Wait(driver,40,ElementLocateMode.FIND_ELEMENT_XPATH,"//button[contains(text(),'确定办理')]");
             driver.findElement(By.xpath("//button[contains(text(),'确定办理')]")).click();
             logger.info("-----------确定办理------------");
@@ -135,7 +135,7 @@ public class ProcessForwarding {
             //如果没有勾选人员会弹出提示信息,然后进行人员选择,再点击办理
             By  element = new By.ByXPath("//span[contains(text(),'确定') and contains(@class,'okbtn')]");
             By promptXpath=new By.ByXPath("//body//div[contains(@class,'modal')]//div[contains(@class,'modal-body')]/div[contains(@class,'modal-alert') and contains(text(),'必须选择接收人')]");
-            if(util.checkExistsElement(driver, element)&&util.checkExistsElement(driver, promptXpath)) {
+            if(util.checkExistsElement(element)&&util.checkExistsElement( promptXpath)) {
                 load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_XPATH,"//span[contains(text(),'确定') and contains(@class,'okbtn')]");
                 driver.findElement(By.xpath("//span[contains(text(),'确定') and contains(@class,'okbtn')]")).click();
                 
@@ -163,7 +163,7 @@ public class ProcessForwarding {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            if(util.checkExistsElement(driver, elBy)) {
+            if(util.checkExistsElement(elBy)) {
                 load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_XPATH,"//body//div[contains(@class,'modal')]//div[contains(@class,'modal-footer')]//span[contains(@class,'btn-default') and contains(text(),'取消')]");
                 driver.findElement(By.xpath("//body//div[contains(@class,'modal')]//div[contains(@class,'modal-footer')]//span[contains(@class,'btn-default') and contains(text(),'取消')]")).click();
                 logger.info("-----------点击取消------------");

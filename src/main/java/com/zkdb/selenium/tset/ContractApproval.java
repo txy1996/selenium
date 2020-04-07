@@ -60,7 +60,7 @@ public class ContractApproval {
         	//鼠标模拟
             Actions actions =new Actions(driver);
             //跳转webiframe 验证是否第一次登陆设置在岗状态
-            util.verifyOnDuty(driver);
+            util.verifyOnDuty();
             load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_XPATH, "//div[@id='topbar1']//div[@data-title='测试部件']");
             driver.findElement(By.xpath("//div[@id='topbar1']//div[@data-title='测试部件']")).click();
             logger.info("测试部件");
@@ -80,7 +80,7 @@ public class ContractApproval {
             logger.info("点击添加按钮");
             
             String handle= driver.getWindowHandle();
-            util.switchWindow(driver);
+            util.switchWindow();
             
             
             new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("body")));

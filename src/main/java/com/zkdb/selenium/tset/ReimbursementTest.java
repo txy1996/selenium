@@ -64,7 +64,7 @@ public class ReimbursementTest {
         // 日志输出
         Logger logger = Logger.getLogger(ReimbursementTest.class);
         // 初始化driver
-        WebDriver driver = InitDriver.INSTANCE.getDriver();
+        WebDriver driver = InitDriver.getDriver();
         // 鼠标模拟
         Actions actions = new Actions(driver);
         // 登录方法
@@ -103,7 +103,7 @@ public class ReimbursementTest {
             // 记录当前窗口
             String handle = driver.getWindowHandle();
             // 跳转到新窗口
-            util.switchWindow(driver);
+            util.switchWindow();
 
             // 等待body加载完毕
             new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("body")));
@@ -254,7 +254,7 @@ public class ReimbursementTest {
 
             // 获取表单信息
              ArrayList<RequiredField>
-             requiredFields1=util.getFormRequiredField(driver);
+             requiredFields1=util.getFormRequiredField();
              
              
             // 写入表单信息
