@@ -3,6 +3,7 @@ package com.zkdb.selenium.util;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -38,8 +39,14 @@ public class ExcelWriter {
         CELL_HEADS.add("小数位数");
         CELL_HEADS.add("字段值");
         CELL_HEADS.add("字典值");
-        
+
     }
+
+
+
+
+
+
 
     /**
      * 生成Excel并写入数据信息
@@ -177,6 +184,10 @@ public class ExcelWriter {
                 logger.warn("关闭输出流时发生错误，错误原因：" + e2.getMessage());
             }
         }
+
+
     }
+
+
     
 }

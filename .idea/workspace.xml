@@ -2,21 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="797fb141-a4b4-4f7d-9614-ed7f8576a4d2" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/zkdb/selenium/constant/ElementLocateMode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/zkdb/selenium/constant/ElementLocateMode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/zkdb/selenium/constant/InitDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/zkdb/selenium/constant/InitDriver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/zkdb/selenium/tset/ContractApproval.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/zkdb/selenium/tset/ContractApproval.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/zkdb/selenium/tset/DesignProject1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/zkdb/selenium/tset/DesignProject1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/zkdb/selenium/util/ExcelReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/zkdb/selenium/util/ExcelReader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/zkdb/selenium/util/ExcelWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/zkdb/selenium/util/ExcelWriter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/zkdb/selenium/util/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/zkdb/selenium/util/Login.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/zkdb/selenium/util/SeleniumUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/zkdb/selenium/util/SeleniumUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/zkdb/selenium/util/SimulationFileUpload.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/zkdb/selenium/util/SimulationFileUpload.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/zkdb/selenium/util/WaitiElementsLoad.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/zkdb/selenium/util/WaitiElementsLoad.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/zkdb/selenium/util/ExcelReader.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/zkdb/selenium/util/ExcelReader.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/zkdb/selenium/util/ExcelWriter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/zkdb/selenium/util/ExcelWriter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/zkdb/selenium/util/SeleniumUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/zkdb/selenium/util/SeleniumUtil.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/zkdb/selenium/util/SimulationFileUpload.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/zkdb/selenium/util/SimulationFileUpload.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/zkdb/selenium/util/WaitiElementsLoad.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/zkdb/selenium/util/WaitiElementsLoad.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -346,21 +332,5 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="636" y="366" width="716" height="306" key="org.intellij.images.editor.actions.BackgroundImageDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1586261289040" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/zkdb/selenium/util/ExcelReader.java</url>
-          <line>112</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/zkdb/selenium/util/ExcelReader.java</url>
-          <line>120</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
