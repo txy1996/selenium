@@ -8,7 +8,10 @@ import com.zkdb.selenium.util.SeleniumUtil;
 public class InitDriver {
 
     private InitDriver() {}
-    
+
+    /**
+     *
+     */
     static enum Driver {
 
         INSTANCE;
@@ -20,7 +23,7 @@ public class InitDriver {
             driver= new ChromeDriver();
             String url=SeleniumUtil.getPropValue("urlU");
             driver.get(url);
-            driver.manage().window().maximize();
+            //driver.manage().window().maximize();
 
         }
         //初始化

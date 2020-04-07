@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -319,10 +320,10 @@ public class SeleniumUtil {
         String dateId;
         String field;
         String fieldName;
-        String length = null;
-        String decimalPlaces = null;
-        String fieldValue = null;
-        String fieldDicValue = null;
+        String length;
+        String decimalPlaces;
+        String fieldValue;
+        String fieldDicValue;
 
         dateId = id;
         // 获取满足 条件的 input 标签的 id属性值
@@ -489,7 +490,7 @@ public class SeleniumUtil {
             Properties props = new Properties();
             InputStream inputStream = SeleniumUtil.class.getResourceAsStream(DEFAULT_PROPERTIES);
             // *.properties配置文件，要使用UTF-8编码，否则会现中文乱码问题
-            BufferedReader bf = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            BufferedReader bf = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
             props.load(bf);
             return props.getProperty(key);
         }
@@ -589,16 +590,16 @@ public class SeleniumUtil {
         if (requiredFields == null) {
             return null;
         }
-        Map<String, String[]> valueMap = new HashMap<String, String[]>();
+        Map<String, String[]> valueMap = new HashMap<>();
 
         for (RequiredField requiredField : requiredFields) {
             // 主表数据处理 key=(字段名称) value=(显示值,字段值(实际值))
-            if (requiredField.getSerialNumber().equals("") || requiredField.getSerialNumber() == null) {
+            if ("".equals(requiredField.getSerialNumber()) || requiredField.getSerialNumber() == null) {
                 valueMap.put(requiredField.getField(),
                         new String[] { requiredField.getFieldValue(), requiredField.getFieldDicValue() });
-                // 从表数据封装 key=(数据集id+行号+字段值名称) value=(显示值,字段值(实际值))
-            }
-            else if (!requiredField.getSerialNumber().equals("") && requiredField.getSerialNumber() != null) {
+
+            }// 从表数据封装 key=(数据集id+行号+字段值名称) value=(显示值,字段值(实际值))
+            else if (!"".equals(requiredField.getSerialNumber()) && requiredField.getSerialNumber() != null) {
                 valueMap.put(requiredField.getDataId() + requiredField.getSerialNumber() + requiredField.getField(),
                         new String[] { requiredField.getFieldValue(), requiredField.getFieldDicValue() });
             }
@@ -677,7 +678,7 @@ public class SeleniumUtil {
      * @return
      */
     public boolean elementsExists(By by) {
-        return (driver.findElements(by).size() > 0) ? true : false;
+        return driver.findElements(by).size() > 0;
     }
 
     /**
@@ -688,7 +689,7 @@ public class SeleniumUtil {
      * @param index
      * @return
      */
-    public WebElement FindByElements(By by, int index) {
+    public WebElement findByElements(By by, int index) {
         WebElement element = null;
         if (this.elementsExists(by)) {
             element = driver.findElements(by).get(index);
@@ -760,46 +761,55 @@ public class SeleniumUtil {
 
     public WebElement getElement(int time, ElementLocateMode locateMode, String path) {
         // 显示等待
-
+        By by;
         WebElement element = null;
         logger.info("等待");
         WebDriverWait wait = new WebDriverWait(driver, time);
         switch (locateMode) {
             case FIND_ELEMENT_ID:
-                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.id(path)));
-                element = driver.findElement(By.id(path));
+                by=By.id(path);
+                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
+                element = driver.findElement(by);
                 break;
             case FIND_ELEMENT_NAME:
-                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.name(path)));
-                element = driver.findElement(By.name(path));
+                by=By.name(path);
+                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
+                element = driver.findElement(by);
                 break;
 
             case FIND_ELEMENT_CLASSNAME:
-                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.className(path)));
-                element = driver.findElement(By.className(path));
+                by=By.className(path);
+                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
+                element = driver.findElement(by);
                 break;
             case FIND_ELEMENT_TAGNAME:
-                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.tagName(path)));
-                element = driver.findElement(By.tagName(path));
+                by=By.tagName(path);
+                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
+                element = driver.findElement(by);
                 break;
             case FIND_ELEMENT_LINKTEXT:
-                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.linkText(path)));
-                element = driver.findElement(By.linkText(path));
+                by=By.linkText(path);
+                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
+                element = driver.findElement(by);
                 break;
             case FIND_ELEMENT_PARTIALLINKTEXT:
-                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.partialLinkText(path)));
-                element = driver.findElement(By.partialLinkText(path));
+                by=By.partialLinkText(path);
+                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
+                element = driver.findElement(by);
                 break;
             case FIND_ELEMENT_XPATH:
-                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(path)));
-                element = driver.findElement(By.xpath(path));
+                by=By.xpath(path);
+                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
+                element = driver.findElement(by);
                 break;
 
             case FIND_ELEMENT_CSSSELECTOR:
-                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(path)));
-                element = driver.findElement(By.cssSelector(path));
+                by=By.cssSelector(path);
+                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
+                element = driver.findElement(by);
                 break;
             default:
+                logger.info("定位方式不存在");
                 break;
         }
         return element;

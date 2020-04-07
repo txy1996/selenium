@@ -1,26 +1,14 @@
 package com.zkdb.selenium.util;
 
+import org.apache.log4j.Logger;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-
-import org.apache.log4j.Logger;
-import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-
-import com.zkdb.selenium.reimbursement.RequiredField;
 
 /**
  * 
@@ -33,7 +21,10 @@ import com.zkdb.selenium.reimbursement.RequiredField;
 public class ExcelWriter {
 
    public static  Logger logger =Logger.getLogger(ExcelWriter.class);
-    private static List<String> CELL_HEADS; //列头
+    /**
+     * 列头
+     */
+    private static List<String> CELL_HEADS;
 
     static{
         // 类装载时就载入指定好的列头信息，如有需要，可以考虑做成动态生成的列头
@@ -67,8 +58,7 @@ public class ExcelWriter {
         Sheet sheet = buildDataSheet(workbook);
         //构建每行的数据内容
         int rowNum = 1;
-        for (Iterator<E> it = requiredFields.iterator(); it.hasNext(); ) {
-            E data = it.next();
+        for (E data : requiredFields) {
             if (data == null) {
                 continue;
             }
@@ -115,13 +105,17 @@ public class ExcelWriter {
         style.setAlignment(HorizontalAlignment.CENTER);
         //边框颜色和宽度设置
         style.setBorderBottom(BorderStyle.THIN);
-        style.setBottomBorderColor(IndexedColors.BLACK.getIndex()); // 下边框
+        // 下边框
+        style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
         style.setBorderLeft(BorderStyle.THIN);
-        style.setLeftBorderColor(IndexedColors.BLACK.getIndex()); // 左边框
+        // 左边框
+        style.setLeftBorderColor(IndexedColors.BLACK.getIndex());
         style.setBorderRight(BorderStyle.THIN);
-        style.setRightBorderColor(IndexedColors.BLACK.getIndex()); // 右边框
+        // 右边框
+        style.setRightBorderColor(IndexedColors.BLACK.getIndex());
         style.setBorderTop(BorderStyle.THIN);
-        style.setTopBorderColor(IndexedColors.BLACK.getIndex()); // 上边框
+        // 上边框
+        style.setTopBorderColor(IndexedColors.BLACK.getIndex());
         //设置背景颜色
         style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
         style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
@@ -136,7 +130,7 @@ public class ExcelWriter {
      * 将数据转换成行
      * @param data 源数据
      * @param row 行对象
-     * @return
+     *
      */
     private static void convertDataToRow(Object data, Row row){
         int cellNum = 0;
@@ -145,7 +139,7 @@ public class ExcelWriter {
             for (Field field : data.getClass().getDeclaredFields()) {
                 field.setAccessible(true);
                 cell = row.createCell(cellNum++);
-                cell.setCellValue(null == (String)field.get(data) ? "" : (String) field.get(data));
+                cell.setCellValue(null == field.get(data) ? "" : (String) field.get(data));
                 }
         }
         catch (Exception e) {
@@ -160,8 +154,7 @@ public class ExcelWriter {
         Workbook workbook =ExcelWriter.exportData(requiredFields);
         FileOutputStream fileOutputStream=null;
         try {
-            String exportFilePath =url;
-            File exportFile =new File(exportFilePath);
+            File exportFile =new File(url);
             if (!exportFile.exists()) {
                 exportFile.createNewFile();
             }
@@ -177,9 +170,7 @@ public class ExcelWriter {
                 if(null!=fileOutputStream) {
                     fileOutputStream.close();
                 }
-                if(null!=workbook) {
-                    workbook.close();
-                }
+                workbook.close();
             }
             catch (Exception e2) {
                 // TODO: handle exception

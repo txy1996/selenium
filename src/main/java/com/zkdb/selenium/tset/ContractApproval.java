@@ -24,9 +24,8 @@ import com.zkdb.selenium.util.WaitiElementsLoad;
 import com.zkdb.selenium.vo.UserAccountVO;
 
 public class ContractApproval {
-
-	static //等待方法
-    WaitiElementsLoad load = new WaitiElementsLoad();
+    //等待方法
+	static WaitiElementsLoad load = new WaitiElementsLoad();
     //工具类
     static SeleniumUtil util = new SeleniumUtil();
     //日志
@@ -113,7 +112,7 @@ public class ContractApproval {
 					logger.info("点击确定");
 				}
 			}
-            //driver.findElement(By.xpath("//div[@class='modal-header']//input[@placeholder='搜索']")).sendKeys("赵云");
+
             load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "customer");
             actions.doubleClick(driver.findElement(By.id("customer"))).perform();
             logger.info("客户");
@@ -146,24 +145,7 @@ public class ContractApproval {
             logger.info("双击选择");
             
             
-//            load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_XPATH, "//div[@id='data_panel']//div[@class='tabHeaders']//span[contains(text(),'收费项')]");
-//            driver.findElement(By.xpath("//div[@id='data_panel']//div[@class='tabHeaders']//span[contains(text(),'收费项')]")).click();
-//            logger.info("点击离职资料从表");
-//            load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_XPATH, "//div[@id='data_panel']//div[@class='tabHeaders']//span[contains(text(),'收费项')]/span");
-//            driver.findElement(By.xpath("//div[@id='data_panel']//div[@class='tabHeaders']//span[contains(text(),'收费项')]/span")).click();
-//            logger.info("点击离职资料从表+");
-//            
-//            //滚动到页面底部
-//            JavascriptExecutor js = ((JavascriptExecutor) driver);
-//            js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
-//            
-//            String FWXdataid="a7594a13-ce79-462e-8c7e-8e2b7ef5eefa";
-//            String serviceitemxpth=util.getElementXPath(FWXdataid, "1", "serviceitem");
-//            logger.info(serviceitemxpth);
-//            load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_XPATH, serviceitemxpth);
-//            driver.findElement(By.xpath(serviceitemxpth)).click();
-//            driver.findElement(By.xpath(serviceitemxpth+"/input")).sendKeys("服务项");
-//            logger.info("输入服务项");
+
             
             
             //滚动到页面底部
@@ -178,9 +160,7 @@ public class ContractApproval {
             driver.findElement(By.xpath("//div[@id='data_panel']//div[@class='tabHeaders']//span[contains(text(),'收费项')]/span")).click();
             logger.info("点击收费项从表+");
             
-//            load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_XPATH,"/html/body//ul//li[@class='ez-detail-new']");
-//            driver.findElement(By.xpath("/html/body//ul//li[@class='ez-detail-new']")).click();
-//            logger.info("点击添加");
+
 
 
 
@@ -234,7 +214,7 @@ public class ContractApproval {
             //SeleniumUtil.runExceptionScreenshot(driver);
         }
         finally {
-            // TODO: handle finally clause
+
             try {
                 Thread.sleep(6200);
             }

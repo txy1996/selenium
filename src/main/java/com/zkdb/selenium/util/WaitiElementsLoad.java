@@ -20,7 +20,13 @@ public class WaitiElementsLoad {
     
     
     //显示等待方法
-    
+
+    /**
+     * @param driver
+     * @param time
+     * @param locateMode
+     * @param position
+     */
     public void Wait(WebDriver driver,int time,ElementLocateMode locateMode,String position ) {
       //显示等待
         Logger logger= Logger.getLogger(WaitiElementsLoad.class);

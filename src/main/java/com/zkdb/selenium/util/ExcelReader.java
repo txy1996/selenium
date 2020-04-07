@@ -21,8 +21,11 @@ import com.google.gson.Gson;
 import com.zkdb.selenium.vo.UserAccountVO;
 
 public class ExcelReader {
-
-    private static Logger logger = Logger.getLogger(ExcelReader.class); // 日志打印类
+    /**
+     * 日志打印类
+     *
+     */
+    private static Logger logger = Logger.getLogger(ExcelReader.class);
 
     private static final String XLS = "xls";
     private static final String XLSX = "xlsx";
@@ -70,9 +73,8 @@ public class ExcelReader {
             workbook = getWorkbook(inputStream, fileType);
 
             // 读取excel中的数据
-            List<E> userDateList = parseExcel(workbook,object);
 
-            return userDateList;
+            return parseExcel(workbook,object);
         } catch (Exception e) {
             logger.warn("解析Excel失败，文件名：" + fileName + " 错误信息：" + e.getMessage());
             return null;
@@ -86,7 +88,6 @@ public class ExcelReader {
                 }
             } catch (Exception e) {
                 logger.warn("关闭数据流出错！错误信息：" + e.getMessage());
-                return null;
             }
         }
     }
@@ -111,8 +112,9 @@ public class ExcelReader {
             // 获取第一行数据
             int firstRowNum = sheet.getFirstRowNum();
             Row firstRow = sheet.getRow(firstRowNum);
+
             if (null == firstRow) {
-                logger.warn("解析Excel失败，在第一行没有读取到任何数据！");
+                logger.warn("解析Excel失败，在"+workbook.getSheetName(sheetNum)+"第一行没有读取到任何数据！");
             }
 
             // 解析每一行的数据，构造数据对象
@@ -141,7 +143,7 @@ public class ExcelReader {
     /**
      * 将单元格内容转换为字符串
      * @param cell
-     * @return
+     * @return returnValue
      */
     private static String convertCellValueToString(Cell cell) {
         if(cell==null){
@@ -149,26 +151,32 @@ public class ExcelReader {
         }
         String returnValue = null;
         switch (cell.getCellType()) {
-            case NUMERIC:   //数字
+            //数字
+            case NUMERIC:
                 Double doubleValue = cell.getNumericCellValue();
 
                 // 格式化科学计数法，取一位整数
                 DecimalFormat df = new DecimalFormat("0");
                 returnValue = df.format(doubleValue);
                 break;
-            case STRING:    //字符串
+            //字符串
+            case STRING:
                 returnValue = cell.getStringCellValue();
                 break;
-            case BOOLEAN:   //布尔
-                Boolean booleanValue = cell.getBooleanCellValue();
-                returnValue = booleanValue.toString();
+            //布尔
+            case BOOLEAN:
+                boolean booleanValue = cell.getBooleanCellValue();
+                returnValue = Boolean.toString(booleanValue);
                 break;
-            case BLANK:     // 空值
+            // 空值
+            case BLANK:
                 break;
-            case FORMULA:   // 公式
+            // 公式
+            case FORMULA:
                 returnValue = cell.getCellFormula();
                 break;
-            case ERROR:     // 故障
+            // 故障
+            case ERROR:
                 break;
             default:
                 break;
@@ -181,7 +189,6 @@ public class ExcelReader {
      *
      * 当该行中有单元格的数据为空或不合法时，忽略该行的数据
      * @param <E>
-     * @param <T>
      *
      * @param row 行数据
      * @return 解析后的行数据对象，行数据错误时返回null

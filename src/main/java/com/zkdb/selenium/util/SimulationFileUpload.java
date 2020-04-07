@@ -17,11 +17,11 @@ public class SimulationFileUpload {
 
     public void fileUpload(String fileUrl) {
       //指定文件路径
-        StringSelection FileUrl =new StringSelection(fileUrl);
+        StringSelection url =new StringSelection(fileUrl);
         
         
         //把文件复制到剪切板上
-        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(FileUrl, null);
+        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(url, null);
         //键盘模拟,上传文件
         Robot robot;
         try {

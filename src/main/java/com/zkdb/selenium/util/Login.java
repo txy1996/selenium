@@ -37,7 +37,7 @@ public Login() {
     //设置密码
     public void setpassWord(WebDriver driver,String passWord) {
         WebElement passWordWeb = driver.findElement(By.id("signin-pass"));
-//        passWordWeb.clear();
+
         passWordWeb.sendKeys(passWord);
     }
     //点击提交

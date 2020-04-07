@@ -1,11 +1,7 @@
 package com.zkdb.selenium.tset;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -42,12 +38,12 @@ public class DesignProject1 {
     @SuppressWarnings("static-access")
     public String designProjectPositioningExpenses(WebDriver driver) {
         
-//        String url = "D:\\费用报销模块\\测试用例\\费用报销测试用例.xlsx";
-//        @SuppressWarnings("static-access")
-//        Map<String, String[]>  valueMap=util.getEncapsulationFormData(url);
-//        if(valueMap==null) {
-//            logger.info("文件不存在,转换输入模式");
-//        }
+        String url = "D:\\费用报销模块\\测试用例\\费用报销测试用例11.xlsx";
+        @SuppressWarnings("static-access")
+        Map<String, String[]> valueMap=util.getEncapsulationFormData(url);
+        if(valueMap==null) {
+            logger.info("文件不存在,转换输入模式");
+        }
         
         //鼠标模拟
         Actions actions =new Actions(driver);
@@ -143,8 +139,10 @@ public class DesignProject1 {
         SimpleDateFormat format =new SimpleDateFormat("yyyy-MM-dd)");
         Date date = new Date();
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date); // 设置为当前时间
-        calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 1); // 设置为上一个月      +为后一个月  0 为本月
+        // 设置为当前时间
+        calendar.setTime(date);
+        // 设置为上一个月      +为后一个月  0 为本月
+        calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 1);
         date = calendar.getTime();
         String time = format.format(date);
         
