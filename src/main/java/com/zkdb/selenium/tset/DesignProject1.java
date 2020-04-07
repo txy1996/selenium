@@ -239,7 +239,8 @@ public class DesignProject1 {
         
         String dataId="360476a2-402d-43a8-8fe7-f709b40ed1c1";
         
-        String a_string2Xpth=util.getElementXPath(dataId, "1", "a_string2");
+        String a_string2Xpth;
+        a_string2Xpth = util.getElementXPath(dataId, "1", "a_string2");
         logger.info(a_string2Xpth);
         load.Wait(driver, 30, ElementLocateMode.FIND_ELEMENT_XPATH, a_string2Xpth);
         actions.doubleClick(driver.findElement(By.xpath(a_string2Xpth))).perform();

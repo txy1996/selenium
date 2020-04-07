@@ -186,7 +186,6 @@ public class SeleniumUtil {
      * 
      * @Title: getFormRequiredField
      * @Description: TODO(获取表单必填字段)
-     * @param driver
      * @return
      */
     public ArrayList<RequiredField> getFormRequiredField() {
@@ -311,7 +310,6 @@ public class SeleniumUtil {
      * 
      * @Title: coreDataInput
      * @Description: TODO(主表数据填充)
-     * @param driver
      * @param webElement
      * @param requiredFields
      * @param id
@@ -352,7 +350,6 @@ public class SeleniumUtil {
      * 
      * @Title: secondaryDataInput
      * @Description: TODO(从表数据填充)
-     * @param driver
      * @param webElement
      * @param webElement1
      * @param requiredFields
@@ -374,7 +371,6 @@ public class SeleniumUtil {
      * 
      * @Title: switchWindow
      * @Description: TODO(切换窗口,切换至新打开的窗口)
-     * @param driver
      */
     public void switchWindow() {
         // 获取当前窗口
@@ -395,7 +391,6 @@ public class SeleniumUtil {
      * 
      * @Title: runExceptionScreenshot
      * @Description: TODO(运行异常截图)
-     * @param driver
      */
     public static void runExceptionScreenshot() {
 
@@ -421,7 +416,6 @@ public class SeleniumUtil {
      * @Title: shortcutMenu
      * @Description: TODO(快捷菜单)
      * @param load
-     * @param driver
      * @param strings
      */
     public void shortcutMenu(WaitiElementsLoad load, String[] strings) {
@@ -615,20 +609,9 @@ public class SeleniumUtil {
     }
 
     /**
-     * @Title: getprocessNodeInfo
-     * @Description: TODO(获取流程节点信息)
-     */
-    public void getprocessNodeInfo() {
-
-        String activityNewId = driver.findElement(By.id("activityid")).getAttribute("value");
-
-    }
-
-    /**
      * 
      * @Title: verifyOnDuty
      * @Description: TODO(检验在岗状态)
-     * @param driver
      */
     public void verifyOnDuty() {
         //
