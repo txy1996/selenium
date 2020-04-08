@@ -27,7 +27,7 @@ public class ReimbursementRun {
         //调用登录
         Login login = new Login();
         //使用预设的账号数据登录
-        login.loginDevelopmentAccount(driver, userDate.get(0).getUserName(), userDate.get(0).getPassWord());
+        login.loginDevelopmentAccount( userDate.get(0).getUserName(), userDate.get(0).getPassWord());
         logger.info("登陆开发者账号:"+userDate.get(0).getUserName());
         try {
             Thread.sleep(2000);

@@ -1,10 +1,7 @@
 package com.zkdb.selenium.tset;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,17 +13,13 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.zkdb.selenium.constant.AttributesEnum;
 import com.zkdb.selenium.constant.ElementLocateMode;
 import com.zkdb.selenium.constant.InitDriver;
-import com.zkdb.selenium.reimbursement.RequiredField;
-import com.zkdb.selenium.util.ExcelReader;
+import com.zkdb.selenium.vo.RequiredField;
 import com.zkdb.selenium.util.ExcelWriter;
 import com.zkdb.selenium.util.Login;
 import com.zkdb.selenium.util.SeleniumUtil;
-import com.zkdb.selenium.util.SimulationFileUpload;
 import com.zkdb.selenium.util.WaitiElementsLoad;
-import com.zkdb.selenium.vo.UserAccountVO;
 
 public class ReimbursementTest {
 
@@ -79,7 +72,7 @@ public class ReimbursementTest {
 //            e.printStackTrace();
 //        }
 
-        login.loginAccount(driver, "BEP", "241", "11111111");
+        login.loginAccount( "BEP", "241", "11111111");
         logger.info("登陆账号:241");
         try {
             String url = "D:\\费用报销模块\\测试用例\\费用报销测试用例.xlsx";

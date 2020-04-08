@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.zkdb.selenium.constant.ElementLocateMode;
+import com.zkdb.selenium.constant.InitDriver;
 
 /**
  * 
@@ -17,40 +18,40 @@ import com.zkdb.selenium.constant.ElementLocateMode;
 public class Login {
     
     WaitiElementsLoad load = new WaitiElementsLoad();
-    
+    static WebDriver driver = InitDriver.getDriver();
 public Login() {
         
     }
     //设置企业号
-    public void setOrguid(WebDriver driver,String orguid) {
+    public void setOrguid(String orguid) {
         WebElement orguidWeb = driver.findElement(By.id("signin-orguid"));
         orguidWeb.clear();
         orguidWeb.sendKeys(orguid);
         
     }
     //设置用户名
-    public void setUsername(WebDriver driver,String userName) {
+    public void setUsername(String userName) {
         WebElement userNameWeb = driver.findElement(By.id("signin-name"));
         userNameWeb.clear();
         userNameWeb.sendKeys(userName);
     }
     //设置密码
-    public void setpassWord(WebDriver driver,String passWord) {
+    public void setpassWord(String passWord) {
         WebElement passWordWeb = driver.findElement(By.id("signin-pass"));
 
         passWordWeb.sendKeys(passWord);
     }
     //点击提交
-    public void clickLogin(WebDriver driver) {
+    public void clickLogin() {
         WebElement loginbtn=driver.findElement(By.id("signin-submit"));
         loginbtn.click();
     }
     //点击取消
-    public void clickCancel(WebDriver driver) {
+    public void clickCancel() {
         WebElement loginbtn=driver.findElement(By.xpath("//input[@value='取 消']"));
         loginbtn.click();//点击登录按钮
     }
-    public void clickEvent(WebDriver driver,String element) {
+    public void clickEvent(String element) {
         WebElement loginbtn=driver.findElement(By.id(element));
         loginbtn.click();
     }
@@ -58,52 +59,50 @@ public Login() {
      * 
      * @Title: loginDevelopmentAccount 
      * @Description: TODO(登陆开发者账号) 
-     * @param driver
-     * @param account 
+     * @param account
      * @param passWord
      */
-    public void loginDevelopmentAccount(WebDriver driver,String account,String passWord) {
+    public void loginDevelopmentAccount(String account,String passWord) {
         load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "signin-name");
-        setUsername(driver, account);
-        setpassWord(driver, passWord);
-        clickLogin(driver);
+        setUsername(account);
+        setpassWord( passWord);
+        clickLogin();
     }
     /**
-     * 
-     * @Title: loginTestAccount 
-     * @Description: TODO(登陆测试账号) 
-     * @param driver 
+     *
+     * @Title: loginTestAccount
+     * @Description: TODO(登陆测试账号)
+     * @param driver
      * @param orguid
      * @param userName
      * @param passWord
      */
     public void loginTestAccount(WebDriver driver,String orguid,String userName,String passWord) {
         load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "signin-orguid");
-        setOrguid(driver, orguid);
-        setUsername(driver, userName);
-        setpassWord(driver, passWord);
-        clickLogin(driver);
-        
+        setOrguid( orguid);
+        setUsername(userName);
+        setpassWord(passWord);
+        clickLogin();
+
     }
-    
+
     /**
-     * @Title: loginAccount 
-     * @Description: TODO(登陆账号) 
-     * @param driver
+     * @Title: loginAccount
+     * @Description: TODO(登陆账号)
      * @param orguid
      * @param userName
      * @param passWord
      */
-    public void loginAccount(WebDriver driver,String orguid,String userName,String passWord) {
-        
+    public void loginAccount(String orguid,String userName,String passWord) {
+
         load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "resetorguid");
         WebElement resetorguid=driver.findElement(By.id("resetorguid"));
         resetorguid.click();
         load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "signin-orguid");
-        setOrguid(driver, orguid);
-        setUsername(driver, userName);
-        setpassWord(driver, passWord);
-        clickLogin(driver);
+        setOrguid(orguid);
+        setUsername( userName);
+        setpassWord( passWord);
+        clickLogin();
     }
     
 }

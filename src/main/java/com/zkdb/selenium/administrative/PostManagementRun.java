@@ -8,7 +8,6 @@ import org.openqa.selenium.WebDriver;
 import com.zkdb.selenium.constant.InitDriver;
 import com.zkdb.selenium.reimbursement.ProcessForwarding;
 import com.zkdb.selenium.reimbursement.ReimbursementRun;
-import com.zkdb.selenium.tset.DesignProject;
 import com.zkdb.selenium.util.Login;
 import com.zkdb.selenium.util.SeleniumUtil;
 import com.zkdb.selenium.vo.UserAccountVO;
@@ -33,7 +32,7 @@ public class PostManagementRun {
 
         
         //使用账号登录
-        login.loginAccount(driver, userDate.get(0).getOrguid(), userDate.get(0).getUserName(), userDate.get(0).getPassWord());
+        login.loginAccount(userDate.get(0).getOrguid(), userDate.get(0).getUserName(), userDate.get(0).getPassWord());
         logger.info("登陆账号:"+userDate.get(0).getUserName());
         try {
             //填写表单

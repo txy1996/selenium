@@ -46,7 +46,7 @@ public class packageCustomertest {
 //	        }
 	        
         //	        使用账号登录
-	        login.loginAccount(driver, userDate.get(0).getOrguid(), userDate.get(0).getUserName(), userDate.get(0).getPassWord());
+	        login.loginAccount(userDate.get(0).getOrguid(), userDate.get(0).getUserName(), userDate.get(0).getPassWord());
 	        logger.info("登陆账号:"+userDate.get(0).getUserName());
 	        try {
 	            //填写表单

@@ -44,7 +44,7 @@ public class ContractApproval {
         //调用登录
         Login login = new Login();
         //使用账号登录
-        login.loginDevelopmentAccount(driver, "15882891378", "888888");
+        login.loginDevelopmentAccount("15882891378", "888888");
         try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e1) {

@@ -1,25 +1,23 @@
-package com.zkdb.selenium.tset;
+package com.zkdb.selenium.txy;
 
 import java.util.ArrayList;
 
-import com.zkdb.selenium.constant.InitDriverU;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 
 import com.zkdb.selenium.constant.InitDriver;
 import com.zkdb.selenium.reimbursement.ProcessForwarding;
-import com.zkdb.selenium.reimbursement.ReimbursementOpenForm;
 import com.zkdb.selenium.reimbursement.ReimbursementRun;
 import com.zkdb.selenium.util.Login;
 import com.zkdb.selenium.util.SeleniumUtil;
 import com.zkdb.selenium.vo.UserAccountVO;
 
 /**
- * 
- * @ClassName: DesignProjectTest 
- * @Description: TODO(fep设计项目立项) 
- * @author tangxiaoyu 
- * @date 2020年4月1日 下午2:15:25 
+ *
+ * @ClassName: DesignProjectTest
+ * @Description: TODO(fep设计项目立项)
+ * @author tangxiaoyu
+ * @date 2020年4月1日 下午2:15:25
  *
  */
 public class DesignProjectRun {
@@ -36,14 +34,14 @@ public class DesignProjectRun {
         String excelFileName ="D:\\项目立项\\UserAccountVO.xlsx";
         UserAccountVO user =new UserAccountVO();
         ArrayList<UserAccountVO> userDate=  (ArrayList<UserAccountVO>) SeleniumUtil.getExcelDate(excelFileName,user);
-        //初始化 
+        //初始化
         WebDriver driver = InitDriver.getDriver();
         //调用登录
         Login login = new Login();
         //使用账号登录
-        login.loginAccount(driver, userDate.get(0).getOrguid(), userDate.get(0).getUserName(), userDate.get(0).getPassWord());
+        login.loginAccount(userDate.get(0).getOrguid(), userDate.get(0).getUserName(), userDate.get(0).getPassWord());
         logger.info("登陆账号:"+userDate.get(0).getUserName());
-        
+
         try {
             //填写费用报销表单
             DesignProject1 designProject =new DesignProject1();
@@ -65,13 +63,13 @@ public class DesignProjectRun {
             //循环预设的账号,进行流程批转
             for (UserAccountVO userAccountVO : userDate) {
 
-                login.loginAccount(driver, userAccountVO.getOrguid(), userAccountVO.getUserName(), userAccountVO.getPassWord());
+                login.loginAccount( userAccountVO.getOrguid(), userAccountVO.getUserName(), userAccountVO.getPassWord());
                 logger.info(userAccountVO.getUserName());
                 processForwarding.processOperation(driver, processName);
             }
-   
+
         }catch (Exception e){
-            
+
             logger.info(e.toString());
             //错误截图
             //SeleniumUtil.runExceptionScreenshot(driver);
@@ -88,6 +86,6 @@ public class DesignProjectRun {
 
             driver.quit();
         }
-        
+
     }
 }

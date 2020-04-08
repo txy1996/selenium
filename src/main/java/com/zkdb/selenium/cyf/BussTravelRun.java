@@ -1,4 +1,4 @@
-package com.zkdb.selenium.turnovermanagement;
+package com.zkdb.selenium.cyf;
 
 import java.util.ArrayList;
 
@@ -12,7 +12,7 @@ import com.zkdb.selenium.util.Login;
 import com.zkdb.selenium.util.SeleniumUtil;
 import com.zkdb.selenium.vo.UserAccountVO;
 
-public class TurnoverManagementRun {
+public class BussTravelRun {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -30,14 +30,14 @@ public class TurnoverManagementRun {
         //调用登录
         Login login = new Login();
         //使用账号登录
-        login.loginAccount( userDate.get(0).getOrguid(), userDate.get(0).getUserName(), userDate.get(0).getPassWord());
-        logger.info("登陆账号:"+userDate.get(0).getUserName());
+        login.loginAccount("fep", "1005118", "66666666");
+        logger.info("登陆账号:");
         
         try {
-            //填写离职管理表单
-            TurnoverManagement management =new TurnoverManagement();
+            //填写招聘申请表单
+            BussTravel management =new BussTravel();
             //返回流程事项名称
-            String processName = management.turnoverManagementOpenFrom(driver);
+            String processName = management.bussTravelOpenFrom(driver);
             try {
                 Thread.sleep(2000);
             }
@@ -54,7 +54,7 @@ public class TurnoverManagementRun {
             //循环预设的账号,进行流程批转
             for (UserAccountVO userAccountVO : userDate) {
                 
-                login.loginAccount(userAccountVO.getOrguid(), userAccountVO.getUserName(), userAccountVO.getPassWord());
+                login.loginAccount( userAccountVO.getOrguid(), userAccountVO.getUserName(), userAccountVO.getPassWord());
                 logger.info(userAccountVO.getUserName());
                 processForwarding.processOperation(driver, processName);
             }

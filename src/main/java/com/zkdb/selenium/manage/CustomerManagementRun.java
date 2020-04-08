@@ -3,14 +3,10 @@ package com.zkdb.selenium.manage;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import com.zkdb.selenium.constant.ElementLocateMode;
 import com.zkdb.selenium.constant.InitDriver;
-import com.zkdb.selenium.reimbursement.ProcessForwarding;
 import com.zkdb.selenium.reimbursement.ReimbursementRun;
-import com.zkdb.selenium.tset.DesignProject;
 import com.zkdb.selenium.util.Login;
 import com.zkdb.selenium.util.SeleniumUtil;
 import com.zkdb.selenium.vo.UserAccountVO;
@@ -48,7 +44,7 @@ public class CustomerManagementRun {
 //        login.loginAccount(driver, userDate.get(0).getOrguid(), userDate.get(0).getUserName(), userDate.get(0).getPassWord());
 //        logger.info("登陆账号:"+userDate.get(0).getUserName());
         
-        login.loginAccount(driver, "fep", "1005118", "888888");
+        login.loginAccount("fep", "1005118", "888888");
         logger.info("登陆账号:"+"1005118");
         
         util.verifyOnDuty();

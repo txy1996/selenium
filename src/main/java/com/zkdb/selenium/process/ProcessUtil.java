@@ -1,13 +1,13 @@
 package com.zkdb.selenium.process;
 
-import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-
 import com.zkdb.selenium.constant.ElementLocateMode;
+import com.zkdb.selenium.constant.InitDriver;
 import com.zkdb.selenium.reimbursement.ProcessForwarding;
 import com.zkdb.selenium.util.SeleniumUtil;
 import com.zkdb.selenium.util.WaitiElementsLoad;
+import org.apache.log4j.Logger;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 
 /**
  * 
@@ -15,14 +15,15 @@ import com.zkdb.selenium.util.WaitiElementsLoad;
  */
 public class ProcessUtil {
 
-    SeleniumUtil util = new SeleniumUtil();
-    WaitiElementsLoad load = new WaitiElementsLoad();
-    Logger logger = Logger.getLogger(ProcessForwarding.class);
+    static SeleniumUtil util = new SeleniumUtil();
+    static  WaitiElementsLoad load = new WaitiElementsLoad();
+    static Logger logger = Logger.getLogger(ProcessForwarding.class);
+    static WebDriver driver = InitDriver.getDriver();
 
     /**
      * 工作箱流程处理
      */
-    public String workboxProcess(WebDriver driver, String processName) {
+    public String workboxProcess(String processName) {
         // 跳转webiframe 验证是否第一次登陆设置在岗状态
         util.verifyOnDuty();
         load.Wait(driver, 30, ElementLocateMode.FIND_ELEMENT_CSSSELECTOR, ".fa-tasks");
@@ -104,9 +105,8 @@ public class ProcessUtil {
 
     /**
      * 批准确认办理
-     * @param driver
      */
-    public void processForwarding(WebDriver driver) {
+    public void processForwarding() {
         // 点击批转
         load.Wait(driver, 60, ElementLocateMode.FIND_ELEMENT_ID, "form_transmitNext");
         driver.findElement(By.id("form_transmitNext")).click();
@@ -128,9 +128,8 @@ public class ProcessUtil {
 
     /**
      * 任务接收人为自己
-     * @param driver
      */
-    public void taskRecipientIsSelf(WebDriver driver) {
+    public static void taskRecipientIsSelf() {
         // 流程接收人为自己
         By elBy = new By.ByXPath(
                 "//body//div[contains(@class,'modal')]//div[contains(@class,'modal-body')]/div[contains(@class,'modal-confirm') and contains(text(),'您选择的接收人为您自己，系统将为您打开流程继续办理')]");
@@ -144,20 +143,17 @@ public class ProcessUtil {
         logger.info("-----------是否存在接收人为自己------------");
         if (util.checkExistsElement(elBy)) {
             logger.info("-----------查询等待------------");
-            load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_XPATH,
-                    "//body//div[contains(@class,'modal')]//div[contains(@class,'modal-footer')]//span[contains(@class,'btn-default') and contains(text(),'取消')]");
-            driver.findElement(By.xpath(
-                    "//body//div[contains(@class,'modal')]//div[contains(@class,'modal-footer')]//span[contains(@class,'btn-default') and contains(text(),'取消')]"))
-                    .click();
+
+            util.getElement(10,ElementLocateMode.FIND_ELEMENT_XPATH,
+                    "//body//div[contains(@class,'modal')]//div[contains(@class,'modal-footer')]//span[contains(@class,'btn-default') and contains(text(),'取消')]").click();
             logger.info("-----------点击取消------------");
         }
     }
 
     /**
      * 未选择任务接收人 (此方法不通用待修改)
-     * @param driver
      */
-    public void ifNoRecipientSelected(WebDriver driver) {
+    public void ifNoRecipientSelected() {
         // 如果没有勾选人员会弹出提示信息,然后进行人员选择,再点击办理
         By element = new By.ByXPath("//span[contains(text(),'确定') and contains(@class,'okbtn')]");
         By promptXpath = new By.ByXPath(

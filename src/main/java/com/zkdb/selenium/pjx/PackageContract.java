@@ -16,7 +16,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.zkdb.selenium.constant.ElementLocateMode;
-import com.zkdb.selenium.reimbursement.RequiredField;
+import com.zkdb.selenium.vo.RequiredField;
 import com.zkdb.selenium.util.ExcelWriter;
 import com.zkdb.selenium.util.SeleniumUtil;
 import com.zkdb.selenium.util.SimulationFileUpload;

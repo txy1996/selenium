@@ -1,38 +1,22 @@
 package com.zkdb.selenium.util;
 
-import java.awt.AWTException;
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
-import com.zkdb.selenium.constant.InitDriverU;
-import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-
 import com.zkdb.selenium.constant.AttributesEnum;
 import com.zkdb.selenium.constant.ElementLocateMode;
 import com.zkdb.selenium.constant.InitDriver;
-import com.zkdb.selenium.reimbursement.RequiredField;
+import com.zkdb.selenium.vo.RequiredField;
+import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.*;
 
 /**
  * 
@@ -72,7 +56,7 @@ public class SeleniumUtil {
     /**
      * 
      * @Title: keyboardNumberInput
-     * @Description: TODO(模拟数字输入)
+     * @Description: TODO(模拟数字,日期 输入)
      * @param number
      */
     public void keyboardNumberInput(String number) {
@@ -759,6 +743,14 @@ public class SeleniumUtil {
         js.executeScript("arguments[0].scrollIntoView(true);", element);
     }
 
+     /**
+       * @Title:getElement
+       * @Description: TODO(获取元素)
+       * @param: 
+       * @return:
+       * @Date: 2020/4/8 8:55
+      */
+     
     public WebElement getElement(int time, ElementLocateMode locateMode, String path) {
         // 显示等待
         By by;
@@ -812,7 +804,24 @@ public class SeleniumUtil {
                 logger.info("定位方式不存在");
                 break;
         }
+
         return element;
     }
 
+     /**
+       * @Title:
+       * @Description: TODO(获取输入值)
+       * @param: 
+       * @return:
+       * @Date: 2020/4/8 8:58
+      */
+     
+    public String getInputValue(String fixedVal,Map<String, String[]> valueMap,boolean flag,String field,int num){
+
+        String value=fixedVal;
+        if (flag){
+            value=valueMap.get(field)[num];
+        }
+        return  value;
+    }
 }

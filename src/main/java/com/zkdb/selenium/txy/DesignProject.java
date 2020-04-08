@@ -1,11 +1,10 @@
-package com.zkdb.selenium.tset;
+package com.zkdb.selenium.txy;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -18,7 +17,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.zkdb.selenium.constant.ElementLocateMode;
 import com.zkdb.selenium.reimbursement.ReimbursementOpenForm;
-import com.zkdb.selenium.reimbursement.RequiredField;
+import com.zkdb.selenium.vo.RequiredField;
 import com.zkdb.selenium.util.ExcelWriter;
 import com.zkdb.selenium.util.SeleniumUtil;
 import com.zkdb.selenium.util.WaitiElementsLoad;

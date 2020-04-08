@@ -39,7 +39,7 @@ public class PackageContracttest {
 //	        }
 	        
         //	        使用账号登录
-	        login.loginAccount(driver, userDate.get(0).getOrguid(), userDate.get(0).getUserName(), userDate.get(0).getPassWord());
+	        login.loginAccount(userDate.get(0).getOrguid(), userDate.get(0).getUserName(), userDate.get(0).getPassWord());
 	        logger.info("登陆账号:"+userDate.get(0).getUserName());
 	        try {
 	            //填写表单
@@ -62,7 +62,7 @@ public class PackageContracttest {
 	            //循环预设的账号,进行流程批转
 	            for (UserAccountVO userAccountVO : userDate) {
 	                
-	                login.loginAccount(driver, userAccountVO.getOrguid(), userAccountVO.getUserName(), userAccountVO.getPassWord());
+	                login.loginAccount( userAccountVO.getOrguid(), userAccountVO.getUserName(), userAccountVO.getPassWord());
 	                logger.info(userAccountVO.getUserName());
 	                processForwarding.processOperation(driver, processName);
 	            }

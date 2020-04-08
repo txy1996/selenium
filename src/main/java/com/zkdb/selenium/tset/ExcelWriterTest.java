@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import com.zkdb.selenium.reimbursement.RequiredField;
+import com.zkdb.selenium.vo.RequiredField;
 import com.zkdb.selenium.util.ExcelWriter;
 
 /**

@@ -1,4 +1,4 @@
-package com.zkdb.selenium.tset;
+package com.zkdb.selenium.txy;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -12,10 +12,9 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.zkdb.selenium.constant.AttributesEnum;
 import com.zkdb.selenium.constant.ElementLocateMode;
 import com.zkdb.selenium.reimbursement.ReimbursementOpenForm;
-import com.zkdb.selenium.reimbursement.RequiredField;
+import com.zkdb.selenium.vo.RequiredField;
 import com.zkdb.selenium.util.ExcelWriter;
 import com.zkdb.selenium.util.SeleniumUtil;
 import com.zkdb.selenium.util.WaitiElementsLoad;
@@ -37,11 +36,13 @@ public class DesignProject1 {
      */
     @SuppressWarnings("static-access")
     public String designProjectPositioningExpenses(WebDriver driver) {
-        
+
         String url = "D:\\费用报销模块\\测试用例\\费用报销测试用例11.xlsx";
+        boolean flag = true;
         @SuppressWarnings("static-access")
         Map<String, String[]> valueMap=util.getEncapsulationFormData(url);
         if(valueMap==null) {
+            flag=false;
             logger.info("文件不存在,转换输入模式");
         }
         
