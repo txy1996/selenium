@@ -1,123 +1,22 @@
 package com.zkdb.selenium.txy;
 
 import com.zkdb.selenium.constant.ElementLocateMode;
-import com.zkdb.selenium.constant.InitDriver;
-import com.zkdb.selenium.process.ProcessUtil;
-import com.zkdb.selenium.reimbursement.ReimbursementRun;
-import com.zkdb.selenium.util.*;
-import com.zkdb.selenium.vo.RequiredField;
-import com.zkdb.selenium.vo.UserAccountVO;
-import org.apache.log4j.Logger;
+import com.zkdb.selenium.util.FormAndFlowBase;
+import com.zkdb.selenium.util.SimulationFileUpload;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * FileName: AdditionalProjectPhase Author: tangxiaoyu Date: 2020/4/8 10:27 Description: TODO(追加设计阶段)
  *
  * @since 1.0.0
  */
-public class AdditionalProjectPhase implements BusinessOperations {
-
-    // 初始化
-    WebDriver driver;
-    SeleniumUtil util = new SeleniumUtil();
-    WaitiElementsLoad load = new WaitiElementsLoad();
-    // 日志
-    Logger logger = Logger.getLogger(AdditionalProjectPhase.class);
-    Actions actions;
-    boolean flag = true;
-    Map<String, String[]> valueMap;
-    String url;
-    String handle;
-
-
-    /**
-     * @Title:
-     * @Description: TODO(登录并定位模块位置)
-     * @param:
-     * @return:
-     * @Date: 2020/4/8 10:33
-     */
-    @Override
-    public void login() {
-        Logger logger = Logger.getLogger(ReimbursementRun.class);
-        // 读取配置文件 (预设账号)
-        driver = InitDriver.getDriver();
-        String excelFileName = "D:\\项目立项\\UserAccountVO.xlsx";
-        url = "D:\\项目立项\\追加项目阶段用例.xlsx";
-
-        valueMap=util.getEncapsulationFormData(url);
-        if(valueMap==null) {
-            flag=false;
-            logger.info("文件不存在,转换输入模式");
-        }
-        UserAccountVO user = new UserAccountVO();
-        ArrayList<UserAccountVO> userDate = (ArrayList<UserAccountVO>)SeleniumUtil.getExcelDate(excelFileName, user);
-
-        // 调用登录
-        Login login = new Login();
-        // 使用账号登录
-        login.loginAccount(userDate.get(0).getOrguid(), userDate.get(0).getUserName(), userDate.get(0).getPassWord());
-        logger.info("登陆账号:" + userDate.get(0).getUserName());
-    }
-
-    /**
-     * @Title:
-     * @Description: TODO(定位模块位置)
-     * @param:
-     * @return:
-     * @Date: 2020/4/8 11:00
-     */
-    @Override
-    public void LocateModule() {
-
-        util.verifyOnDuty();
-        util.getElement(10, ElementLocateMode.FIND_ELEMENT_XPATH, "//div[@id='topbar1']//div[@data-title='项目']")
-            .click();
-        logger.info("点击项目");
-
-        util.getElement(10, ElementLocateMode.FIND_ELEMENT_LINKTEXT, "启动规划").click();
-        logger.info("启动规划");
-
-        util.getElement(10, ElementLocateMode.FIND_ELEMENT_LINKTEXT, "追加设计阶段").click();
-        logger.info("追加设计阶段");
-    }
-
-    /**
-     * @Title:
-     * @Description: TODO(新增业务数据)
-     * @param:
-     * @return:
-     * @Date: 2020/4/8 10:29
-     */
-    @Override
-    public void addBusinessData() {
-
-        // 跳转
-        driver.switchTo().frame(2);
-
-        load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_ID, "btnAdd");
-        driver.findElement(By.id("btnAdd")).click();
-        logger.info("点击添加按钮");
-
-        handle = driver.getWindowHandle();
-        util.switchWindow();
-        new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("body")));
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
+public class AdditionalProjectPhase extends FormAndFlowBase  {
 
     /**
      * @Title:
@@ -219,83 +118,4 @@ public class AdditionalProjectPhase implements BusinessOperations {
 
     }
 
-    /**
-     * @Title:
-     * @Description: TODO(保存表单数据)
-     * @param:
-     * @return:
-     * @Date: 2020/4/8 10:35
-     */
-    @Override
-    public void saveFormDate() {
-
-        util.getElement(10,ElementLocateMode.FIND_ELEMENT_ID,"form_save").click();
-        logger.info("点击保存");
-    }
-
-    /**
-     * 数据输出
-     */
-    @Override
-    public void dataOutput() {
-        ArrayList<RequiredField> requiredFields=util.getFormRequiredField();
-        //写入表单信息
-        ExcelWriter.inputDataExcel(requiredFields,url);
-    }
-
-    /**
-     * @Title:
-     * @Description: TODO(发起流程)
-     * @param:
-     * @return:
-     * @Date: 2020/4/8 10:36
-     */
-    @Override
-    public void initiationrocess() {
-        //点击发起按钮
-        WebElement newWfInstanceEle=util.getElement(10,ElementLocateMode.FIND_ELEMENT_ID,"form_newWfInstance");
-        newWfInstanceEle.click();
-        logger.info("点击发起");
-        //获取流程事项名称
-        WebElement processNameEle=util.getElement(10,ElementLocateMode.FIND_ELEMENT_XPATH,"//div[contains(@class,'modalWorkFlow')]//div[contains(@class,'modal-body')]//div/label[contains(text(), '事项名称')]/../input");
-        processNameEle.click();
-
-        //确认办理
-        WebElement primaryEle =util.getElement(10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".modal-footer > .btn-primary");
-        primaryEle.click();
-        logger.info("-----------发起成功------------");
-
-        ProcessUtil.taskRecipientIsSelf();
-        driver.switchTo().window(handle);
-
-        //跳转窗体
-        load.Wait(driver,10,ElementLocateMode.FIND_ELEMENT_ID,"webiframe");
-        driver.switchTo().frame("webiframe");
-        driver.navigate().refresh();
-    }
-
-    /**
-     * @Title:
-     * @Description: TODO(关闭表单)
-     * @param:
-     * @return:
-     * @Date: 2020/4/8 10:37
-     */
-    @Override
-    public void closeForm() {
-        util.getElement(10,ElementLocateMode.FIND_ELEMENT_ID,"form_cancel").click();
-        logger.info("点击关闭");
-    }
-
-    /**
-     * @Title:
-     * @Description: TODO(流程批转)
-     * @param:
-     * @return:
-     * @Date: 2020/4/8 10:54
-     */
-    @Override
-    public void processForwarding() {
-
-    }
 }

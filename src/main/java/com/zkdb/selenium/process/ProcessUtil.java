@@ -8,6 +8,7 @@ import com.zkdb.selenium.util.WaitiElementsLoad;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 /**
  * 
@@ -23,33 +24,31 @@ public class ProcessUtil {
     /**
      * 工作箱流程处理
      */
-    public String workboxProcess(String processName) {
+    public static String workboxProcess(String processName) {
         // 跳转webiframe 验证是否第一次登陆设置在岗状态
         util.verifyOnDuty();
-        load.Wait(driver, 30, ElementLocateMode.FIND_ELEMENT_CSSSELECTOR, ".fa-tasks");
-        // new WebDriverWait(driver,
-        // 30).until(ExpectedConditions.elementToBeClickable(By.id("a_number3")));
-        driver.findElement(By.cssSelector(".fa-tasks")).click();
+        util.getElement(10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".fa-tasks").click();
         logger.info("-----------点击工作箱------------");
 
         load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_NAME, "workframe");
         driver.switchTo().frame("workframe");
 
-        load.Wait(driver, 30, ElementLocateMode.FIND_ELEMENT_CSSSELECTOR, ".working .glyphicon");
-        driver.findElement(By.cssSelector(".working .glyphicon")).click();
+
+        util.getElement(10,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".working .glyphicon").click();
         logger.info("-----------点击工作箱搜索------------");
 
-        load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_LINKTEXT, "自定义搜索");
-        driver.findElement(By.linkText("自定义搜索")).click();
 
-        load.Wait(driver, 30, ElementLocateMode.FIND_ELEMENT_XPATH, "//div[4]/div/div[2]/div/input");
-        driver.findElement(By.xpath("//div[4]/div/div[2]/div/input")).click();
-        driver.findElement(By.xpath("//div[4]/div/div[2]/div/input")).sendKeys(processName);
+        util.getElement(ElementLocateMode.FIND_ELEMENT_LINKTEXT,"自定义搜索").click();
+
+
+        WebElement  workitemname =util.getElement(ElementLocateMode.FIND_ELEMENT_XPATH,"//body//div[@class='advfilter']//div/input[@data-field='workitemname']");
+        workitemname.click();
+        workitemname.sendKeys(processName);
 
         logger.info("-----------点击事项标题------------");
 
-        load.Wait(driver, 30, ElementLocateMode.FIND_ELEMENT_CSSSELECTOR, ".querybtn");
-        driver.findElement(By.cssSelector(".querybtn")).click();
+
+        util.getElement(30,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".querybtn").click();
         logger.info("-----------点击查询------------");
         try {
             Thread.sleep(2000);
@@ -62,17 +61,19 @@ public class ProcessUtil {
         By elementGroup = new By.ByCssSelector(".wftasks .name");
 
         By elementUnclassified = new By.ByCssSelector("#box_data .name");
-
+        WebElement wftasksEle = null;
+        WebElement box_data = null;
         boolean flag = true;
         if (util.checkExistsElement(elementGroup)) {
-            load.Wait(driver, 30, ElementLocateMode.FIND_ELEMENT_CSSSELECTOR, ".wftasks .name");
-            text = driver.findElement(By.cssSelector(".wftasks .name")).getText();
+
+            wftasksEle=util.getElement(30,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".wftasks .name");
+            text = wftasksEle.getText();
             logger.info("-----------分组------------" + text);
 
         }
         else if (util.checkExistsElement(elementUnclassified)) {
-            load.Wait(driver, 30, ElementLocateMode.FIND_ELEMENT_CSSSELECTOR, "#box_data .name");
-            text = driver.findElement(By.cssSelector("#box_data .name")).getText();
+            box_data=util.getElement(30,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,"#box_data .name");
+            text = box_data.getText();
             flag = false;
             logger.info("-----------未分组------------" + text);
         }
@@ -80,10 +81,10 @@ public class ProcessUtil {
         // 判断是否存在
         if (processName.equals(text)) {
             if (flag) {
-                driver.findElement(By.cssSelector(".wftasks .name")).click();
+                wftasksEle.click();
             }
             else {
-                driver.findElement(By.cssSelector("#box_data .name")).click();
+                box_data.click();
             }
             util.switchWindow();
             try {
@@ -96,8 +97,7 @@ public class ProcessUtil {
             By unreadMessages = new By.ByCssSelector(".close");
             if (util.checkExistsElement(unreadMessages)) {
                 logger.info("-----------@未阅消息提醒------------");
-                load.Wait(driver, 30, ElementLocateMode.FIND_ELEMENT_CSSSELECTOR, ".close");
-                driver.findElement(By.cssSelector(".close")).click();
+                util.getElement(30,ElementLocateMode.FIND_ELEMENT_CSSSELECTOR,".close").click();
             }
         }
         return handle;
@@ -106,30 +106,26 @@ public class ProcessUtil {
     /**
      * 批准确认办理
      */
-    public void processForwarding() {
+    public static void processForwarding() throws InterruptedException {
         // 点击批转
-        load.Wait(driver, 60, ElementLocateMode.FIND_ELEMENT_ID, "form_transmitNext");
-        driver.findElement(By.id("form_transmitNext")).click();
+        util.getElement(30,ElementLocateMode.FIND_ELEMENT_ID,"form_transmitNext").click();
         // 确定办理
         By confirmation = new By.ByXPath("//button[contains(.,'确定办理')]");
-        try {
+
             Thread.sleep(4000);
-        }
-        catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+
         if (util.checkExistsElement(confirmation)) {
-            load.Wait(driver, 40, ElementLocateMode.FIND_ELEMENT_XPATH, "//button[contains(.,'确定办理')]");
-            driver.findElement(By.xpath("//button[contains(.,'确定办理')]")).click();
+            util.getElement(30,ElementLocateMode.FIND_ELEMENT_XPATH,"//button[contains(.,'确定办理')]").click();
             logger.info("-----------确定办理------------");
         }
+
+
     }
 
     /**
      * 任务接收人为自己
      */
-    public static void taskRecipientIsSelf() {
+    public static void taskRecipientIsSelf(String handle) throws InterruptedException {
         // 流程接收人为自己
         By elBy = new By.ByXPath(
                 "//body//div[contains(@class,'modal')]//div[contains(@class,'modal-body')]/div[contains(@class,'modal-confirm') and contains(text(),'您选择的接收人为您自己，系统将为您打开流程继续办理')]");
@@ -148,34 +144,16 @@ public class ProcessUtil {
                     "//body//div[contains(@class,'modal')]//div[contains(@class,'modal-footer')]//span[contains(@class,'btn-default') and contains(text(),'取消')]").click();
             logger.info("-----------点击取消------------");
         }
+
+        Thread.sleep(2000);
+
+        driver.switchTo().window(handle);
+        logger.info("-----------跳转窗口------------"+handle);
+
+        //刷新页面
+        driver.navigate().refresh();
+        Thread.sleep(4000);
     }
 
-    /**
-     * 未选择任务接收人 (此方法不通用待修改)
-     */
-    public void ifNoRecipientSelected() {
-        // 如果没有勾选人员会弹出提示信息,然后进行人员选择,再点击办理
-        By element = new By.ByXPath("//span[contains(text(),'确定') and contains(@class,'okbtn')]");
-        By promptXpath = new By.ByXPath(
-                "//body//div[contains(@class,'modal')]//div[contains(@class,'modal-body')]/div[contains(@class,'modal-alert') and contains(text(),'必须选择接收人')]");
-        if (util.checkExistsElement(element) && util.checkExistsElement(promptXpath)) {
-            load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_XPATH,
-                    "//span[contains(text(),'确定') and contains(@class,'okbtn')]");
-            driver.findElement(By.xpath("//span[contains(text(),'确定') and contains(@class,'okbtn')]")).click();
 
-            logger.info("-----------选中人员1------------");
-            load.Wait(driver, 60, ElementLocateMode.FIND_ELEMENT_ID, "Transmit_userTree_2_check");
-            driver.findElement(By.id("Transmit_userTree_2_check")).click();
-
-            logger.info("-----------选中人员2------------");
-            load.Wait(driver, 60, ElementLocateMode.FIND_ELEMENT_ID, "Transmit_userTree_5_check");
-            driver.findElement(By.id("Transmit_userTree_5_check")).click();
-
-            logger.info("-----------选中人员3------------");
-
-            load.Wait(driver, 10, ElementLocateMode.FIND_ELEMENT_XPATH, "//button[contains(.,'确定办理')]");
-            driver.findElement(By.xpath("//button[contains(.,'确定办理')]")).click();
-            logger.info("-----------确定办理------------");
-        }
-    }
 }

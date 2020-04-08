@@ -1,9 +1,5 @@
 package com.zkdb.selenium.txy;
 
-import com.zkdb.selenium.constant.InitDriver;
-import org.apache.log4j.Logger;
-import org.openqa.selenium.WebDriver;
-
 /**
  * FileName: TestRun
  * Author:   tangxiaoyu
@@ -17,25 +13,11 @@ public class TestRun {
 
     public static void main(String[] args) {
         // TODO Auto-generated method stub
-        Logger logger = Logger.getLogger(TestRun.class);
-        //初始化
-        try {
-            AdditionalProjectPhase projectPhase =new AdditionalProjectPhase();
-            projectPhase.login();
-            projectPhase.LocateModule();
-            projectPhase.addBusinessData();
-            projectPhase.writeFormData();
-        }
-        catch (Exception e){
 
-            logger.info(e.toString());
-            //错误截图
-            //SeleniumUtil.runExceptionScreenshot(driver);
-        }
-        finally {
-            WebDriver driver=InitDriver.getDriver();
-            driver.quit();
-        }
+
+        AdditionalProjectPhase projectPhase =new AdditionalProjectPhase();
+        projectPhase.run("D:\\项目立项\\UserAccountVO.xlsx","D:\\项目立项\\追加项目阶段用例.xlsx","项目","启动规划","追加设计阶段");
+
 
 
 

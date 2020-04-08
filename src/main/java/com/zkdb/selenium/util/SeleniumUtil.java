@@ -689,7 +689,7 @@ public class SeleniumUtil {
      * @Date: 2020/4/7 14:50
      */
 
-    public void BrowserBack() {
+    public void browserBack() {
         driver.navigate().back();
     }
 
@@ -701,7 +701,7 @@ public class SeleniumUtil {
      * @Date: 2020/4/7 14:50
      */
 
-    public void BrowserForward() {
+    public void browserForward() {
         driver.navigate().forward();
     }
 
@@ -715,8 +715,6 @@ public class SeleniumUtil {
 
     public void scrollToTop() {
         ((JavascriptExecutor) driver).executeScript("window.scrollTo(0,0);");
-        // JavascriptExecutor js = (JavascriptExecutor) driver;
-        // js.executeScript("window.scrollTo(0,0);");
     }
 
     /**
@@ -727,7 +725,7 @@ public class SeleniumUtil {
      * @Date: 2020/4/7 14:49
      */
 
-    public void scrollToBottom(String id) {
+    public void scrollToBottom() {
         ((JavascriptExecutor) driver).executeScript("window.scrollTo(0,10000);");
     }
 
@@ -808,6 +806,70 @@ public class SeleniumUtil {
         return element;
     }
 
+    /**
+     * 不输入时间默认等待时间为10s
+     * @Description: TODO(获取元素)
+     * @param locateMode
+     * @param path
+     * @return
+     */
+    public WebElement getElement(ElementLocateMode locateMode, String path) {
+        int time=10;
+        // 显示等待
+        By by;
+        WebElement element = null;
+        logger.info("等待");
+        WebDriverWait wait = new WebDriverWait(driver, time);
+        switch (locateMode) {
+            case FIND_ELEMENT_ID:
+                by=By.id(path);
+                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
+                element = driver.findElement(by);
+                break;
+            case FIND_ELEMENT_NAME:
+                by=By.name(path);
+                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
+                element = driver.findElement(by);
+                break;
+
+            case FIND_ELEMENT_CLASSNAME:
+                by=By.className(path);
+                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
+                element = driver.findElement(by);
+                break;
+            case FIND_ELEMENT_TAGNAME:
+                by=By.tagName(path);
+                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
+                element = driver.findElement(by);
+                break;
+            case FIND_ELEMENT_LINKTEXT:
+                by=By.linkText(path);
+                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
+                element = driver.findElement(by);
+                break;
+            case FIND_ELEMENT_PARTIALLINKTEXT:
+                by=By.partialLinkText(path);
+                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
+                element = driver.findElement(by);
+                break;
+            case FIND_ELEMENT_XPATH:
+                by=By.xpath(path);
+                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
+                element = driver.findElement(by);
+                break;
+
+            case FIND_ELEMENT_CSSSELECTOR:
+                by=By.cssSelector(path);
+                wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
+                element = driver.findElement(by);
+                break;
+            default:
+                logger.info("定位方式不存在");
+                break;
+        }
+
+        return element;
+    }
      /**
        * @Title:
        * @Description: TODO(获取输入值)
